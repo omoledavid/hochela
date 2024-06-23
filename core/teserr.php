@@ -1,0 +1,10 @@
+Route::get('staffs/detail/{id}', 'ManageStaffsController@detail')->name('staffs.detail');
+        Route::post('staffs/update/{id}', 'ManageStaffsController@update')->name('staffs.update');
+        Route::get('staffs/send-email/{id}', 'ManageStaffsController@showEmailSingleForm')->name('staffs.email.single');
+        Route::post('staffs/send-email/{id}', 'ManageStaffsController@sendEmailSingle')->name('staffs.email.single');
+        Route::get('staffs/login/{id}', 'ManageStaffsController@login')->name('staffs.login');
+        Route::get('staffs/tickets/{id}', 'ManageStaffsController@tickets')->name('staffs.tickets');
+        Route::get('staffs/payments/{id}', 'ManageStaffsController@deposits')->name('staffs.deposits');
+        Route::get('staffs/payments/via/{method}/{type?}/{userId}', 'ManageStaffsController@depositViaMethod')->name('staffs.deposits.method');
+        Route::get('staffs/booked-properties/{id}', 'ManageStaffsController@bookedProperties')->name('staffs.booked.properties');
+        Route::get('staffs/withdrawals/via/{method}/{type?}/{userId}', 'ManageStaffsController@withdrawalsViaMethod')->name('staffs.withdrawals.method');
