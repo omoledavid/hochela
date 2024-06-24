@@ -7,6 +7,7 @@ use App\Lib\GoogleAuthenticator;
 use App\Models\AdminNotification;
 use App\Models\GeneralSetting;
 use App\Models\Property;
+use App\Models\Review;
 use App\Models\Room;
 use App\Models\RoomCategory;
 use App\Models\Transaction;
@@ -26,13 +27,13 @@ class OwnerController extends Controller
         $widget['balance'] = Auth::guard('owner')->user()->balance;
         $widget['total_properties'] = Property::where('owner_id', Auth::guard('owner')->id())->count();
         $widget['total_rooms'] = Room::with('property')
-        ->whereHas('property', function($property){
-            $property->where('owner_id', Auth::guard('owner')->id());
-        })->count();
+            ->whereHas('property', function ($property) {
+                $property->where('owner_id', Auth::guard('owner')->id());
+            })->count();
         $widget['total_room_category'] = RoomCategory::with('property')
-        ->whereHas('property', function($property){
-            $property->where('owner_id', Auth::guard('owner')->id());
-        })->count();
+            ->whereHas('property', function ($property) {
+                $property->where('owner_id', Auth::guard('owner')->id());
+            })->count();
         return view('owner.dashboard', compact('pageTitle', 'widget'));
     }
 
@@ -54,10 +55,10 @@ class OwnerController extends Controller
             'state' => 'sometimes|required|max:80',
             'zip' => 'sometimes|required|integer|min:1',
             'city' => 'sometimes|required|max:50',
-        ],[
-            'firstname.required'=>'First name field is required',
-            'lastname.required'=>'Last name field is required',
-            'about_me.required'=>'About me field is required'
+        ], [
+            'firstname.required' => 'First name field is required',
+            'lastname.required' => 'Last name field is required',
+            'about_me.required' => 'About me field is required'
         ]);
         $owner = Auth::guard('owner')->user();
 
@@ -71,10 +72,10 @@ class OwnerController extends Controller
             }
         }
 
-        $owner->firstname= $request->firstname;
-        $owner->lastname= $request->lastname;
+        $owner->firstname = $request->firstname;
+        $owner->lastname = $request->lastname;
         $owner->about_me = $request->about_me;
-      
+
 
         $in['address'] = [
             'address' => $request->address,
@@ -88,7 +89,6 @@ class OwnerController extends Controller
 
         $notify[] = ['success', 'Profile updated successfully.'];
         return back()->withNotify($notify);
-
     }
 
     public function changePassword()
@@ -108,9 +108,9 @@ class OwnerController extends Controller
 
         $this->validate($request, [
             'current_password' => 'required',
-            'password' => ['required','confirmed',$password_validation]
+            'password' => ['required', 'confirmed', $password_validation]
         ]);
-        
+
 
         try {
             $owner = auth()->guard('owner')->user();
@@ -148,7 +148,7 @@ class OwnerController extends Controller
             'key' => 'required',
             'code' => 'required',
         ]);
-        $response = verifyG2fa($owner,$request->code,$request->key);
+        $response = verifyG2fa($owner, $request->code, $request->key);
         if ($response) {
             $owner->tsc = $request->key;
             $owner->ts = 1;
@@ -177,7 +177,7 @@ class OwnerController extends Controller
         ]);
 
         $owner = auth()->guard('owner')->user();
-        $response = verifyG2fa($owner,$request->code);
+        $response = verifyG2fa($owner, $request->code);
         if ($response) {
             $owner->tsc = null;
             $owner->ts = 0;
@@ -198,15 +198,15 @@ class OwnerController extends Controller
     }
 
 
-     /*
+    /*
      * Withdraw Operation
      */
 
     public function withdrawMoney()
     {
-        $withdrawMethod = WithdrawMethod::where('status',1)->get();
+        $withdrawMethod = WithdrawMethod::where('status', 1)->get();
         $pageTitle = 'Withdraw Money';
-        return view('owner.withdraw.methods', compact('pageTitle','withdrawMethod'));
+        return view('owner.withdraw.methods', compact('pageTitle', 'withdrawMethod'));
     }
 
     public function withdrawStore(Request $request)
@@ -253,16 +253,16 @@ class OwnerController extends Controller
 
     public function withdrawPreview()
     {
-        $withdraw = Withdrawal::with('method','owner')->where('trx', session()->get('wtrx'))->where('status', 0)->orderBy('id','desc')->firstOrFail();
+        $withdraw = Withdrawal::with('method', 'owner')->where('trx', session()->get('wtrx'))->where('status', 0)->orderBy('id', 'desc')->firstOrFail();
         $pageTitle = 'Withdraw Preview';
-        return view('owner.withdraw.preview', compact('pageTitle','withdraw'));
+        return view('owner.withdraw.preview', compact('pageTitle', 'withdraw'));
     }
 
 
     public function withdrawSubmit(Request $request)
     {
         $general = GeneralSetting::first();
-        $withdraw = Withdrawal::with('method','owner')->where('trx', session()->get('wtrx'))->where('status', 0)->orderBy('id','desc')->firstOrFail();
+        $withdraw = Withdrawal::with('method', 'owner')->where('trx', session()->get('wtrx'))->where('status', 0)->orderBy('id', 'desc')->firstOrFail();
 
         $rules = [];
         $inputField = [];
@@ -271,7 +271,7 @@ class OwnerController extends Controller
                 $rules[$key] = [$cus->validation];
                 if ($cus->type == 'file') {
                     array_push($rules[$key], 'image');
-                    array_push($rules[$key], new FileTypeValidate(['jpg','jpeg','png']));
+                    array_push($rules[$key], new FileTypeValidate(['jpg', 'jpeg', 'png']));
                     array_push($rules[$key], 'max:2048');
                 }
                 if ($cus->type == 'text') {
@@ -285,14 +285,14 @@ class OwnerController extends Controller
         }
 
         $this->validate($request, $rules);
-        
+
         $owner = Auth::guard('owner')->user();
         if ($owner->ts) {
-            $response = verifyG2fa($owner,$request->authenticator_code);
+            $response = verifyG2fa($owner, $request->authenticator_code);
             if (!$response) {
                 $notify[] = ['error', 'Wrong verification code'];
                 return back()->withNotify($notify);
-            }   
+            }
         }
 
 
@@ -301,8 +301,8 @@ class OwnerController extends Controller
             return back()->withNotify($notify);
         }
 
-        $directory = date("Y")."/".date("m")."/".date("d");
-        $path = imagePath()['verify']['withdraw']['path'].'/'.$directory;
+        $directory = date("Y") . "/" . date("m") . "/" . date("d");
+        $path = imagePath()['verify']['withdraw']['path'] . '/' . $directory;
         $collection = collect($request);
         $reqField = [];
         if ($withdraw->method->user_data != null) {
@@ -315,7 +315,7 @@ class OwnerController extends Controller
                             if ($request->hasFile($inKey)) {
                                 try {
                                     $reqField[$inKey] = [
-                                        'field_name' => $directory.'/'.uploadImage($request[$inKey], $path),
+                                        'field_name' => $directory . '/' . uploadImage($request[$inKey], $path),
                                         'type' => $inVal->type,
                                     ];
                                 } catch (\Exception $exp) {
@@ -356,8 +356,8 @@ class OwnerController extends Controller
 
         $adminNotification = new AdminNotification();
         $adminNotification->owner_id = $owner->id;
-        $adminNotification->title = 'New withdraw request from '.$owner->username;
-        $adminNotification->click_url = urlPath('admin.withdraw.details',$withdraw->id);
+        $adminNotification->title = 'New withdraw request from ' . $owner->username;
+        $adminNotification->click_url = urlPath('admin.withdraw.details', $withdraw->id);
         $adminNotification->save();
 
         notify($owner, 'WITHDRAW_REQUEST', [
@@ -381,7 +381,7 @@ class OwnerController extends Controller
     {
         $pageTitle = "Withdraw Log";
         $emptyMessage = "No withdraw history found";
-        $withdraws = Withdrawal::where('owner_id', Auth::guard('owner')->id())->where('status', '!=', 0)->with('method')->orderBy('id','desc')->paginate(getPaginate());
+        $withdraws = Withdrawal::where('owner_id', Auth::guard('owner')->id())->where('status', '!=', 0)->with('method')->orderBy('id', 'desc')->paginate(getPaginate());
         $data['emptyMessage'] = "No Data Found!";
         return view('owner.withdraw.log', compact('pageTitle', 'emptyMessage', 'withdraws'));
     }

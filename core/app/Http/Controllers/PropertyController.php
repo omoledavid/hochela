@@ -319,7 +319,8 @@ class PropertyController extends Controller
 
         $bookedProperty = new BookedProperty();
         $bookedProperty->property_id = $property->id;
-        $bookedProperty->user_id = auth()->id();
+        $bookedProperty->user_id = $property->owner_id;
+        $bookedProperty->agent_id = auth()->id();
         $bookedProperty->total_price = $totalPrice;
         $bookedProperty->date_from = $checkInDate;
         $bookedProperty->date_to = $checkOutDate;

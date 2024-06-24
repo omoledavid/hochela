@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\AdminNotification;
+use App\Models\Agent_review;
 use App\Models\Frontend;
 use App\Models\Language;
 use App\Models\Location;
@@ -163,7 +164,8 @@ class SiteController extends Controller
         $pageTitle = $agents->firstname.' '.$agents->lastname;
         $properties = Property::where('owner_id', $agents->id)->count();
         $properties_all = Property::where('owner_id', $agents->id)->with('location')->with('rooms')->get();
-        return view($this->activeTemplate.'agents_details', compact('pageTitle', 'agents', 'properties', 'properties_all'));
+        $review_count = Agent_review::where('agent_id', $agents->id)->count();
+        return view($this->activeTemplate.'agents_details', compact('pageTitle', 'agents', 'properties', 'properties_all', 'review_count'));
     }
 
 

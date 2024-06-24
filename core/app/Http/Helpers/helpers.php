@@ -737,6 +737,10 @@ function imagePath()
             'path' => 'assets/images/news',
             'size' => '900x500',
     ];
+    $data['message'] = [
+            'path' => 'assets/images/news',
+            'size' => '590x300',
+    ];
     return $data;
 }
 function ratings($number){

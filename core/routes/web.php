@@ -49,6 +49,16 @@ Route::prefix('ticket')->group(function () {
     Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
 });
 
+//messages for users
+Route::prefix('message')->group(function () {
+    Route::get('/', 'MessageController@index')->name('message');
+    Route::get('/open', 'MessageController@open')->name('message.open');
+    Route::post('/create', 'TicketController@storeSupportTicket')->name('ticket.store');
+    Route::get('/view/{message}', 'MessageController@chat')->name('message.view');
+    Route::post('/reply/{ticket}', 'TicketController@replyTicket')->name('ticket.reply');
+    Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -640,6 +650,12 @@ Route::name('user.')->group(function () {
     Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
     Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
     Route::post('password/verify-code', 'Auth\ForgotPasswordController@verifyCode')->name('password.verify.code');
+
+    //Conversation
+    Route::post('conversation', 'MessageController@store')->name('conversation.store');
+    Route::get('inbox', 'MessageController@inbox')->name('conversation.inbox');
+    Route::get('chat/{id}', 'MessageController@chat')->name('conversation.chat');
+    Route::post('message/store', 'MessageController@messageStore')->name('message.store');
 });
 
 Route::name('user.')->prefix('user')->group(function () {
@@ -652,6 +668,8 @@ Route::name('user.')->prefix('user')->group(function () {
 
         Route::middleware(['checkStatus'])->group(function () {
             Route::get('dashboard', 'UserController@home')->name('home');
+
+            Route::get('open_msg/{$id}', 'UserController@openMessage')->name('open_msg');
 
             Route::get('profile-setting', 'UserController@profile')->name('profile.setting');
             Route::post('profile-setting', 'UserController@submitProfile');
@@ -726,4 +744,6 @@ Route::post('/subscribe', 'SiteController@subscribe')->name('subscribe');
 
 Route::get('/{slug}', 'SiteController@pages')->name('pages');
 Route::get('property/chat', 'SiteController@startChat')->name('property.chat');
+
+Route::post('/review', 'ReviewController@review')->name('review');
 Route::get('/', 'SiteController@index')->name('home');

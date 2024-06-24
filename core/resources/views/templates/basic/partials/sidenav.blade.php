@@ -6,6 +6,9 @@
           <li class="{{ menuActive('user.home') }}">
             <a href="{{ route('user.home') }}"><i class="las la-layer-group"></i> <span>@lang('Dashboard')</span></a>
           </li>
+          <li class="{{ menuActive('message') }}">
+            <a href="{{ route('message') }}"><i class="fas fa-mail-bulk"></i> <span>@lang('Messages')</span></a>
+          </li>
           <li class="{{ menuActive('user.property.history') }}">
             <a href="{{ route('user.property.history') }}"><i class="las la-history"></i> <span>@lang('Activities')</span></a>
           </li>

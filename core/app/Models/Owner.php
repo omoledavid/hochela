@@ -71,4 +71,8 @@ class Owner extends Authenticatable
     {
         return $this->where('sv', 1);
     }
+    public function reviews()
+    {
+        return $this->hasMany(Agent_review::class,'agent_id');
+    }
 }

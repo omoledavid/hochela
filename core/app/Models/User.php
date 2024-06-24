@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    public function reviewed()
+    {
+        return Review::where('user_id',auth()->id())->exists();
+    }
+
     public function scopeActive()
     {
         return $this->where('status', 1);

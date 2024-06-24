@@ -18,7 +18,7 @@
               </li>
               <li>
                 <i class="las la-star"></i>
-                <span>9 @lang('Reviews')</span>
+                <span>{{$review_count}} @lang('Reviews')</span>
               </li>
             </ul>
           </div>
@@ -83,7 +83,7 @@
                         </div>
                       </div>
                     </div>
-                  </div><!-- best-trip-card end -->
+                  </div>
                 </div><!-- single-slide end -->
                 @endforeach
 
@@ -96,6 +96,25 @@
             <div class="rating-area mt-5">
               <div class="single-rating-wrapper">
                 <!-- single-rating end -->
+                @forelse ($agents->reviews as $review)
+                <div class="single-rating">
+                  <div class="single-rating__thumb">
+                    <img src="{{getImage('assets/images/user/profile/'.$review->user->image,'350x350')}}" alt="image">
+                  </div>
+                  <div class="single-rating__content">
+                    <h5 class="name">{{$review->user->fullname}}</h5>
+                    <div class="d-flex align-items-center mt-1">
+                      <div class="ratings d-flex align-items-center justify-content-end fs--18px">
+                        @php
+                        echo ratings($review->stars);
+                        @endphp
+                      </div>
+                      <span class="text-muted ms-2">{{diffForHumans($review->created_at)}}</span>
+                    </div>
+                    <p class="mt-2">{{__($review->review)}}</p>
+                  </div>
+                </div><!-- single-rating end -->
+                @empty
                 <div class="single-rating">
                   <div class="single-rating__content">
                     <div class="d-flex align-items-center mt-1">
@@ -103,6 +122,7 @@
                     </div>
                   </div>
                 </div><!-- single-rating end -->
+                @endforelse<!-- single-rating end -->
 
               </div>
             </div>
@@ -114,9 +134,9 @@
               <h3 class="block-title text--danger text-center">@lang('Please login first')</h3>
               @endguest
               @auth
-              <form class="review-form rating mt-4" method="POST" action="{{route('user.review')}}">
+              <form class="review-form rating mt-4" method="POST" action="{{route('review')}}">
                 @csrf
-                <input type="hidden" name="course_id" value="">
+                <input type="hidden" name="agent_id" value="{{$agents->id}}">
                 <input type="hidden" name="author_id" value="">
                 <div class="form-group d-flex flex-wrap">
                   <label class="review-label text-dark fw-medium mb-0 me-3">@lang('Your Ratings') :</label>
@@ -170,13 +190,11 @@
             <i class="fas fa-mail-bulk"></i>
             <h3 class="text-white mt-2">@lang('Book a meeting')</h3>
             <form action="{{route('property.chat')}}">
-              <input type="text" name="msg" class="form--control" value="I want to book an appointment">
               @guest
-              <button type="submit" disabled class="btn mt-2 btn--base w-100">@lang('Login to book a meeting')</button>
-              <a href="link" class="nav-link" style="color:white;"> Login</a>
+              <a href="{{route('user.login')}}" data-bs-toggle="modal" data-bs-target="#depoModal" class="btn mt-2 btn--base w-100">@lang('Contact Now')</a>
               @endguest
               @auth
-              <button type="submit" class="btn mt-2 btn--base w-100">@lang('Send Message')</button>
+              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#depoModal" class="btn mt-2 btn--base w-100">@lang('Contact Now')</a>
               @endauth
             </form>
           </div><!-- agent-details-widget end -->
@@ -188,4 +206,38 @@
   </div>
   </div>
 </section>
+<!-- modal -->
+<div class="modal fade" id="depoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">@lang('Start new conversation')</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{route('user.conversation.store')}}">
+          @csrf
+          <input type="hidden" name="recevier_id" value="{{$agents->id}}">
+
+          <div class="form-group">
+            <label for="subject" class="font-weight-bold">@lang('Subject')</label>
+            <input type="text" class="form-control" name="subject" placeholder="@lang('Enter Subject')" maxlength="255" required>
+          </div>
+
+          <div class="form-group">
+            <label for="message" class="font-weight-bold">@lang('Message')</label>
+            <textarea rows="8" class="form-control" name="message" maxlength="500" placeholder="@lang('Enter Message')" required></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn--base" style="width:100%;">@lang('Submit')</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn--danger btn-rounded text-white" data-bs-dismiss="modal">@lang('Close')</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
