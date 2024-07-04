@@ -4,7 +4,7 @@ $properties = \App\Models\Property::with('location', 'rooms')
   ->whereHas('rooms', function($room){
     $room->where('status', 1);
   })
-  ->orderBy('all_time_booked_counter', 'DESC')->limit(5)->get();
+  ->orderBy('all_time_booked_counter', 'DESC')->where('top_reviewed', 1)->limit(5)->get();
 @endphp
 <!-- best trip section start -->
 <section class="pt-100 pb-100 bg_img best-trip-section" style="background-image: url('{{ getImage('assets/images/frontend/top_trip/'.$trip->data_values->background_image, '1920x1090') }}');">

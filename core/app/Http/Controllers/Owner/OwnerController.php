@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Lib\FormProcessor;
 use App\Lib\GoogleAuthenticator;
+use App\Lib\QuoreId;
 use App\Models\AdminNotification;
+use App\Models\Booking;
+use App\Models\Form;
 use App\Models\GeneralSetting;
 use App\Models\Property;
 use App\Models\Review;
@@ -34,7 +38,10 @@ class OwnerController extends Controller
             ->whereHas('property', function ($property) {
                 $property->where('owner_id', Auth::guard('owner')->id());
             })->count();
-        return view('owner.dashboard', compact('pageTitle', 'widget'));
+        $user = Auth::guard('owner')->user();
+        $bookings = Booking::where('agent_id', $user->id)->latest()->paginate(getPaginate());
+        $general = GeneralSetting::first();
+        return view('owner.dashboard', compact('pageTitle', 'widget', 'user', 'bookings', 'general'));
     }
 
     public function profile()
@@ -384,5 +391,53 @@ class OwnerController extends Controller
         $withdraws = Withdrawal::where('owner_id', Auth::guard('owner')->id())->where('status', '!=', 0)->with('method')->orderBy('id', 'desc')->paginate(getPaginate());
         $data['emptyMessage'] = "No Data Found!";
         return view('owner.withdraw.log', compact('pageTitle', 'emptyMessage', 'withdraws'));
+    }
+
+    public function kycForm()
+    {
+        if (Auth::guard('owner')->user()->kv == 2) {
+            $notify[] = ['error', 'Your KYC is under review'];
+            return redirect()->route('owner.dashboard')->withNotify($notify);
+        }
+        if (Auth::guard('owner')->user()->kv == 1) {
+            $notify[] = ['error', 'You are already KYC verified'];
+            return redirect()->route('owner.dashboard')->withNotify($notify);
+        }
+        $pageTitle = 'KYC Form';
+        $form      = Form::where('act', 'kyc')->first();
+        return view('owner.kyc.form', compact('pageTitle', 'form'));
+    }
+
+    public function kycSubmit(Request $request, QuoreId $quoreId)
+    {
+        $form           = Form::where('act', 'kyc')->first();
+        $formData       = $form->form_data;
+        $formProcessor  = new FormProcessor();
+        $validationRule = $formProcessor->valueValidation($formData);
+        $request->validate($validationRule);
+
+        $userData       = $formProcessor->processFormData($request, $formData);
+        $ninDetails = array_reduce($userData, function ($combine, $data) {
+            $combine[strtolower($data['name'])] = $data['value'];
+            return $combine;
+        }, []);
+        $quoreId->verifyId($ninDetails);
+
+        /** App\Models\Owner $user */
+        $user           = Auth::guard('owner')->user();
+        $user->kyc_data = $userData;
+        $user->kv       = 2;
+        $user->save();
+
+
+        $notify[] = ['success', 'KYC data submitted successfully'];
+        return redirect()->route('owner.dashboard')->withNotify($notify);
+    }
+    public function kycData()
+    {
+        $user      = Auth::guard('owner')->user();
+        $pageTitle = 'KYC Data';
+        $kyc_data = json_decode($user->kyc_data);
+        return view('owner.kyc.info', compact('pageTitle', 'user', 'kyc_data'));
     }
 }

@@ -12,9 +12,11 @@
           <li class="{{ menuActive('user.property.history') }}">
             <a href="{{ route('user.property.history') }}"><i class="las la-history"></i> <span>@lang('Activities')</span></a>
           </li>
+          @if($general->pr == 1)
           <li class="{{ menuActive(['user.review', 'user.review.pending', 'user.review.complete']) }}">
             <a href="{{ route('user.review') }}"><i class="lar la-star"></i> <span>@lang('Reviews')</span></a>
           </li>
+          @endif
           <li class="{{ menuActive(['ticket', 'ticket.view', 'ticket.open']) }}">
             <a href="{{ route('ticket') }}"><i class="las la-cog"></i> <span>@lang('Support Tickets')</span></a>
           </li>

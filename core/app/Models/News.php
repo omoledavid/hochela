@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DOMDocument;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -60,5 +61,21 @@ class News extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    function format_html($html) {
+        $html = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $html);
+        $html = trim($html);
+
+        // Load HTML into DOMDocument
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true); // Disable HTML errors
+        $dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+
+        // Format the HTML
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $formatted_html = $dom->saveXML($dom->documentElement);
+
+        return $formatted_html;
     }
 }

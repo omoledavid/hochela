@@ -35,23 +35,7 @@
                 </ul>
             </div>
         </div>
-        <div class="card b-radius--10 overflow-hidden mt-30 box--shadow1">
-            <div class="card-body">
-                <h5 class="mb-20 text-muted">@lang('User action')</h5>
-                <a href="{{ route('admin.staffs.login.history.single', $user->id) }}" class="btn btn--primary btn--shadow btn-block btn-lg">
-                    @lang('Login Logs')
-                </a>
-                <a href="{{route('admin.staffs.email.single',$user->id)}}" class="btn btn--info btn--shadow btn-block btn-lg">
-                    @lang('Send Email')
-                </a>
-                <a href="{{route('admin.staffs.login',$user->id)}}" target="_blank" class="btn btn--dark btn--shadow btn-block btn-lg">
-                    @lang('Login as Staff')
-                </a>
-                <a href="{{route('admin.staffs.email.log',$user->id)}}" class="btn btn--warning btn--shadow btn-block btn-lg">
-                    @lang('Email Log')
-                </a>
-            </div>
-        </div>
+        
     </div>
 
     <div class="col-xl-9 col-lg-7 col-md-7 mb-30">
@@ -195,34 +179,6 @@
                     </div>
 
 
-                    <div class="row">
-                        <div class="form-group col-xl-4 col-md-6  col-sm-3 col-12">
-                            <label class="form-control-label font-weight-bold">@lang('Status') </label>
-                            <input type="checkbox" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Active')" data-off="@lang('Banned')" data-width="100%" name="status" @if($user->status) checked @endif>
-                        </div>
-
-                        <div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">
-                            <label class="form-control-label font-weight-bold">@lang('Email Verification') </label>
-                            <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')" name="ev" @if($user->ev) checked @endif>
-
-                        </div>
-
-                        <div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">
-                            <label class="form-control-label font-weight-bold">@lang('SMS Verification') </label>
-                            <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')" name="sv" @if($user->sv) checked @endif>
-
-                        </div>
-                        <div class="form-group  col-md-6  col-sm-3 col-12">
-                            <label class="form-control-label font-weight-bold">@lang('2FA Status') </label>
-                            <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Active')" data-off="@lang('Deactive')" name="ts" @if($user->ts) checked @endif>
-                        </div>
-
-                        <div class="form-group  col-md-6  col-sm-3 col-12">
-                            <label class="form-control-label font-weight-bold">@lang('2FA Verification') </label>
-                            <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Verified')" data-off="@lang('Unverified')" name="tv" @if($user->tv) checked @endif>
-                        </div>
-                    </div>
-
 
                     <div class="row mt-4">
                         <div class="col-md-12">
@@ -238,5 +194,6 @@
         </div>
     </div>
 </div>
+<!-- hello branch color -->
 
 @endsection

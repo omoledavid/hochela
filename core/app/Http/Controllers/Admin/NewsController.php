@@ -77,6 +77,7 @@ class NewsController extends Controller
             'category' => 'required|integer|in:'.Category::active()->pluck('id')->join(','),
             'title' => 'required|string',
             'short_description' => 'required',
+            'author' => 'required',
             'description' => 'required',
             'video_link' => 'required_if:video,==,on|url',
             'image' => 'image|mimes:jpg,jpeg,png,jpeg',
@@ -101,6 +102,7 @@ class NewsController extends Controller
         $news->category_id = $request->category;
         $news->title = $request->title;
         $news->short_description = $request->short_description;
+        $news->author = $request->author;
         $news->description = $request->description;
 
         $news->tags = json_encode($request->tags);
@@ -268,6 +270,7 @@ class NewsController extends Controller
             'category' => 'required|integer|in:'.Category::active()->pluck('id')->join(','),
             'title' => 'required|string',
             'short_description' => 'required',
+            'author' => 'required',
             'description' => 'required',
             'video_link' => 'required_if:video,==,on|url',
             'image' => 'required|image|mimes:jpg,jpeg,png,jpeg',
@@ -293,6 +296,7 @@ class NewsController extends Controller
         $news->category_id = $request->category;
         $news->title = $request->title;
         $news->short_description = $request->short_description;
+        $news->author = $request->author;
         $news->description = $request->description;
         $news->image = $image;
         if($admin->level == 2){

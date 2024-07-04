@@ -1,14 +1,9 @@
-<div class="sidebar {{ sidebarVariation()['selector'] }} {{ sidebarVariation()['sidebar'] }} {{ @sidebarVariation()['overlay'] }} {{ @sidebarVariation()['opacity'] }}"
-    data-background="{{ getImage('assets/laramin/images/sidebar/2.jpg','400x800') }}">
+<div class="sidebar {{ sidebarVariation()['selector'] }} {{ sidebarVariation()['sidebar'] }} {{ @sidebarVariation()['overlay'] }} {{ @sidebarVariation()['opacity'] }}" data-background="{{ getImage('assets/laramin/images/sidebar/2.jpg','400x800') }}">
     <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
     <div class="sidebar__inner">
         <div class="sidebar__logo">
-            <a href="{{ route('owner.dashboard') }}" class="sidebar__main-logo"><img
-                    src="{{ getImage(imagePath()['logoIcon']['path'] .'/logo_2.png') }}"
-                    alt="@lang('image')"></a>
-            <a href="{{ route('owner.dashboard') }}" class="sidebar__logo-shape"><img
-                    src="{{ getImage(imagePath()['logoIcon']['path'] .'/favicon.png') }}"
-                    alt="@lang('image')"></a>
+            <a href="{{ route('owner.dashboard') }}" class="sidebar__main-logo"><img src="{{ getImage(imagePath()['logoIcon']['path'] .'/logo_2.png') }}" alt="@lang('image')"></a>
+            <a href="{{ route('owner.dashboard') }}" class="sidebar__logo-shape"><img src="{{ getImage(imagePath()['logoIcon']['path'] .'/favicon.png') }}" alt="@lang('image')"></a>
             <button type="button" class="navbar__expand"></button>
         </div>
 
@@ -18,6 +13,12 @@
                     <a href="{{ route('owner.dashboard') }}" class="nav-link ">
                         <i class="menu-icon las la-home"></i>
                         <span class="menu-title">@lang('Dashboard')</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item {{ menuActive('owner.conversation') }}">
+                    <a href="{{ route('owner.conversation') }}" class="nav-link ">
+                        <i class="menu-icon fas fa-mail-bulk"></i>
+                        <span class="menu-title">@lang('Messages')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item sidebar-dropdown">
@@ -42,7 +43,7 @@
                         </ul>
                     </div>
                 </li>
-
+                @if($general->aw == 1)
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('owner.withdraw*',3)}}">
                         <i class="menu-icon las la-wallet"></i>
@@ -66,6 +67,7 @@
                         </ul>
                     </div>
                 </li>
+                @endif
 
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('owner.ticket*',3)}}">

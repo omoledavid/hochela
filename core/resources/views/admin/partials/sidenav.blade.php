@@ -265,6 +265,25 @@
                                     @endif
                                 </a>
                             </li>
+                            <li class="sidebar-menu-item {{ menuActive('admin.owners.kyc.unverified') }}">
+                                <a href="{{ route('admin.owners.kyc.unverified') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('KYC Unverified')</span>
+                                    @if ($kycUnverifiedUsersCount)
+                                        <span class="menu-badge pill bg--danger ms-auto">{{ $kycUnverifiedUsersCount }}</span>
+                                    @endif
+                                </a>
+                            </li>
+
+                            <li class="sidebar-menu-item {{ menuActive('admin.owners.kyc.pending') }}">
+                                <a href="{{ route('admin.owners.kyc.pending') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('KYC Pending')</span>
+                                    @if ($kycPendingUsersCount)
+                                        <span class="menu-badge pill bg--danger ms-auto">{{ $kycPendingUsersCount }}</span>
+                                    @endif
+                                </a>
+                            </li>
 
                             <li class="sidebar-menu-item  {{menuActive('admin.owners.email.unverified')}}">
                                 <a href="{{route('admin.owners.email.unverified')}}" class="nav-link">
@@ -570,6 +589,13 @@
                     <a href="{{route('admin.seo')}}" class="nav-link">
                         <i class="menu-icon las la-globe"></i>
                         <span class="menu-title">@lang('SEO Manager')</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-menu-item {{ menuActive('admin.kyc.setting') }}">
+                    <a href="{{ route('admin.kyc.setting') }}" class="nav-link">
+                        <i class="menu-icon las la-user-check"></i>
+                        <span class="menu-title">@lang('KYC Setting')</span>
                     </a>
                 </li>
 

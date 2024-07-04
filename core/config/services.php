@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'qoreid' => [
+        'clientid' => env('QOREID_CLIENT'),
+        'secret' => env('QOREID_SECRET'),
+    ],
+
 ];

@@ -309,5 +309,18 @@
             "heading": "text",
             "sub_heading": "text"
         }
+    },
+    "faq": {
+        "builder": true,
+        "name": "FAQ Section",
+        "content": {
+            "heading": "text",
+            "subheading": "textarea"
+        },
+        "element": {
+            "question": "text",
+            "answer": "textarea",
+            "modal": true
+        }
     }
 }

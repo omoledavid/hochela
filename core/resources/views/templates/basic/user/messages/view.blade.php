@@ -21,7 +21,7 @@
                     @foreach($messages as $message)
                     @if($message->sender_id != auth()->user()->id)
                     <div class="media media-chat">
-                        <img class="avatar" src="{{ getImage(imagePath()['profile']['user']['path'].'/'.$message->sender->image,imagePath()['profile']['user']['size']) }}" alt="client">
+                        <img class="avatar" src="{{ getImage(imagePath()['profile']['user']['path'].'/'.auth()->user()->image,imagePath()['profile']['user']['size']) }}" alt="client">
                         <div class="media-body">
                             @if(!empty($message->message))
                             <p>{{$message->message}}</p>
@@ -80,19 +80,20 @@
             </div>
         </div>
     </div>
+</div>
 
-    @endsection
+@endsection
 
-    @push('script')
-    <script>
-        $('[readonly]').on('focus', function() {
-            $(this).parents('.form-group').append('<span class="text--danger error-message">@lang("Sorry! you can\'t change this field")<span>');
-        });
+@push('script')
+<script>
+    $('[readonly]').on('focus', function() {
+        $(this).parents('.form-group').append('<span class="text--danger error-message">@lang("Sorry! you can\'t change this field")<span>');
+    });
 
-        $('[readonly]').on('focusout', function() {
+    $('[readonly]').on('focusout', function() {
 
-            $(this).parents('.form-group').find('.error-message').remove();
+        $(this).parents('.form-group').find('.error-message').remove();
 
-        });
-    </script>
-    @endpush
+    });
+</script>
+@endpush

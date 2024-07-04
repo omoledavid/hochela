@@ -359,4 +359,65 @@ class ManageOwnersController extends Controller
         $pageTitle = 'Email details';
         return view('admin.owners.email_details', compact('pageTitle','email'));
     }
+    protected function userData($scope = null)
+    {
+        if ($scope) {
+            $users = Owner::$scope();
+        } else {
+            $users = Owner::query();
+        }
+
+        return $users->searchable(['username', 'email'])->orderBy('id', 'desc')->paginate(getPaginate());
+    }
+    public function kycUnverifiedUsers()
+    {
+        $pageTitle = 'KYC Unverified Users';
+        $owners     = $this->userData('kycUnverified');
+        return view('admin.owners.list', compact('pageTitle', 'owners'));
+    }
+    public function kycPendingUsers()
+    {
+        $pageTitle = 'KYC Unverified Users';
+        $emptyMessage = 'No Pending Agents';
+        $owners     = $this->userData('kycPending');
+        return view('admin.owners.list', compact('pageTitle', 'owners', 'emptyMessage'));
+    }
+    public function kycDetails($id)
+    {
+        $pageTitle = 'KYC Details';
+        $user      = Owner::findOrFail($id);
+        $data = json_decode($user->kyc_data);
+        return view('admin.owners.kyc_detail', compact('pageTitle', 'user', 'data'));
+    }
+
+    public function kycApprove($id)
+    {
+        $user     = Owner::findOrFail($id);
+        $user->kv = 1;
+        $user->save();
+
+        notify($user, 'KYC_APPROVE', []);
+
+        $notify[] = ['success', 'KYC approved successfully'];
+        return redirect()->route('admin.owners.kyc.pending')->with('notify', $notify);
+    }
+
+    public function kycReject($id)
+    {
+        $user = Owner::findOrFail($id);
+        $data = json_decode($user->kyc_data);
+        foreach ($data as $kycData) {
+            if ($kycData->type == 'file') {
+                fileManager()->removeFile(getFilePath('verify') . '/' . $kycData->value);
+            }
+        }
+        $user->kv       = 0;
+        $user->kyc_data = null;
+        $user->save();
+
+        notify($user, 'KYC_REJECT', []);
+
+        $notify[] = ['success', 'KYC rejected successfully'];
+        return redirect()->route('admin.owners.kyc.pending')->with('notify', $notify);
+    }
 }

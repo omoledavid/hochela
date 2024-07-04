@@ -40,6 +40,7 @@
               @endforeach
               <li><a href="{{ route('user.register') }}">@lang('User Registration')</a></li>
               <li><a href="{{ route('owner.register') }}">@lang('Agent Registration')</a></li>
+              <li><a href="{{ route('faq') }}">@lang('Faqs')</a></li>
             </ul>
           </div>
         </div>

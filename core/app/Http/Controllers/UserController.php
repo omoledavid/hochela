@@ -6,6 +6,7 @@ use App\Lib\GoogleAuthenticator;
 use App\Models\GeneralSetting;
 use App\Models\Property;
 use App\Models\BookedProperty;
+use App\Models\Booking;
 use App\Models\Review;
 use App\Models\SupportTicket;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class UserController extends Controller
         $pageTitle = 'Dashboard';
         $emptyMessage = 'No booking history found';
         $widget['total_tickets'] = SupportTicket::where('user_id', Auth::id())->count();
+        $widget['booked_appointment'] = Booking::where('user_id', Auth::id())->count();
         $widget['total_booked'] = BookedProperty::where('user_id', Auth::id())->where('status', 1)->count();
         $widget['total_pending_review'] =  Property::with('bookedProperties')
             ->whereHas('bookedProperties', function($bookedProperty){

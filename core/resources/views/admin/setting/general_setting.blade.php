@@ -88,6 +88,18 @@
                                 <label class="form-control-label font-weight-bold">@lang('SMS Notification')</label>
                                 <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')" data-off="@lang('Disable')" name="sn" @if($general->sn) checked @endif>
                             </div>
+                            <div class="form-group col-lg-2 col-sm-6 col-md-4">
+                                <label class="form-control-label font-weight-bold">@lang('Agent wallet')</label>
+                                <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')" data-off="@lang('Disable')" name="aw" @if($general->aw) checked @endif>
+                            </div>
+                            <div class="form-group col-lg-2 col-sm-6 col-md-4">
+                                <label class="form-control-label font-weight-bold">@lang('Property Review')</label>
+                                <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')" data-off="@lang('Disable')" name="pr" @if($general->pr) checked @endif>
+                            </div>
+                            <div class="form-group col-lg-2 col-sm-6 col-md-4">
+                                <label class="form-control-label font-weight-bold">@lang('Agent Review')</label>
+                                <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')" data-off="@lang('Disable')" name="ar" @if($general->ar) checked @endif>
+                            </div>
                         </div>
 
                         <div class="form-group">

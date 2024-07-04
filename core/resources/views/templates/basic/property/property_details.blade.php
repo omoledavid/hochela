@@ -32,9 +32,11 @@
                     <li class="hotel-nav__item">
                         <button class="nav-link w-100 hotel-nav__btn" data-bs-toggle="pill" data-bs-target="#hotel-category" type="button">@lang('Rooms')</button>
                     </li>
+                    @if($general->pr == 1)
                     <li class="hotel-nav__item">
                         <button class="nav-link w-100 hotel-nav__btn" data-bs-toggle="pill" data-bs-target="#hotel-review" type="button">@lang('Review')</button>
                     </li>
+                    @endif
                     <li class="hotel-nav__item">
                         <button class="nav-link w-100 hotel-nav__btn" data-bs-toggle="pill" data-bs-target="#hotel-location" type="button">@lang('Location')</button>
                     </li>
@@ -60,10 +62,12 @@
                                 <i class="las la-layer-group"></i>
                                 <span>{{$propertiesByAgent}} @lang('Properties')</span>
                             </li>
+                            @if($general->ar == 1)
                             <li>
                                 <i class="las la-star"></i>
                                 <span>2 @lang('Reviews')</span>
                             </li>
+                            @endif
                         </ul>
                     </div>
                     <p class="w-100 mt-2">{{$agent->about_me}}</p>
@@ -119,16 +123,13 @@
                     </div>
                     <div class="book-widget mt-4 text-center text-white">
                         <i class="fas fa-mail-bulk"></i>
-                        <h3 class="text-white mt-2">@lang('Book a meeting')</h3>
-                        <label for="msg"></label>
+                        <h3 class="text-white mt-2">@lang('Send a message')</h3>
                         <form action="{{route('property.chat')}}">
-                            <input type="text" name="msg" class="form--control" value="I want to book an appointment">
                             @guest
-                            <button type="submit" disabled class="btn mt-2 btn--base w-100">@lang('Login to book a meeting')</button>
-                            <a href="link" class="nav-link" style="color:white;"> Login</a>
+                            <a href="{{route('user.login')}}" class="btn mt-2 btn--base w-100">@lang('Contact Now')</a>
                             @endguest
                             @auth
-                            <button type="submit" class="btn mt-2 btn--base w-100">@lang('Send Message')</button>
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#depoModal" class="btn mt-2 btn--base w-100">@lang('Contact Now')</a>
                             @endauth
                         </form>
                     </div>
@@ -139,3 +140,37 @@
 </section>
 <!-- hotel deatils section end -->
 @endsection
+@push('modal')
+<div class="modal fade" id="depoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">@lang('Start new conversation')</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{route('user.conversation.store')}}">
+                    @csrf
+                    <input type="hidden" name="recevier_id" value="{{$agent->id}}">
+
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="subject" value="{{ __($property->name) }}" placeholder="@lang('Enter Subject')" maxlength="255" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="font-weight-bold">@lang('Message')</label>
+                        <input class="form-control" name="message" value="Is the {{ __($property->name) }} property still available ?" placeholder="@lang('Enter Message')" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn--base" style="width:100%;">@lang('Send Message')</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn--danger btn-rounded text-white" data-bs-dismiss="modal">@lang('Close')</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endpush

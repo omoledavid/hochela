@@ -43,9 +43,13 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <label for="">@lang('News Title') <code>**</code></label>
                                     <input type="text" class="form-control" name="title" required placeholder="@lang('News Title')" value="{{ $news->title }}">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="">@lang('Author\'s name') <code>**</code></label>
+                                    <input type="text" class="form-control" name="author" required value="{{ $news->author }}" placeholder="@lang('Author\'s name')">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputName" class="">@lang('Trending')</label>
@@ -89,7 +93,7 @@
                         </div>
                         <div class="form-group col-md-12 newsDescription">
                             <label for="">@lang('News Description') <code>**</code></label>
-                            <textarea name="description" cols="30" rows="15" class="nicEdit">{{ $news->description }}</textarea>
+                            <textarea name="description" cols="30" rows="15" id="summernote">{{ $news->description }}</textarea>
                         </div>
 
                         <div class="col-md-12">

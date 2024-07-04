@@ -25,7 +25,7 @@ $propertyTypes = App\Models\PropertyType::with('properties')->where('status', 1)
             </div>
             <div class="property-card__content text-center">
               <h4 class="title">{{ __($propertyType->name) }}</h4>
-              <span class="fs--14px">{{ $propertyType->properties->count() }} {{ $propertyType->name }}</span>
+              <span class="fs--14px">{{ $propertyType->properties->where('status', 1)->count() }} {{ $propertyType->name }}</span>
             </div>
           </div><!-- property-card end -->
         </div><!-- single-slide end -->

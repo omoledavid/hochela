@@ -51,6 +51,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'banned_users_count'           => User::banned()->count(),
                 'banned_owners_count'           => Owner::banned()->count(),
+                'kycUnverifiedUsersCount'    => User::kycUnverified()->count(),
+                'kycPendingUsersCount'       => User::kycPending()->count(),
                 'email_unverified_users_count' => User::emailUnverified()->count(),
                 'email_unverified_owners_count' => Owner::emailUnverified()->count(),
                 'sms_unverified_users_count'   => User::smsUnverified()->count(),
@@ -77,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         if($general->force_ssl){
-            \URL::forceScheme('https');
+            \URL::forceScheme('http');
         }
 
 

@@ -26,7 +26,7 @@
                         @foreach($amenities as $amenity)
                         <div>
                             <input type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="{{ $amenity->id }}" @foreach ($roomCategory->amenities as $am)
-                            {{ $am == null ? '' : $am->id == $amenity->id ? 'checked':'' }}
+                            {{ $am == null ? '' : ($am->id == $amenity->id ? 'checked' : '') }}
                             @endforeach
                             >
                             <label for="{{ $amenity->id }}" class="amenity-item">{{ __($amenity->name) }}</label>

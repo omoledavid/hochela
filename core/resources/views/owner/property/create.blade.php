@@ -71,12 +71,12 @@
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">
-                        <label class="w-100">@lang('Phone') <span class="text-danger">*</span></label>
-                        <input type="text" name="phone" value="{{ old('phone') }}" placeholder="@lang('Enter phone number')" class="form-control" required>
+                        <label class="w-100">@lang('Phone') <span class="text-danger"></span></label>
+                        <input type="text" name="phone" value="{{ old('phone') }}" placeholder="@lang('Enter phone number')" class="form-control" >
                     </div>
                     <div class="form-group">
-                        <label class="w-100">@lang('Phone Call Time') <span class="text-danger">*</span></label>
-                        <input type="text" name="phone_call_time" value="{{ old('phone_call_time') }}" placeholder="@lang('Enter phone call time')" class="form-control" required>
+                        <label class="w-100">@lang('Phone Call Time') <span class="text-danger"></span></label>
+                        <input type="text" name="phone_call_time" value="{{ old('phone_call_time') }}" placeholder="@lang('Enter phone call time')" class="form-control">
                     </div>
                     <div class="form-group">
                         <label class="w-100">@lang('Discount')</label>
@@ -160,7 +160,7 @@
             $('.addImage').on('click', function () {
                 var randomId = Math.floor(Math.random() * 10000);
                 var html = `<div class="col-md-3 image-data">
-                                <div class="form-group">
+                                <div class="form-group"> 
                                     <div class="image-upload">
                                         <div class="thumb">
                                             <div class="avatar-preview">

@@ -13,6 +13,17 @@
         </a><!-- d-widget end -->
     </div>
     <div class="col-md-4 col-sm-6">
+        <a href="{{ route('ticket') }}" class="d-widget">
+            <div class="d-widget__icon">
+                <i class="las la-envelope"></i>
+            </div>
+            <div class="d-widget__content">
+                <h3 class="amount">{{ __($widget['booked_appointment']) }}</h3>
+                <p class="caption text-dark">@lang('Booked appointment')</p>
+            </div>
+        </a><!-- d-widget end -->
+    </div>
+    <div class="col-md-4 col-sm-6">
         <a href="{{ route('user.property.history') }}" class="d-widget">
             <div class="d-widget__icon">
                 <i class="menu-icon las la-store-alt"></i>
@@ -23,6 +34,7 @@
             </div>
         </a><!-- d-widget end -->
     </div>
+    @if($general->pr == 1)
     <div class="col-md-4 col-sm-6">
         <a href="{{ route('user.review') }}" class="d-widget">
             <div class="d-widget__icon">
@@ -34,6 +46,7 @@
             </div>
         </a><!-- d-widget end -->
     </div>
+    @endif
 
 </div><!-- row end -->
 <div class="custom--card mt-5">

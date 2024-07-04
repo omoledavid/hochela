@@ -1,94 +1,167 @@
 <!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $general->sitename($pageTitle ?? '') }}</title>
     <!-- site favicon -->
-    <link rel="shortcut icon" type="image/png" href="{{getImage(imagePath()['logoIcon']['path'] .'/favicon.png')}}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="shortcut icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] . '/favicon.png') }}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
     <!-- bootstrap 4  -->
     <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/gird.min.css') }}">
     <!-- bootstrap toggle css -->
-    <link rel="stylesheet" href="{{asset('assets/laramin/css/vendor/bootstrap-toggle.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/bootstrap-toggle.min.css') }}">
     <!-- fontawesome 5  -->
-    <link rel="stylesheet" href="{{asset('assets/global/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/global/css/all.min.css') }}">
     <!-- line-awesome webfont -->
-    <link rel="stylesheet" href="{{asset('assets/global/css/line-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/global/css/line-awesome.min.css') }}">
 
     @stack('style-lib')
 
     <!-- custom select box css -->
-    <link rel="stylesheet" href="{{asset('assets/laramin/css/vendor/nice-select.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/nice-select.css') }}">
     <!-- code preview css -->
-    <link rel="stylesheet" href="{{asset('assets/laramin/css/vendor/prism.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/prism.css') }}">
     <!-- select 2 css -->
-    <link rel="stylesheet" href="{{asset('assets/global/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/global/css/select2.min.css') }}">
     <!-- jvectormap css -->
-    <link rel="stylesheet" href="{{asset('assets/laramin/css/vendor/jquery-jvectormap-2.0.5.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/jquery-jvectormap-2.0.5.css') }}">
     <!-- datepicker css -->
-    <link rel="stylesheet" href="{{asset('assets/global/css/datepicker.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/global/css/datepicker.min.css') }}">
     <!-- timepicky for time picker css -->
-    <link rel="stylesheet" href="{{asset('assets/laramin/css/vendor/jquery-timepicky.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/jquery-timepicky.css') }}">
     <!-- bootstrap-clockpicker css -->
-    <link rel="stylesheet" href="{{asset('assets/laramin/css/vendor/bootstrap-clockpicker.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/bootstrap-clockpicker.min.css') }}">
     <!-- bootstrap-pincode css -->
-    <link rel="stylesheet" href="{{asset('assets/laramin/css/vendor/bootstrap-pincode-input.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/bootstrap-pincode-input.css') }}">
     <!-- dashdoard main css -->
-    <link rel="stylesheet" href="{{asset('assets/laramin/css/app.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/css/app.css') }}">
+
+    <!-- summernote css -->
+    <link rel="stylesheet" href="{{ asset('assets/laramin/summernote/summernote.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/laramin/summernote/summernote-lite.min.css') }}">
+
+    <!-- ckeditor -->
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css" />
+
+    <!-- If you are using premium features: -->
+    <link rel="stylesheet"
+        href="https://cdn.ckeditor.com/ckeditor5-premium-features/42.0.0/ckeditor5-premium-features.css" />
+
 
 
     @stack('style')
 </head>
+
 <body>
-@yield('content')
+    @yield('content')
 
 
 
-<!-- jQuery library -->
-<script src="{{asset('assets/global/js/jquery-3.6.0.min.js')}}"></script>
-<!-- bootstrap js -->
-<script src="{{asset('assets/laramin/js/vendor/grid.min.js')}}"></script>
-<!-- bootstrap-toggle js -->
-<script src="{{asset('assets/laramin/js/vendor/bootstrap-toggle.min.js')}}"></script>
+    <!-- jQuery library -->
+    <script src="{{ asset('assets/global/js/jquery-3.6.0.min.js') }}"></script>
+    <!-- bootstrap js -->
+    <script src="{{ asset('assets/laramin/js/vendor/grid.min.js') }}"></script>
+    <!-- bootstrap-toggle js -->
+    <script src="{{ asset('assets/laramin/js/vendor/bootstrap-toggle.min.js') }}"></script>
 
-<!-- slimscroll js for custom scrollbar -->
-<script src="{{asset('assets/laramin/js/vendor/jquery.slimscroll.min.js')}}"></script>
-<!-- custom select box js -->
-<script src="{{asset('assets/laramin/js/vendor/jquery.nice-select.min.js')}}"></script>
+    <!-- slimscroll js for custom scrollbar -->
+    <script src="{{ asset('assets/laramin/js/vendor/jquery.slimscroll.min.js') }}"></script>
+    <!-- custom select box js -->
+    <script src="{{ asset('assets/laramin/js/vendor/jquery.nice-select.min.js') }}"></script>
 
 
-@include('partials.notify')
-@stack('script-lib')
+    @include('partials.notify')
+    @stack('script-lib')
 
-<script src="{{ asset('assets/laramin/js/nicEdit.js') }}"></script>
+    <script src="{{ asset('assets/laramin/js/nicEdit.js') }}"></script>
 
-<!-- code preview js -->
-<script src="{{asset('assets/laramin/js/vendor/prism.js')}}"></script>
-<!-- seldct 2 js -->
-<script src="{{asset('assets/global/js/select2.min.js')}}"></script>
-<!-- main js -->
-<script src="{{asset('assets/laramin/js/app.js')}}"></script>
+    <!-- code preview js -->
+    <script src="{{ asset('assets/laramin/js/vendor/prism.js') }}"></script>
+    <!-- seldct 2 js -->
+    <script src="{{ asset('assets/global/js/select2.min.js') }}"></script>
+    <!-- main js -->
+    <script src="{{ asset('assets/laramin/js/app.js') }}"></script>
+    <script src="{{ asset('assets/laramin/summernote/summernote-lite.min.js') }}"></script>
+    <!-- summernote text editor -->
+    <script>
+        $(document).ready(function() {
+            $("#summernote").summernote({
+                placeholder: "{{ __('Description') }}",
+                minHeight: 300,
+                focus: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video', 'hr']],
+                    ['view', ['fullscreen', 'help']],
+                    ['remove', ['removeMedia']],
+                    ['view', ['fullscreen', 'codeview']]
+                ],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        // Upload image to server using Laravel's route
+                        uploadImage(files[0], $(this));
+                    },
+                }
+            });
 
-{{-- LOAD NIC EDIT --}}
-<script>
-    "use strict";
-    bkLib.onDomLoaded(function() {
-        $( ".nicEdit" ).each(function( index ) {
-            $(this).attr("id","nicEditor"+index);
-            new nicEditor({fullPanel : true}).panelInstance('nicEditor'+index,{hasPanel : true});
+
+            $('#summernote').summernote('formatPara');
+
+
+            function uploadImage(file, editor) {
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('_token', '{{ csrf_token() }}'); // Include CSRF token
+
+                $.ajax({
+                    url: "{{ route('upload.image') }}",
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var imageUrl = response.url;
+                        editor.summernote('insertImage', imageUrl);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Error uploading image: " + textStatus, errorThrown);
+                    }
+                });
+            }
         });
-    });
-    (function($){
-        $( document ).on('mouseover ', '.nicEdit-main,.nicEdit-panelContain',function(){
-            $('.nicEdit-main').focus();
-        });
-    })(jQuery);
-</script>
+    </script>
 
-@stack('script')
+    {{-- LOAD NIC EDIT --}}
+    <script>
+        "use strict";
+        bkLib.onDomLoaded(function() {
+            $(".nicEdit").each(function(index) {
+                $(this).attr("id", "nicEditor" + index);
+                new nicEditor({
+                    fullPanel: true
+                }).panelInstance('nicEditor' + index, {
+                    hasPanel: true
+                });
+            });
+        });
+        (function($) {
+            $(document).on('mouseover ', '.nicEdit-main,.nicEdit-panelContain', function() {
+                $('.nicEdit-main').focus();
+            });
+        })(jQuery);
+    </script>
+
+    @stack('script')
 
 
 </body>
+
 </html>

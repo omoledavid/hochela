@@ -43,9 +43,13 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <label for="">@lang('Blog Posts Title') <code>**</code></label>
                                     <input type="text" class="form-control" name="title" required placeholder="@lang('Blog Posts Title')">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="">@lang('Author\'s name') <code>**</code></label>
+                                    <input type="text" class="form-control" name="author" required placeholder="@lang('Author\'s name')">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputName" class="">@lang('Trending')</label>
@@ -80,7 +84,7 @@
                         </div>
                         <div class="form-group col-md-12 newsDescription">
                             <label for="">@lang('Blog Posts Description') <code>**</code></label>
-                            <textarea name="description" cols="30" rows="15" class="nicEdit"></textarea>
+                            <textarea name="description" cols="30" rows="15" id="summernote"></textarea>
                         </div>
 
                         <div class="col-md-12">

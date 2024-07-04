@@ -30,6 +30,10 @@ class Property extends Model
     {
         return $this->belongsTo(Location::class);
     }
+    public function amenities()
+    {
+        return $this->belongsTo(Amenity::class);
+    }
 
 
     public function bookedProperties()

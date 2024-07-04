@@ -156,14 +156,14 @@ class SiteController extends Controller
     }
     public function agents(){
         $pageTitle = 'Agents';
-        $agents_landlords = Owner::where('status', 1)->limit(10)->paginate(getPaginate());
+        $agents_landlords = Owner::where('status', 1)->whereNotNull('image')->limit(10)->paginate(getPaginate());
         return view($this->activeTemplate.'agents', compact('pageTitle', 'agents_landlords'));
     }
     public function agents_details($id){
         $agents = Owner::where('id', $id)->first();
         $pageTitle = $agents->firstname.' '.$agents->lastname;
         $properties = Property::where('owner_id', $agents->id)->count();
-        $properties_all = Property::where('owner_id', $agents->id)->with('location')->with('rooms')->get();
+        $properties_all = Property::where('owner_id', $agents->id)->where('status', 1)->with('location')->with('rooms')->get();
         $review_count = Agent_review::where('agent_id', $agents->id)->count();
         return view($this->activeTemplate.'agents_details', compact('pageTitle', 'agents', 'properties', 'properties_all', 'review_count'));
     }

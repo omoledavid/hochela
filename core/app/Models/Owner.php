@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Owner extends Authenticatable
 {
+    use  Searchable;
 
     protected $guarded = ['id'];
     /**
@@ -74,5 +75,13 @@ class Owner extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Agent_review::class,'agent_id');
+    }
+    public function scopeKycUnverified($query)
+    {
+        return $query->where('kv', 0);
+    }
+    public function scopeKycPending($query)
+    {
+        return $query->where('kv', 2);
     }
 }

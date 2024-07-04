@@ -256,6 +256,7 @@ class PropertyController extends Controller
 
     public function bookingProcess(Request $request)
     {
+        
         $request->validate([
             'room_list' => 'required'
         ],[

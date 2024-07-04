@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/clear', function(){
+Route::get('/clear', function () {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
 });
 /*
@@ -78,6 +78,10 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.form');
         Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
     });
+    Route::controller('KycController')->group(function () {
+        Route::get('kyc-setting', 'setting')->name('kyc.setting');
+        Route::post('kyc-setting', 'settingUpdate');
+    });
 
     Route::middleware('admin')->group(function () {
         Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
@@ -87,8 +91,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('password', 'AdminController@passwordUpdate')->name('password.update');
 
         //add staff
-        Route::post('add/staff','AdminController@addStaff')->name('add.staff');
-        
+        Route::post('add/staff', 'AdminController@addStaff')->name('add.staff');
+
 
         //Property and Room
         Route::get('properties', 'PropertyController@properties')->name('property.index');
@@ -97,13 +101,13 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('property/edit/{id}', 'PropertyController@edit')->name('property.edit');
         Route::post('property/update/{id}', 'PropertyController@saveProperty')->name('property.update');
 
-         //Room Category
-         Route::get('room-categories', 'RoomCategoryController@roomCategories')->name('property.room.category.index');
-         Route::get('{property}/{id}/room-categories/', 'RoomCategoryController@roomCategoriesByProperty')->name('property.room.category.property');
-         Route::get('room-category/create', 'RoomCategoryController@create')->name('property.room.category.create');
-         Route::post('room-category/store', 'RoomCategoryController@store')->name('property.room.category.store');
-         Route::get('room-category/edit/{id}', 'RoomCategoryController@edit')->name('property.room.category.edit');
-         Route::post('room-category/update/{id}', 'RoomCategoryController@update')->name('property.room.category.update');
+        //Room Category
+        Route::get('room-categories', 'RoomCategoryController@roomCategories')->name('property.room.category.index');
+        Route::get('{property}/{id}/room-categories/', 'RoomCategoryController@roomCategoriesByProperty')->name('property.room.category.property');
+        Route::get('room-category/create', 'RoomCategoryController@create')->name('property.room.category.create');
+        Route::post('room-category/store', 'RoomCategoryController@store')->name('property.room.category.store');
+        Route::get('room-category/edit/{id}', 'RoomCategoryController@edit')->name('property.room.category.edit');
+        Route::post('room-category/update/{id}', 'RoomCategoryController@update')->name('property.room.category.update');
 
 
         //Location
@@ -123,15 +127,15 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('amenity/update/{id}', 'AmenityController@saveAmenity')->name('amenity.update');
 
         //Notification
-        Route::get('notifications','AdminController@notifications')->name('notifications');
-        Route::get('notification/read/{id}','AdminController@notificationRead')->name('notification.read');
-        Route::get('notifications/read-all','AdminController@readAll')->name('notifications.readAll');
+        Route::get('notifications', 'AdminController@notifications')->name('notifications');
+        Route::get('notification/read/{id}', 'AdminController@notificationRead')->name('notification.read');
+        Route::get('notifications/read-all', 'AdminController@readAll')->name('notifications.readAll');
 
         //Report Bugs
-        Route::get('request-report','AdminController@requestReport')->name('request.report');
-        Route::post('request-report','AdminController@reportSubmit');
+        Route::get('request-report', 'AdminController@requestReport')->name('request.report');
+        Route::post('request-report', 'AdminController@reportSubmit');
 
-        Route::get('system-info','AdminController@systemInfo')->name('system.info');
+        Route::get('system-info', 'AdminController@systemInfo')->name('system.info');
 
 
         // Users Manager
@@ -182,6 +186,14 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('owners', 'ManageOwnersController@allOwners')->name('owners.all');
         Route::get('owners/active', 'ManageOwnersController@activeOwners')->name('owners.active');
         Route::get('owners/banned', 'ManageOwnersController@bannedOwners')->name('owners.banned');
+        Route::get('owners/kyc-unverified', 'ManageOwnersController@kycUnverifiedUsers')->name('owners.kyc.unverified');
+        Route::get('owners/kyc-pending', 'ManageOwnersController@kycPendingUsers')->name('owners.kyc.pending');
+
+        Route::get('owners/detail/{id}', 'ManageOwnersController@detail')->name('owners.detail');
+        Route::get('owners/kyc-data/{id}', 'ManageOwnersController@kycDetails')->name('owners.kyc.details');
+        Route::post('owners/kyc-approve/{id}', 'ManageOwnersController@kycApprove')->name('owners.kyc.approve');
+        Route::post('owners/kyc-reject/{id}', 'ManageOwnersController@kycReject')->name('owners.kyc.reject');
+
         Route::get('owners/email-verified', 'ManageOwnersController@emailVerifiedOwners')->name('owners.email.verified');
         Route::get('owners/email-unverified', 'ManageOwnersController@emailUnverifiedOwners')->name('owners.email.unverified');
         Route::get('owners/sms-unverified', 'ManageOwnersController@smsUnverifiedOwners')->name('owners.sms.unverified');
@@ -289,7 +301,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
 
         // Deposit Gateway
-        Route::name('gateway.')->prefix('gateway')->group(function(){
+        Route::name('gateway.')->prefix('gateway')->group(function () {
             // Automatic Gateway
             Route::get('automatic', 'GatewayController@index')->name('automatic.index');
             Route::get('automatic/edit/{alias}', 'GatewayController@edit')->name('automatic.edit');
@@ -311,7 +323,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
 
         // DEPOSIT SYSTEM
-        Route::name('deposit.')->prefix('payment')->group(function(){
+        Route::name('deposit.')->prefix('payment')->group(function () {
             Route::get('/', 'DepositController@deposit')->name('list');
             Route::get('pending', 'DepositController@pending')->name('pending');
             Route::get('rejected', 'DepositController@rejected')->name('rejected');
@@ -324,12 +336,11 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             Route::get('via/{method}/{type?}', 'DepositController@depositViaMethod')->name('method');
             Route::get('/{scope}/search', 'DepositController@search')->name('search');
             Route::get('date-search/{scope}', 'DepositController@dateSearch')->name('dateSearch');
-
         });
 
 
         // WITHDRAW SYSTEM
-        Route::name('withdraw.')->prefix('withdraw')->group(function(){
+        Route::name('withdraw.')->prefix('withdraw')->group(function () {
             Route::get('pending', 'WithdrawalController@pending')->name('pending');
             Route::get('approved', 'WithdrawalController@approved')->name('approved');
             Route::get('rejected', 'WithdrawalController@rejected')->name('rejected');
@@ -399,13 +410,13 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('setting/logo-icon', 'GeneralSettingController@logoIconUpdate')->name('setting.logo.icon');
 
         //Custom CSS
-        Route::get('custom-css','GeneralSettingController@customCss')->name('setting.custom.css');
-        Route::post('custom-css','GeneralSettingController@customCssSubmit');
+        Route::get('custom-css', 'GeneralSettingController@customCss')->name('setting.custom.css');
+        Route::post('custom-css', 'GeneralSettingController@customCssSubmit');
 
 
         //Cookie
-        Route::get('cookie','GeneralSettingController@cookie')->name('setting.cookie');
-        Route::post('cookie','GeneralSettingController@cookieSubmit');
+        Route::get('cookie', 'GeneralSettingController@cookie')->name('setting.cookie');
+        Route::post('cookie', 'GeneralSettingController@cookieSubmit');
 
 
         // Plugin
@@ -430,7 +441,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         // SMS Setting
         Route::get('sms-template/global', 'SmsTemplateController@smsTemplate')->name('sms.template.global');
         Route::post('sms-template/global', 'SmsTemplateController@smsTemplateUpdate')->name('sms.template.global');
-        Route::get('sms-template/setting','SmsTemplateController@smsSetting')->name('sms.templates.setting');
+        Route::get('sms-template/setting', 'SmsTemplateController@smsSetting')->name('sms.templates.setting');
         Route::post('sms-template/setting', 'SmsTemplateController@smsSettingUpdate')->name('sms.template.setting');
         Route::get('sms-template/index', 'SmsTemplateController@index')->name('sms.template.index');
         Route::get('sms-template/edit/{id}', 'SmsTemplateController@edit')->name('sms.template.edit');
@@ -470,8 +481,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::namespace('Owner')->prefix('owner')->name('owner.')->group(function(){
-    Route::namespace('Auth')->group(function(){
+Route::namespace('Owner')->prefix('owner')->name('owner.')->group(function () {
+    Route::namespace('Auth')->group(function () {
         Route::get('/', 'LoginController@showLoginForm')->name('login');
         Route::post('/', 'LoginController@login')->name('login');
         Route::get('logout', 'LoginController@logout')->name('logout');
@@ -488,7 +499,7 @@ Route::namespace('Owner')->prefix('owner')->name('owner.')->group(function(){
         Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify.code');
     });
 
-    Route::middleware('owner')->group(function(){
+    Route::middleware('owner')->group(function () {
 
         Route::get('authorization', 'AuthorizationController@authorizeForm')->name('authorization');
         Route::get('resend-verify', 'AuthorizationController@sendVerifyCode')->name('send.verify.code');
@@ -496,7 +507,7 @@ Route::namespace('Owner')->prefix('owner')->name('owner.')->group(function(){
         Route::post('verify-sms', 'AuthorizationController@smsVerification')->name('verify.sms');
         Route::post('verify-g2fa', 'AuthorizationController@g2faVerification')->name('go2fa.verify');
 
-        Route::middleware('owner.checkStatus')->group(function(){
+        Route::middleware('owner.checkStatus')->group(function () {
 
             Route::get('dashboard', 'OwnerController@dashboard')->name('dashboard');
 
@@ -505,10 +516,22 @@ Route::namespace('Owner')->prefix('owner')->name('owner.')->group(function(){
             Route::get('change-password', 'OwnerController@changePassword')->name('change.password');
             Route::post('change-password', 'OwnerController@submitPassword');
 
+            //Conversation
+            Route::get('conversation', 'OwnerMessageController@index')->name('conversation');
+            Route::get('inbox', 'OwnerMessageController@store')->name('conversation.inbox');
+            Route::post('conversation/check/{booking}', 'OwnerMessageController@check')->name('conversation.check');
+            Route::get('chat/{id}', 'OwnerMessageController@chat')->name('conversation.chat');
+            Route::post('message/store', 'OwnerMessageController@messageStore')->name('message.store');
+
             //2FA
             Route::get('twofactor', 'OwnerController@show2faForm')->name('twofactor');
             Route::post('twofactor/enable', 'OwnerController@create2fa')->name('twofactor.enable');
             Route::post('twofactor/disable', 'OwnerController@disable2fa')->name('twofactor.disable');
+
+            //KYC
+            Route::get('kyc-form', 'OwnerController@kycForm')->name('kyc.form');
+            Route::get('kyc-data', 'OwnerController@kycData')->name('kyc.data');
+            Route::post('kyc-submit', 'OwnerController@kycSubmit')->name('kyc.submit');
 
             //Property and Room
             Route::get('properties', 'PropertyController@properties')->name('property.index');
@@ -542,7 +565,6 @@ Route::namespace('Owner')->prefix('owner')->name('owner.')->group(function(){
                 Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
             });
         });
-
     });
 });
 /*
@@ -551,8 +573,8 @@ Route::namespace('Owner')->prefix('owner')->name('owner.')->group(function(){
 |--------------------------------------------------------------------------
 */
 
-Route::namespace('Bloggers')->prefix('bloggers')->name('bloggers.')->group(function(){
-    Route::namespace('Auth')->group(function(){
+Route::namespace('Bloggers')->prefix('bloggers')->name('bloggers.')->group(function () {
+    Route::namespace('Auth')->group(function () {
         Route::get('/', 'LoginController@showLoginForm')->name('login');
         Route::post('/', 'LoginController@login')->name('login');
         Route::get('logout', 'LoginController@logout')->name('logout');
@@ -569,7 +591,7 @@ Route::namespace('Bloggers')->prefix('bloggers')->name('bloggers.')->group(funct
         Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify.code');
     });
 
-    Route::middleware('bloggers')->group(function(){
+    Route::middleware('bloggers')->group(function () {
 
         Route::get('authorization', 'AuthorizationController@authorizeForm')->name('authorization');
         Route::get('resend-verify', 'AuthorizationController@sendVerifyCode')->name('send.verify.code');
@@ -577,7 +599,7 @@ Route::namespace('Bloggers')->prefix('bloggers')->name('bloggers.')->group(funct
         Route::post('verify-sms', 'AuthorizationController@smsVerification')->name('verify.sms');
         Route::post('verify-g2fa', 'AuthorizationController@g2faVerification')->name('go2fa.verify');
 
-        Route::middleware('bloggers.checkStatus')->group(function(){
+        Route::middleware('bloggers.checkStatus')->group(function () {
 
             Route::get('dashboard', 'BloggersController@dashboard')->name('dashboard');
 
@@ -623,7 +645,6 @@ Route::namespace('Bloggers')->prefix('bloggers')->name('bloggers.')->group(funct
                 Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
             });
         });
-
     });
 });
 
@@ -653,6 +674,7 @@ Route::name('user.')->group(function () {
 
     //Conversation
     Route::post('conversation', 'MessageController@store')->name('conversation.store');
+    Route::post('booking', 'MessageController@booking')->name('conversation.booking');
     Route::get('inbox', 'MessageController@inbox')->name('conversation.inbox');
     Route::get('chat/{id}', 'MessageController@chat')->name('conversation.chat');
     Route::post('message/store', 'MessageController@messageStore')->name('message.store');
@@ -701,7 +723,6 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('properties-history', 'UserController@propertyHistory')->name('property.history');
 
             Route::post('property/booking', 'PropertyController@bookingProcess')->name('property.booking');
-
         });
     });
 });
@@ -715,7 +736,7 @@ Route::get('agents', 'SiteController@agents')->name('agents');
 Route::get('agents_details/{id}', 'SiteController@agents_details')->name('agents_details');
 
 Route::get('search-location/{location}/{slug}', 'PropertyController@propertySearch')->name('search.location.property');
-Route::get('search-property-type/{propertyType}/{slug}','PropertyController@propertySearch')->name('search.property.type');
+Route::get('search-property-type/{propertyType}/{slug}', 'PropertyController@propertySearch')->name('search.property.type');
 
 Route::get('search', 'PropertyController@propertySearch')->name('property.search');
 Route::get('search-filter', 'PropertyController@propertySearchFilter')->name('property.search.ajax');
@@ -747,3 +768,6 @@ Route::get('property/chat', 'SiteController@startChat')->name('property.chat');
 
 Route::post('/review', 'ReviewController@review')->name('review');
 Route::get('/', 'SiteController@index')->name('home');
+
+// upload for summernote editor
+Route::post('/upload-image', 'UploadController@upload')->name('upload.image');

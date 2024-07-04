@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -9,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasApiTokens;
+    use Notifiable, HasApiTokens, Searchable ;
     /**
      * The attributes that are mass assignable.
      *
@@ -100,6 +101,14 @@ class User extends Authenticatable
     public function scopeSmsVerified()
     {
         return $this->where('sv', 1);
+    }
+    public function scopeKycUnverified($query)
+    {
+        return $query->where('kv', 0);
+    }
+    public function scopeKycPending($query)
+    {
+        return $query->where('kv', 2);
     }
 
 }

@@ -1,12 +1,12 @@
 @extends('admin.layouts.app')
 @section('panel')
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card b-radius--10 ">
-                <div class="card-body p-0">
-                    <div class="table-responsive--md  table-responsive">
-                        <table class="table table--light style--two">
-                            <thead>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card b-radius--10 ">
+            <div class="card-body p-0">
+                <div class="table-responsive--md  table-responsive">
+                    <table class="table table--light style--two">
+                        <thead>
                             <tr>
                                 <th>@lang('Owner')</th>
                                 <th>@lang('Email-Phone')</th>
@@ -15,15 +15,15 @@
                                 <th>@lang('Balance')</th>
                                 <th>@lang('Action')</th>
                             </tr>
-                            </thead>
-                            <tbody>
+                        </thead>
+                        <tbody>
                             @forelse($owners as $owner)
                             <tr>
                                 <td data-label="@lang('Owner')">
                                     <span class="font-weight-bold">{{$owner->fullname}}</span>
                                     <br>
                                     <span class="small">
-                                    <a href="{{ route('admin.owners.detail', $owner->id) }}"><span>@</span>{{ $owner->username }}</a>
+                                        <a href="{{ route('admin.owners.detail', $owner->id) }}"><span>@</span>{{ $owner->username }}</a>
                                     </span>
                                 </td>
 
@@ -42,8 +42,8 @@
 
                                 <td data-label="@lang('Balance')">
                                     <span class="font-weight-bold">
-                                        
-                                    {{ $general->cur_sym }}{{ showAmount($owner->balance) }}
+
+                                        {{ $general->cur_sym }}{{ showAmount($owner->balance) }}
                                     </span>
                                 </td>
 
@@ -51,33 +51,38 @@
                                     <a href="{{ route('admin.owners.detail', $owner->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">
                                         <i class="las la-desktop text--shadow"></i>
                                     </a>
+                                    @if (request()->routeIs('admin.owners.kyc.pending'))
+                                    <a style="margin-left: 5px;" href="{{ route('admin.owners.kyc.details', $owner->id) }}" target="_blank" class="btn btn-sm btn-outline--dark">
+                                        <i class="las la-user-check"></i>@lang('KYC Data')
+                                    </a>
+                                    @endif
                                 </td>
                             </tr>
                             @empty
-                                <tr>
-                                    <td class="text-muted text-center" colspan="100%">{{ __($emptyMessage) }}</td>
-                                </tr>
+                            <tr>
+                                <td class="text-muted text-center" colspan="100%">{{ __($emptyMessage) }}</td>
+                            </tr>
                             @endforelse
 
-                            </tbody>
-                        </table><!-- table end -->
-                    </div>
+                        </tbody>
+                    </table><!-- table end -->
                 </div>
-                <div class="card-footer py-4">
-                    {{ paginateLinks($owners) }}
-                </div>
+            </div>
+            <div class="card-footer py-4">
+                {{ paginateLinks($owners) }}
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @push('breadcrumb-plugins')
-    <form action="{{ route('admin.owners.search', $scope ?? str_replace('admin.owners.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
-        <div class="input-group has_append">
-            <input type="text" name="search" class="form-control" placeholder="@lang('Ownername or email')" value="{{ $search ?? '' }}">
-            <div class="input-group-append">
-                <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
-            </div>
+<form action="{{ route('admin.owners.search', $scope ?? str_replace('admin.owners.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
+    <div class="input-group has_append">
+        <input type="text" name="search" class="form-control" placeholder="@lang('Ownername or email')" value="{{ $search ?? '' }}">
+        <div class="input-group-append">
+            <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
         </div>
-    </form>
+    </div>
+</form>
 @endpush
