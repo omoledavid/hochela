@@ -12,9 +12,11 @@
         <p class="mt-1"><i class="las la-map-marker-alt fs--18px"></i>
             {{ __($property->location->name) }}</p>
         <ul class="features-list mt-2">
-            @foreach ($property->extra_features as $feature)
-                <li>{{ __($feature) }}</li>
-            @endforeach
+            @isset($property->extra_features)
+                @foreach ($property->extra_features as $feature)
+                    <li>{{ __($feature) }}</li>
+                @endforeach
+            @endisset
         </ul>
     </div><!-- hotel-details-box end -->
     <div class="hotel-details-box">
