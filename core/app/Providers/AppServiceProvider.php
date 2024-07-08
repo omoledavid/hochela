@@ -79,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         if($general->force_ssl){
-            \URL::forceScheme('https');
+            \URL::forceScheme('http');
         }
 
 
