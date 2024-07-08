@@ -219,7 +219,7 @@ $banners = getContent('search_page_banner.element');
               @endforelse
               <div class="text-end mt-4 pagination-md">
                 <ul class="pagination d-inline-flex">
-                  {{ $properties->appends(request()->input())->links() }}
+                    {{ paginateLinksFrontend($properties) }}
                 </ul>
               </div>
 
@@ -299,12 +299,6 @@ $banners = getContent('search_page_banner.element');
     searchData.child = $('#child').val();
     searchData.request = @json(request()->input());
 
-    $(document).on('click', '.page-link', function(e) {
-      e.preventDefault();
-      page = $(this).attr('href').match(/page=([0-9]+)/)[1];;
-      loadSearch();
-    });
-
     var sorting = '';
     var propertyType = '';
     var minPrice = 0;
@@ -345,6 +339,39 @@ $banners = getContent('search_page_banner.element');
 
 
     function loadSearch() {
+      $('.loader').css('display', 'block');
+      $('.search-result').html('');
+      var url = `{{ route('property.search.ajax') }}`;
+
+      var data = {
+        '_token': '{{ csrf_token() }}',
+        'sorting': sorting,
+        'propertyType': propertyType,
+        'minPrice': minPrice,
+        'maxPrice': maxPrice,
+        'paymentOptions': paymentOptions,
+        'starLevels': starLevels,
+        'amenities': amenities,
+        'searchData': searchData,
+        'page': page
+      }
+
+      $.ajax({
+        type: "GET",
+        url: url,
+        data: data,
+        success: function(response) {
+          $('.loader').css('display', 'none');
+          $('.search-result').html(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert("Status: " + textStatus);
+          alert("Error: " + errorThrown);
+        }
+
+      });
+    }
+    function loadSearchCurrent() {
       $('.loader').css('display', 'block');
       $('.search-result').html('');
       var url = `{{ route('property.search.ajax') }}`;

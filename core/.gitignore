@@ -6,6 +6,7 @@
 ../assets/images
 /storage/*.key
 /vendor
+/core/app/Providers/AppServiceProvider.php
 .env
 .env.backup
 .phpunit.result.cache

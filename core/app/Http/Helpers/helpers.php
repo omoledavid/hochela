@@ -644,6 +644,9 @@ function getPaginate($paginate = 20)
 function paginateLinks($data, $design = 'admin.partials.paginate'){
     return $data->appends(request()->all())->links($design);
 }
+function paginateLinksFrontend($data, $design = 'admin.partials.paginate'){
+    return $data->appends(request()->all())->links($design);
+}
 
 
 function menuActive($routeName, $type = null)
