@@ -95,8 +95,8 @@ $banners = getContent('search_page_banner.element');
               </div>
             </div><!-- action-widget end -->
 
-            <div class="action-widget">
-              <h4 class="action-widget__title">@lang('Hotel Star Level')</h4>
+            {{-- <div class="action-widget">
+              <h4 class="action-widget__title">@lang('Accomodation Standard')</h4>
               <div class="action-widget__body">
                 @for ($star=1; $star <= $general->property_max_star; $star++)
                   <div class="form-check custom--checkbox d-flex justify-content-between">
@@ -115,7 +115,8 @@ $banners = getContent('search_page_banner.element');
                   </div><!-- form-check end -->
                   @endfor
               </div>
-            </div><!-- action-widget end -->
+            </div> --}}
+            <!-- action-widget end -->
             <div class="action-widget">
               <h6 class="action-widget__title">@lang('Amenities')</h6>
               <div class="action-widget__body scroll--active">
