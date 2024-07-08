@@ -50,7 +50,7 @@ $banners = getContent('search_page_banner.element');
                 </div>
               </div>
                 <input type="hidden" name="date" placeholder="50,000 - 250,000" id="date" data-range="true" data-multiple-dates-separator=" - " data-language="en" class="datepicker-here form--control" placeholder="M/D/Y - M/D/Y" autocomplete="off">
-                
+
               <div class="col-xl-2 text-end">
                 <button type="submit" class="btn btn--base w-100">@lang('Search')</button>
               </div>
@@ -205,11 +205,9 @@ $banners = getContent('search_page_banner.element');
                         }
                         @endphp
 
-                        <span class="{{ $highestPrice > 9999 ? 'd-block' : '' }}">{{ $general->cur_sym.showAmount($lowestPrice) }}</span>
-                        -
-                        <span class="{{ $highestPrice > 9999 ? 'd-block' : '' }}">{{ $general->cur_sym.showAmount($highestPrice) }}</span>
+                        <span class="{{ $highestPrice > 9999 ? 'd-block' : '' }}">{{ $general->cur_sym.showAmount($property->property_amount) }}</span>
                     </div>
-                    <p class="fs--14px mt-1">@lang('price per night')</p>
+                    <p class="fs--14px mt-1">@lang('price per year')</p>
                     <a href="{{ route('property', [$property->id, slug($property->name)]) }}" class="btn btn-sm btn--base mt-3 w-100">@lang('View Details')</a>
                   </div>
                 </div>

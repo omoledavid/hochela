@@ -27,7 +27,7 @@
                                     <td data-label="@lang('Property Type')">{{ __($property->propertyType->name) }}</td>
                                     <td data-label="@lang('Location')">{{ __($property->location->name) }}</td>
                                     <td data-label="@lang('Discount')">{{ showAmount($property->discount) }}%</td>
-                                    <td data-label="@lang('Room')">{{ $property->rooms->count() }}</td>
+                                    <td data-label="@lang('Room')">{{ $property->available_rooms }}</td>
                                     <td data-label="@lang('Categories')">
                                         <a href="{{ route('owner.property.room.category.property', [slug($property->name), $property->id]) }}" class="icon-btn btn--info ml-1">
                                             {{ $property->roomCategories->count() }}

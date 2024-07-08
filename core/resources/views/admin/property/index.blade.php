@@ -26,11 +26,11 @@
                                     <td data-label="@lang('Name')">{{ __($property->name) }}</td>
                                     <td data-label="@lang('Property Type')">{{ __($property->propertyType->name) }}</td>
                                     <td data-label="@lang('Location')">{{ __($property->location->name) }}</td>
-                                    <td data-label="@lang('Room')">{{ $property->rooms->count() }}</td>
+                                    <td data-label="@lang('Room')">{{ $property->available_rooms }}</td>
                                     <td data-label="@lang('Categoreis')">
                                         <a href="{{ route('admin.property.room.category.property', [slug($property->name), $property->id]) }}" class="icon-btn btn--info ml-1">
                                             {{ $property->roomCategories->count() }}
-                                        </a>   
+                                        </a>
                                     </td>
                                     <td data-label="@lang('Discount')">{{ showAmount($property->discount) }}%</td>
                                     <td data-label="@lang('Status')">
@@ -42,7 +42,7 @@
                                     </td>
                                     <td data-label="@lang('Action')">
                                         <a href="{{ route('admin.property.edit', $property->id) }}" class="icon-btn ml-1"><i class="la la-pen"></i></i></a>
-                                        
+
                                     </td>
                                 </tr>
                             @empty

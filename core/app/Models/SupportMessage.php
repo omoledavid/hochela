@@ -21,4 +21,8 @@ class SupportMessage extends Model
     {
         return $this->hasMany('App\Models\SupportAttachment','support_message_id','id');
     }
+    public function supportAttachments()
+    {
+        return $this->hasMany(SupportAttachment::class, 'support_message_id', 'id');
+    }
 }

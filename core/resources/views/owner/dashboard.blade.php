@@ -77,7 +77,7 @@
                     <span class="amount">{{$widget['total_rooms']}}</span>
                 </div>
                 <div class="desciption">
-                    <span class="text--small">@lang('Total Rooms')</span>
+                    <span class="text--small">@lang('Total Available Rooms')</span>
                 </div>
                 <a href="{{route('owner.property.index')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View Properties')</a>
             </div>
@@ -90,12 +90,11 @@
             </div>
             <div class="details">
                 <div class="numbers">
-                    <span class="amount">{{$widget['total_room_category']}}</span>
+                    <span class="amount">{{$widget['total_appointment']}}</span>
                 </div>
                 <div class="desciption">
-                    <span class="text--small">@lang('Total Room Categories')</span>
+                    <span class="text--small">@lang('Booked Appointment')</span>
                 </div>
-                <a href="{{route('owner.property.room.category.index')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View Room Categoires')</a>
             </div>
         </div>
     </div>
@@ -128,9 +127,8 @@
                     <span class="amount">{{$widget['total_rooms']}}</span>
                 </div>
                 <div class="desciption">
-                    <span class="text--small">@lang('Total Rooms')</span>
+                    <span class="text--small">@lang('Total Available Rooms')</span>
                 </div>
-                <a href="{{route('owner.property.index')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View Properties')</a>
             </div>
         </div>
     </div>
@@ -141,12 +139,11 @@
             </div>
             <div class="details">
                 <div class="numbers">
-                    <span class="amount">{{$widget['total_room_category']}}</span>
+                    <span class="amount">{{$widget['total_appointment']}}</span>
                 </div>
                 <div class="desciption">
-                    <span class="text--small">@lang('Total Room Categories')</span>
+                    <span class="text--small">@lang('Booked Appointment')</span>
                 </div>
-                <a href="{{route('owner.property.room.category.index')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View Room Categoires')</a>
             </div>
         </div>
     </div>

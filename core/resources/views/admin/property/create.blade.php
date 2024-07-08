@@ -5,7 +5,7 @@
     @csrf
 <div class="row">
         <div class="col-lg-8">
-            <div class="card">              
+            <div class="card">
                 <div class="card-body">
                     <div class="payment-method-item">
                         <div class="payment-method-header">
@@ -66,13 +66,25 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6" >
                                 <div class="form-group">
-                                    <label class="w-100">@lang('Google Map Embed URL')</label>
-                                    <textarea name="map_url" class="form-control" rows="4">{{ old('map_url') }}</textarea>
+                                    <label class="w-100"> @lang('Available Rooms')</label>
+                                    <input type="number" name="available_rooms" class="form-control" placeholder="Available Rooms">
                                 </div>
                             </div>
-
+                            <div class="col-md-6" >
+                                <div class="form-group">
+                                    <label class="w-100"> @lang('Apartment Amount') </label>
+                                    <input type="number" name="property_amount" class="form-control" placeholder="50000">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="w-100">@lang('Location')</label>
+                                    <input type="hidden" name="google_link" id="input_map_embed" value="">
+                                    <textarea name="apartment_location" id="place_location" class="form-control" rows="4">{{ old('map_url') }}</textarea>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

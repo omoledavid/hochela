@@ -50,10 +50,23 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-6" >
+                                <div class="form-group">
+                                    <label class="w-100"> @lang('Available Rooms')</label>
+                                    <input type="number" name="available_rooms" value="{{$property->available_rooms}}" class="form-control" placeholder="Available Rooms">
+                                </div>
+                            </div>
+                            <div class="col-md-6" >
+                                <div class="form-group">
+                                    <label class="w-100"> @lang('Apartment Amount') </label>
+                                    <input type="number" name="property_amount" value="{{$property->property_amount}}" class="form-control" placeholder="50000">
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="w-100">@lang('Google Map Embed URL')</label>
-                                    <textarea name="map_url" class="form-control" rows="4">{{ $property->map_url }}</textarea>
+                                    <label class="w-100">@lang('Location')</label>
+                                    <input type="hidden" name="google_link" id="input_map_embed" value="{{ $property->google_link }}">
+                                    <textarea name="apartment_location" id="place_location" class="form-control" rows="4">{{$property->apartment_location}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -102,10 +115,10 @@
                         </select>
                         <small>@lang('Write feature then press enter')</small>
                     </div>
-                    <div class="form-group">
-                        <label>@lang('Status')</label>
-                        <input type="checkbox" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Active')" data-off="@lang('Inactive')" data-width="100%" name="status" @if ($property->status == 1) checked @endif>
-                    </div>
+{{--                    <div class="form-group">--}}
+{{--                        <label>@lang('Status')</label>--}}
+{{--                        <input type="checkbox" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Active')" data-off="@lang('Inactive')" data-width="100%" name="status" @if ($property->status == 1) checked @endif>--}}
+{{--                    </div>--}}
                 </div>
             </div>
         </div>

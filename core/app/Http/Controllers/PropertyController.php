@@ -96,11 +96,8 @@ class PropertyController extends Controller
             }]);
         }
 
-        $properties = $properties->whereHas('location', function($location){
+        $properties = $properties->where('status', 1)->whereHas('location', function($location){
             $location->where('status', 1);
-        })
-        ->whereHas('rooms', function($room){
-            $room->where('status', 1);
         })
         ->paginate(getPaginate(15));
 
@@ -256,7 +253,7 @@ class PropertyController extends Controller
 
     public function bookingProcess(Request $request)
     {
-        
+
         $request->validate([
             'room_list' => 'required'
         ],[

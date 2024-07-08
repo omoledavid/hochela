@@ -39,7 +39,7 @@
                         <span class="menu-title">@lang('Amenity')</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.news*',3)}}">
                         <i class="menu-icon la la-newspaper"></i>
@@ -114,6 +114,12 @@
                                 <a href="{{ route('admin.property.room.category.index') }}" class="nav-link ">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Room Category')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('admin.pending.property.index') }}">
+                                <a href="{{ route('admin.pending.property.index') }}" class="nav-link ">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Pending Approval')</span>
                                 </a>
                             </li>
                         </ul>
@@ -748,7 +754,7 @@
         @elseif(auth()->guard('admin')->check() && auth()->guard('admin')->user()->level == 2)
         <div class="sidebar__menu-wrapper" id="sidebar__menuWrapper">
 
-            
+
                 <ul class="sidebar__menu">
                     <li class="sidebar-menu-item {{menuActive('user.home')}}">
                         <a href="{{route('admin.dashboard')}}" class="nav-link ">

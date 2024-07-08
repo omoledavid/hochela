@@ -71,14 +71,6 @@
                       <div class="bottom d-flex align-items-center">
                         <div class="col-6">
                           <div class="price text--base">
-                            @php
-                            $lowestPrice = $property->rooms[0]->price;
-                            foreach ($property->rooms as $room) {
-                            if($room->price < $lowestPrice){ $lowestPrice=$room->price;
-                              }
-                              }
-                              echo $general->cur_sym.showAmount($lowestPrice);
-                              @endphp
                           </div>
                           <span class="fs--14px">@lang('Per year')</span>
                         </div>
@@ -192,7 +184,7 @@
         <div class="course-details-sidebar">
           <div class="book-widget mt-4 text-center text-white">
             <i class="lar la-calendar"></i>
-            <h3 class="text-white mt-2">@lang('Schedule an appointment')</h3>
+            <h3 class="text-white mt-2 mb-2">@lang('Schedule an appointment')</h3>
               @guest
               <input class="form-control" name="time" type="datetime-local" placeholder="Select date" required>
               <a href="{{route('user.login')}}" class="btn mt-2 btn--base w-100">@lang('Book meeting')</a>
@@ -202,7 +194,7 @@
                 @csrf
                 <input type="hidden" name="agent_id" value="{{$agents->id}}">
                 <input class="form-control" name="time" type="datetime-local" placeholder="Select date" required>
-                <button type="submit" class="btn mt-2 btn--base w-100" style="width:100%;">@lang('Book Meeting')</button>
+                <button type="submit" class="btn mt-3 btn--base w-100" style="width:100%;">@lang('Submit')</button>
               </form>
               @endauth
           </div><!-- agent-details-widget end -->

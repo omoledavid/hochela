@@ -207,29 +207,29 @@ $(".location-slider").slick({
 
 // feature-ad-slider
 $(".property-slider").slick({
-    // autoplay: true,
-    autoplaySpeed: 2000,
-    dots: true,
-    infinite: true,
-    speed: 300,
+    // other settings...
     slidesToShow: 4,
+    slidesToScroll: 1,
     arrows: false,
-    slidesToScroll: 2,
+    // responsive settings...
     responsive: [
         {
             breakpoint: 992,
             settings: {
                 slidesToShow: 2,
+                slidesToScroll: 1,
             },
         },
         {
             breakpoint: 768,
             settings: {
                 slidesToShow: 1,
+                slidesToScroll: 1,
             },
         },
     ],
 });
+
 
 // best-trip-slider js
 $(".best-trip-slider").slick({

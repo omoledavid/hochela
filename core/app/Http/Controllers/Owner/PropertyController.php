@@ -59,7 +59,10 @@ class PropertyController extends Controller
                 new FileTypeValidate(['jpeg', 'jpg', 'png'])
             ],
             'property_type' => 'required',
-            'location' => 'required',
+            'apartment_location' => 'required',
+            'google_link' => 'required',
+            'available_rooms' => 'required|numeric',
+            'property_amount' => 'required|numeric',
             'phone' => 'nullable',
             'phone_call_time' => 'nullable',
             'discount' => 'sometimes|numeric|min:0',
@@ -74,7 +77,7 @@ class PropertyController extends Controller
         ]);
 
         $property = new Property();
-        $status = 1;
+        $status = 0;
         $oldImage = null;
         $notification = 'Property added successfully';
         $filename = '';
@@ -122,8 +125,8 @@ class PropertyController extends Controller
         if ($request->hasFile('images')) {
             for ($i = 0; $i < count($request->images); $i++) {
                 try {
-                    $filename = uploadImage($request->images[$i], $path, $size);
-                    array_push($multipleImages, $filename);
+                    $filenames = uploadImage($request->images[$i], $path, $size);
+                    array_push($multipleImages, $filenames);
                 } catch (\Exception $exp) {
                     $notify[] = ['error', 'Image could not be uploaded.'];
                     return back()->withNotify($notify);
@@ -145,6 +148,10 @@ class PropertyController extends Controller
         $property->star = $request->star;
         $property->extra_features = $request->extra_features;
         $property->status = $status;
+        $property->available_rooms = $request->available_rooms;
+        $property->property_amount = $request->property_amount;
+        $property->google_link = $request->google_link;
+        $property->apartment_location = $request->apartment_location;
         $property->save();
         $notify[] = ['success', $notification];
         return back()->withNotify($notify)->withInput();

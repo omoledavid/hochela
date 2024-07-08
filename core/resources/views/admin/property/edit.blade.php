@@ -46,7 +46,7 @@
                                                    </select>
                                            </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="w-100">@lang('Accommodation Standard') <span class="text-danger">*</span></label>
                                                 <select name="star" class="form-control">
@@ -57,11 +57,11 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="w-100">@lang('Extra Features')</label>
                                                 <select class="form-control select2" name="extra_features[]" multiple="multiple">
-                                                    @if ($property->extra_features)    
+                                                    @if ($property->extra_features)
                                                         @foreach($property->extra_features as $feature)
                                                             <option value="{{$feature}}" selected="true">{{__($feature)}}</option>
                                                         @endforeach
@@ -74,12 +74,25 @@
                                 </div>
                             </div>
                                 <div class="row">
-                                     <div class="col-md-12">
-                                         <div class="form-group">
-                                             <label class="w-100">@lang('Google Map Embed URL')</label>
-                                             <textarea name="map_url" class="form-control" rows="4">{{ $property->map_url }}</textarea>
-                                         </div>
-                                     </div>
+                                    <div class="col-md-6" >
+                                        <div class="form-group">
+                                            <label class="w-100"> @lang('Available Rooms')</label>
+                                            <input type="number" name="available_rooms" value="{{$property->available_rooms}}" class="form-control" placeholder="Available Rooms">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" >
+                                        <div class="form-group">
+                                            <label class="w-100"> @lang('Apartment Amount') </label>
+                                            <input type="number" name="property_amount" value="{{$property->property_amount}}" class="form-control" placeholder="50000">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="w-100">@lang('Location')</label>
+                                            <input type="hidden" name="google_link" id="input_map_embed" value="{{ $property->google_link }}">
+                                            <textarea name="apartment_location" id="place_location" class="form-control" rows="4">{{$property->apartment_location}}</textarea>
+                                        </div>
+                                    </div>
                                 </div>
                         </div>
                     </div>
@@ -90,11 +103,11 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label class="w-100">@lang('Phone') <span class="text-danger">*</span></label>
-                        <input type="text" name="phone" value="{{ $property->phone }}" class="form-control" required>
+                        <input type="text" name="phone" value="{{ $property->phone }}" class="form-control" >
                     </div>
                     <div class="form-group">
                         <label class="w-100">@lang('Phone Call Time') <span class="text-danger">*</span></label>
-                        <input type="text" name="phone_call_time" value="{{ $property->phone_call_time }}" class="form-control" required>
+                        <input type="text" name="phone_call_time" value="{{ $property->phone_call_time }}" class="form-control" >
                     </div>
                     <div class="form-group">
                         <label class="w-100">@lang('Discount')</label>
@@ -244,7 +257,7 @@
                 $(this).closest('div.image-data').remove();
             });
 
-             
+
             $(".profilePicUpload").on('change', function () {
                 var image = $(this).data('old_image');
                 images.splice($.inArray(image, images), 1);

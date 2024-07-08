@@ -29,9 +29,9 @@
                     <li class="hotel-nav__item">
                         <button class="nav-link w-100 hotel-nav__btn active" data-bs-toggle="pill" data-bs-target="#hotel-description" type="button">@lang('Description')</button>
                     </li>
-                    <li class="hotel-nav__item">
-                        <button class="nav-link w-100 hotel-nav__btn" data-bs-toggle="pill" data-bs-target="#hotel-category" type="button">@lang('Rooms')</button>
-                    </li>
+{{--                    <li class="hotel-nav__item">--}}
+{{--                        <button class="nav-link w-100 hotel-nav__btn" data-bs-toggle="pill" data-bs-target="#hotel-category" type="button">@lang('Rooms')</button>--}}
+{{--                    </li>--}}
                     @if($general->pr == 1)
                     <li class="hotel-nav__item">
                         <button class="nav-link w-100 hotel-nav__btn" data-bs-toggle="pill" data-bs-target="#hotel-review" type="button">@lang('Review')</button>
@@ -83,21 +83,11 @@
                                 <span>@lang('off')</span>
                             </div>
                             @endif
-                            <h4>@lang('Grade') {{ $property->star }} @lang('Standard')</h4>
-                            @if (count($property->rooms))
+                            <h4>@lang('Amount')</h4>
                             <div class="price">
-                                @if ($property->discount != 0)
-                                <del>{{ $general->cur_sym }} {{ showAmount($lowestRoomPrice) }}</del>
-                                <span class="text--base">{{ $general->cur_sym }}{{ showAmount(($lowestRoomPrice * (100 - $property->discount)) / 100) }}</span>
+                                <span class="text--base">{{ $general->cur_sym }}{{ showAmount(($property->property_amount)) }}</span>
                                 <sub>/ @lang('per year')</sub>
-                                @else
-                                <span class="text--base">{{ $general->cur_sym }}
-                                    {{ showAmount($lowestRoomPrice) }}</span>
-                                @endif
                             </div>
-                            @else
-                            <p>@lang('No room found')</p>
-                            @endif
                         </div>
                         @if (isset($request))
                         @if ($request->location && $request->date && $request->adult)

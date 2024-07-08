@@ -30,14 +30,8 @@ class OwnerController extends Controller
         $pageTitle = 'Dashboard';
         $widget['balance'] = Auth::guard('owner')->user()->balance;
         $widget['total_properties'] = Property::where('owner_id', Auth::guard('owner')->id())->count();
-        $widget['total_rooms'] = Room::with('property')
-            ->whereHas('property', function ($property) {
-                $property->where('owner_id', Auth::guard('owner')->id());
-            })->count();
-        $widget['total_room_category'] = RoomCategory::with('property')
-            ->whereHas('property', function ($property) {
-                $property->where('owner_id', Auth::guard('owner')->id());
-            })->count();
+        $widget['total_rooms'] = Property::sum('available_rooms');
+        $widget['total_appointment'] = Booking::where('agent_id', Auth::guard('owner')->id())->count();
         $user = Auth::guard('owner')->user();
         $bookings = Booking::where('agent_id', $user->id)->latest()->paginate(getPaginate());
         $general = GeneralSetting::first();

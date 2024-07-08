@@ -18,6 +18,11 @@ class PropertyController extends Controller
         $emptyMessage = 'No property found';
         $properties = Property::with('propertyType', 'location', 'rooms', 'roomCategories')->orderBy('id', 'DESC')->paginate(getPaginate());
         return view('admin.property.index', compact('pageTitle', 'emptyMessage', 'properties'));
+    }public function pendingProperties(){
+        $pageTitle = 'Pending Approval';
+        $emptyMessage = 'No property found';
+        $properties = Property::with('propertyType', 'location', 'rooms', 'roomCategories')->orderBy('id', 'DESC')->where('status', 0)->paginate(getPaginate());
+        return view('admin.property.index', compact('pageTitle', 'emptyMessage', 'properties'));
     }
 
     public function create(){
@@ -41,14 +46,17 @@ class PropertyController extends Controller
     }
 
     public function saveProperty(Request $request, $id=0){
-   
+
         $request->validate([
             'name' => 'required',
             'image' => ['sometimes','image',new FileTypeValidate(['jpeg', 'jpg', 'png'])],
             'property_type' => 'required',
-            'location' => 'required',
-            'phone' => 'required',
-            'phone_call_time' => 'required',
+            'apartment_location' => 'required',
+            'google_link' => 'required',
+            'available_rooms' => 'required|numeric',
+            'property_amount' => 'required|numeric',
+            'phone' => 'nullable',
+            'phone_call_time' => 'nullable',
             'star' => 'required|numeric|min:1',
             'owner' => 'sometimes|exists:owners,username',
             'extra_features' => 'sometimes|array',
@@ -66,7 +74,7 @@ class PropertyController extends Controller
             $notification = 'Property added successfully';
             $filename = '';
             $multipleImages = [];
-        
+
             $path = imagePath()['property']['path'];
             $size = imagePath()['property']['size'];
 
@@ -134,6 +142,10 @@ class PropertyController extends Controller
             $property->star = $request->star;
             $property->extra_features = $request->extra_features;
             $property->status = $status;
+            $property->available_rooms = $request->available_rooms;
+            $property->property_amount = $request->property_amount;
+            $property->google_link = $request->google_link;
+            $property->apartment_location = $request->apartment_location;
             $property->save();
             $notify[] = ['success', $notification];
             return back()->withNotify($notify)->withInput();

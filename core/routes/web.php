@@ -96,6 +96,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
         //Property and Room
         Route::get('properties', 'PropertyController@properties')->name('property.index');
+        Route::get('pending/properties', 'PropertyController@pendingProperties')->name('pending.property.index');
         Route::get('property/create', 'PropertyController@create')->name('property.create');
         Route::post('property/store', 'PropertyController@saveProperty')->name('property.store');
         Route::get('property/edit/{id}', 'PropertyController@edit')->name('property.edit');

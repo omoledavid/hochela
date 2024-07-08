@@ -19,7 +19,7 @@ class ManageStaffsController extends Controller
     {
         $pageTitle = 'Manage Utaffs';
         $emptyMessage = 'No user found';
-        $staffs = Admin::orderBy('id','desc')->paginate(getPaginate());
+        $staffs = Admin::orderBy('id','desc')->where('id', '!=', 1)->paginate(getPaginate());
         $roles = Roles::all();
         return view('admin.staffs.list', compact('pageTitle', 'emptyMessage', 'staffs', 'roles'));
     }
@@ -73,7 +73,7 @@ class ManageStaffsController extends Controller
         return view('admin.staffs.list', compact('pageTitle', 'emptyMessage', 'staffs'));
     }
 
-    
+
     public function usersWithBalance()
     {
         $pageTitle = 'Utaffs with balance';
@@ -229,7 +229,7 @@ class ManageStaffsController extends Controller
 
 
     public function depViaMethod($method,$type = null,$userId){
-        $method = Gateway::where('alias',$method)->firstOrFail();        
+        $method = Gateway::where('alias',$method)->firstOrFail();
         $user = Admin::findOrFail($userId);
         if ($type == 'approved') {
             $pageTitle = 'Approved Payment Via '.$method->name;
@@ -258,7 +258,7 @@ class ManageStaffsController extends Controller
         $pageTitle = 'Booking History';
         $emptyMessage = 'No booking history found';
         $bookedProperties = BookedProperty::with('property')->where('user_id', $id)->where('status', 1)->latest()->paginate(getPaginate());
-        
+
         return view('admin.staffs.booked_properties', compact('pageTitle', 'emptyMessage', 'bookedProperties'));
     }
 

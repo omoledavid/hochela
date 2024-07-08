@@ -34,12 +34,12 @@
                                     <span class="menu-title">@lang('All Property')</span>
                                 </a>
                             </li>
-                            <li class="sidebar-menu-item {{ menuActive('owner.property.room.category*') }}">
-                                <a href="{{ route('owner.property.room.category.index') }}" class="nav-link ">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Room Category')</span>
-                                </a>
-                            </li>
+{{--                            <li class="sidebar-menu-item {{ menuActive('owner.property.room.category*') }}">--}}
+{{--                                <a href="{{ route('owner.property.room.category.index') }}" class="nav-link ">--}}
+{{--                                    <i class="menu-icon las la-dot-circle"></i>--}}
+{{--                                    <span class="menu-title">@lang('Room Category')</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                         </ul>
                     </div>
                 </li>

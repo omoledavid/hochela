@@ -31,7 +31,11 @@
                                     {{ $user->email }}<br>{{ $user->mobile }}
                                 </td>
                                 <td data-label="@lang('Role')">
-                                    <span class="font-weight-bold" data-toggle="tooltip" data-original-title="{{ @$user->level }}">{{ $user->level }}</span>
+                                    @if($user->level == 2)
+                                    <span class="font-weight-bold" data-toggle="tooltip" data-original-title="admin">Admin</span>
+                                        @elseif($user->level == 0)
+                                    <span class="font-weight-bold" data-toggle="tooltip" data-original-title="Blogger">Blogger</span>
+                                        @endif
                                 </td>
 
 
