@@ -22,6 +22,9 @@ class WishlistController extends Controller
         }
 
         $user_id = auth()->user()->id ?? null;
+        if(!$user_id){
+            return response()->json(['error' => 'Please login to add to favourite']);
+        }
 
         $s_id = session()->get('session_id');
         if ($s_id == null) {
