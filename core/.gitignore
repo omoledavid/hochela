@@ -2,8 +2,8 @@
 /public/hot
 /public/storage
 /public/uploads
-../assets/laramin/images
-../assets/images
+../assets/laramin/images/
+../assets/images/
 /storage/*.key
 /vendor
 app/Providers/AppServiceProvider.php

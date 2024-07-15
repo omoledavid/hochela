@@ -394,11 +394,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('/language/import', 'LanguageController@langImport')->name('language.importLang');
 
 
-
         Route::post('language/store/key/{id}', 'LanguageController@storeLanguageJson')->name('language.store.key');
         Route::post('language/delete/key/{id}', 'LanguageController@deleteLanguageJson')->name('language.delete.key');
         Route::post('language/update/key/{id}', 'LanguageController@updateLanguageJson')->name('language.update.key');
-
 
 
         // General Setting
@@ -425,7 +423,6 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('extensions/update/{id}', 'ExtensionController@update')->name('extensions.update');
         Route::post('extensions/activate', 'ExtensionController@activate')->name('extensions.activate');
         Route::post('extensions/deactivate', 'ExtensionController@deactivate')->name('extensions.deactivate');
-
 
 
         // Email Setting
@@ -656,6 +653,13 @@ Route::namespace('Bloggers')->prefix('bloggers')->name('bloggers.')->group(funct
 |--------------------------------------------------------------------------
 */
 
+//Wishlist
+Route::get('add_to_wishlist', 'WishlistController@addToWishList')->name('add-to-wishlist');
+Route::get('get_wishlist_data/', 'WishlistController@getWsihList')->name('get-wishlist-data');
+Route::get('get_wishlist_total/', 'WishlistController@getWsihListTotal')->name('get-wishlist-total');
+Route::get('wishlist/', 'WishlistController@wishList')->name('wishlist');
+Route::get('wishlist/remove/{id}', 'WishlistController@removeFromwishList')->name('removeFromWishlist')->where('id', '[0-9]+');
+
 
 Route::name('user.')->group(function () {
     Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -772,3 +776,5 @@ Route::get('/', 'SiteController@index')->name('home');
 
 // upload for summernote editor
 Route::post('/upload-image', 'UploadController@upload')->name('upload.image');
+
+

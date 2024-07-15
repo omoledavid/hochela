@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> {{ $general->sitename(__($pageTitle)) }}</title>
     <!-- Bootstrap CSS -->
-    <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] .'/favicon.png') }}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] .'/favicon.png') }}"
+          sizes="16x16">
     <!-- bootstrap 5  -->
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/lib/bootstrap.min.css') }}">
     <!-- fontawesome 5  -->
@@ -35,90 +36,160 @@
 <body>
 
 
-    @include($activeTemplate.'partials.preloader')
+@include($activeTemplate.'partials.preloader')
 
-    @include($activeTemplate.'partials.header')
+@include($activeTemplate.'partials.header')
 
-    <div class="main-wrapper">
-        @include($activeTemplate.'partials.breadcrumb')
-            <!-- dashboard section start -->
+<div class="main-wrapper">
+    @include($activeTemplate.'partials.breadcrumb')
+    <!-- dashboard section start -->
     <div class="pt-100 pb-100 section--bg dashboard-section">
         <div class="container">
-          <div class="row justify-content-center">
-            @include($activeTemplate.'partials.sidenav')
+            <div class="row justify-content-center">
+                @include($activeTemplate.'partials.sidenav')
 
-            <div class="col-xl-9 mt-xl-0">
-                <div class="sidebar-toggler-icon d-xl-none">
-                  <i class="las la-bars"></i>
+                <div class="col-xl-9 mt-xl-0">
+                    <div class="sidebar-toggler-icon d-xl-none">
+                        <i class="las la-bars"></i>
+                    </div>
+                    @yield('content')
                 </div>
-                @yield('content')
+
             </div>
-
-          </div>
         </div>
-      </div>
-      <!-- dashboard section end -->
+    </div>
+    <!-- dashboard section end -->
 
-    </div><!-- main-wrapper end -->
-    <!-- footer section start -->
-    @include($activeTemplate.'partials.footer')
+</div><!-- main-wrapper end -->
+<!-- footer section start -->
+@include($activeTemplate.'partials.footer')
 
-    @stack('modal')
+@stack('modal')
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="{{ asset('assets/global/js/jquery-3.6.0.min.js') }}"></script>
-    <!-- bootstrap js -->
-    <script src="{{ asset($activeTemplateTrue.'js/lib/bootstrap.bundle.min.js') }}"></script>
-    <!-- slick slider js -->
-    <script src="{{ asset($activeTemplateTrue.'js/lib/slick.min.js') }}"></script>
-    <!-- scroll animation -->
-    <script src="{{ asset($activeTemplateTrue.'js/lib/wow.min.js') }}"></script>
-    <!-- lightcase js -->
-    <script src="{{ asset($activeTemplateTrue.'js/lib/lightcase.min.js') }}"></script>
-    <script src="{{ asset('assets/global/js/select2.min.js') }}"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="{{ asset('assets/global/js/jquery-3.6.0.min.js') }}"></script>
+<!-- bootstrap js -->
+<script src="{{ asset($activeTemplateTrue.'js/lib/bootstrap.bundle.min.js') }}"></script>
+<!-- slick slider js -->
+<script src="{{ asset($activeTemplateTrue.'js/lib/slick.min.js') }}"></script>
+<!-- scroll animation -->
+<script src="{{ asset($activeTemplateTrue.'js/lib/wow.min.js') }}"></script>
+<!-- lightcase js -->
+<script src="{{ asset($activeTemplateTrue.'js/lib/lightcase.min.js') }}"></script>
+<script src="{{ asset('assets/global/js/select2.min.js') }}"></script>
 
-    <script src="{{ asset('assets/global/js/datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/global/js/datepicker.en.js') }}"></script>
-    <script src="{{ asset($activeTemplateTrue.'js/jquery.validate.js') }}"></script>
+<script src="{{ asset('assets/global/js/datepicker.min.js') }}"></script>
+<script src="{{ asset('assets/global/js/datepicker.en.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue.'js/jquery.validate.js') }}"></script>
 
-    <!-- main js -->
-    <script src="{{ asset($activeTemplateTrue.'js/app.js') }}"></script>
+<!-- main js -->
+<script src="{{ asset($activeTemplateTrue.'js/app.js') }}"></script>
 
 
-    @stack('script-lib')
+@stack('script-lib')
 
-    @stack('script')
+@stack('script')
 
-    @include('partials.plugins')
+@include('partials.plugins')
 
-    @include('partials.notify')
+@include('partials.notify')
 
-    <script>
 
-(function ($) {
-    "use strict";
-    $(".langSel").on("change", function() {
-        window.location.href = "{{route('home')}}/change/"+$(this).val() ;
+<script>
+
+    (function ($) {
+        "use strict";
+        $(".langSel").on("change", function () {
+            window.location.href = "{{route('home')}}/change/" + $(this).val();
+        });
+
+    })(jQuery);
+
+    //remove from wishlist
+    $(document).on('click', '.remove-wishlist', function (e) {
+        console.log('working')
+        var id = $(this).data('id');
+        var pid = $(this).data('pid');
+        var url = '{{route("removeFromWishlist", '')}}' + '/' + id;
+        var page = $(this).data('page');
+        var parent = $(this).parent().parent();
+        $.ajax({
+            url: url,
+            method: "get",
+            success: function (response) {
+                if (response.success) {
+                    getWishlistData();
+                    getWishlistTotal();
+                    notify('success', response.success);
+                } else {
+                    notify('error', response.error);
+                }
+            }
+        }).done(function () {
+            if (pid) {
+                var products = $(`.add-to-wish-list[data-id="${pid}"]`);
+                $.each(products, function (i, v) {
+                    if ($(v).hasClass('active')) {
+                        $(v).removeClass('active');
+                    }
+                });
+            }
+            if (page == 1) {
+
+                if (id == 0) {
+                    $('.cart-table-body').html(`
+                            <tr>
+                                <td colspan="100%">
+                                    @lang('Your wishlist is empty')
+                    </td>
+                </tr>
+`);
+                    $('.remove-all-btn').hide(300);
+                } else {
+                    parent.hide(300);
+                }
+            }
+        });
+
     });
 
-})(jQuery);
+    function getWishlistData() {
+        $.ajax({
+            url: "{{ route('get-wishlist-data') }}",
+            method: "get",
+            success: function (response) {
+                $('.wish-products').html(response);
+            }
+        });
+    }
+
+    function getWishlistTotal() {
+        $.ajax({
+            url: "{{ route('get-wishlist-total') }}",
+            method: "get",
+            success: function (response) {
+                $('.wishlist-count').text(response);
+            }
+        });
+    }
+
 
 </script>
 
 
 <script>
-(function($){
-    "use strict";
+    (function ($) {
+        "use strict";
 
-    $("form").validate();
-    $('form').on('submit',function () {
-      if ($(this).valid()) {
-        $(':submit', this).attr('disabled', 'disabled');
-      }
-    });
+        $("form").validate();
+        $('form').on('submit', function () {
+            if ($(this).valid()) {
+                $(':submit', this).attr('disabled', 'disabled');
+            }
+        });
 
-})(jQuery);
+    })(jQuery);
 
 </script>
 

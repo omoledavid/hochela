@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
+    protected $activeTemplate;
+    
     public function __construct()
     {
         $this->activeTemplate = activeTemplate();

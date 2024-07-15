@@ -10,10 +10,10 @@ class Property extends Model
 
     protected $casts = [
         'extra_features' => 'object',
-        'images'          => 'object'
+        'images' => 'object'
     ];
 
-    protected $hidden = ['description','map_url'];
+    protected $hidden = ['description', 'map_url'];
 
 
     public function owner()
@@ -26,10 +26,16 @@ class Property extends Model
         return $this->belongsTo(PropertyType::class);
     }
 
+    public function propertyTypeSingle()
+    {
+        return $this->belongsTo(PropertyType::class, 'property_type_id');
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class);
     }
+
     public function amenities()
     {
         return $this->belongsTo(Amenity::class);
@@ -51,7 +57,8 @@ class Property extends Model
         return $this->hasMany(BookedRoom::class);
     }
 
-    public function review(){
+    public function review()
+    {
         return $this->hasOne(Review::class);
     }
 

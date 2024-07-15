@@ -183,6 +183,7 @@ class PropertyController extends Controller
                 $review->limit(1);
             }])
             ->firstOrFail();
+        $related_properties = Property::where('property_type_id', $property->property_type_id)->with('propertyTypeSingle')->limit(4)->get();
         $agent = Owner::where('id', $property->owner_id)->first();
 
         $propertiesByAgent = Property::where('owner_id', $agent->id)->count();
@@ -203,7 +204,7 @@ class PropertyController extends Controller
         for ($i = 1; $i <= 5; $i++) {
             $reviewCount[$i] = $property->reviews->where('rating', $i)->count();
         }
-        return view($this->activeTemplate . 'property.property_details', compact('pageTitle', 'property', 'lowestRoomPrice', 'reviewCount', 'agent', 'propertiesByAgent'));
+        return view($this->activeTemplate . 'property.property_details', compact('pageTitle', 'property', 'lowestRoomPrice', 'reviewCount', 'agent', 'propertiesByAgent', 'related_properties'));
     }
 
     public function roomsByCategory(Request $request)
