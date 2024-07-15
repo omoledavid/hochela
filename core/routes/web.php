@@ -659,6 +659,7 @@ Route::get('get_wishlist_data/', 'WishlistController@getWsihList')->name('get-wi
 Route::get('get_wishlist_total/', 'WishlistController@getWsihListTotal')->name('get-wishlist-total');
 Route::get('wishlist/', 'WishlistController@wishList')->name('wishlist');
 Route::get('wishlist/remove/{id}', 'WishlistController@removeFromwishList')->name('removeFromWishlist')->where('id', '[0-9]+');
+Route::get('wishlist-home/remove/{id}', 'WishlistController@removeFromwishListFromHome')->name('removeFromWishlist-home')->where('id', '[0-9]+');
 
 
 Route::name('user.')->group(function () {

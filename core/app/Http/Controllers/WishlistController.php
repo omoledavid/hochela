@@ -182,4 +182,34 @@ class WishlistController extends Controller
 
         return response()->json(['error' => 'This product isn\'t available in your wishlsit']);
     }
+    public function removeFromwishListFromHome($id)
+    {
+        if ($id == 0) {
+
+            $user_id = auth()->user()->id ?? null;
+            if ($user_id != null) {
+                $wishlist = Wishlist::where('property_id', $id);
+            } else {
+                $s_id = session()->get('session_id');
+                if (!$s_id) {
+                    abort(404);
+                }
+                $wishlist = Wishlist::where('session_id', $s_id);
+            }
+
+        } else {
+            $wishlist = Wishlist::where('property_id', $id)->first();
+            $product_id = $wishlist->property_id;
+            $wl = session()->get('wishlist');
+            unset($wl[$product_id]);
+            session()->put('wishlist', $wl);
+        }
+        Artisan::call('cache:clear');
+        if ($wishlist) {
+            $wishlist->delete();
+            return response()->json(['success' => 'Removed From Wishlist']);
+        }
+
+        return response()->json(['error' => 'This product isn\'t available in your wishlsit']);
+    }
 }

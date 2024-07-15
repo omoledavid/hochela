@@ -111,12 +111,12 @@
         var property_id = $(this).data('id');
         var properties = $(`.add-to-wish-list[data-id="${property_id}"]`);
         var data = {
-            property_id: property_id
+            property_id: property_id,
         };
         //add to wishlist
         if ($(this).hasClass('active')) {
             $.ajax({
-                url: "{{ route('removeFromWishlist', ':id') }}".replace(':id', property_id),
+                url: "{{ route('removeFromWishlist-home', ':id') }}".replace(':id', property_id),
                 method: "get",
                 success: function (response) {
                     if (response.success) {
