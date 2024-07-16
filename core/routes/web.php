@@ -83,7 +83,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('kyc-setting', 'settingUpdate');
     });
 
-    Route::middleware('admin')->group(function () {
+    Route::middleware('admin', 'adminPermission')->group(function () {
         Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
         Route::get('profile', 'AdminController@profile')->name('profile');
         Route::post('profile', 'AdminController@profileUpdate')->name('profile.update');

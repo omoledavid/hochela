@@ -27,6 +27,11 @@ class QuoreId
                 'secret' => config('services.qoreid.secret')
             ]);
 
+        if (!$response->successful()) {
+            logger()->error("QoreId Failed to retrieve access token", $response->json());
+            throw new QoreIdError('Something went wrong. Kindly try again later.');
+        }
+
         $data = $response->json();
 
         Cache::put($cacheKey, $data['accessToken'], $data['expiresIn']);
@@ -38,7 +43,7 @@ class QuoreId
 
     public function validateNin(?array $data = null, string $token)
     {
-        $nin  = $data['nin'];
+        $nin = $data['nin'];
         unset($data['nin']);
         $response = Http::withHeaders([
             'accept' => 'application/json',

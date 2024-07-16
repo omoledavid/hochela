@@ -8,6 +8,7 @@ use App\Models\Frontend;
 use App\Models\GeneralSetting;
 use App\Models\SmsTemplate;
 use App\Models\EmailLog;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use PHPMailer\PHPMailer\Exception;
@@ -883,6 +884,10 @@ function checkWishList($product_id)
     } else {
         return false;
     }
+}
+function can($code)
+{
+    return Role::hasPermission($code);
 }
 
 function ratingStar($rating = 0)

@@ -31,6 +31,7 @@
     @stack('style-lib')
 
     @stack('style')
+    <x-facebook_pixel/>
 </head>
 
 <body>

@@ -37,7 +37,7 @@
                 </li>
                 <li class="{{ menuActive('user.twofactor') }}">
                     <a href="{{ route('user.twofactor') }}"><i
-                            class="las la-user-lock"></i><span> @lang('2FA Security')</span></a>
+                                class="las la-user-lock"></i><span> @lang('2FA Security')</span></a>
                 </li>
                 <li>
                     <a href="{{ route('user.logout') }}"><i class="las la-sign-out-alt"></i>
