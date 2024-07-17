@@ -90,6 +90,25 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('password', 'AdminController@password')->name('password');
         Route::post('password', 'AdminController@passwordUpdate')->name('password.update');
 
+        Route::controller('StaffController')->prefix('staff')->name('staff.')->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::post('save/{id?}', 'save')->name('save');
+            Route::post('switch-status/{id}', 'status')->name('status');
+            Route::get('login/{id}', 'login')->name('login');
+        });
+
+        Route::controller('PermissionController')->group(function () {
+            Route::get('permissions', 'index');
+            Route::post('permission', 'updatePermissions')->name('permissions.update');
+        });
+
+        Route::controller('RolesController')->prefix('roles')->name('roles.')->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::get('add', 'add')->name('add');
+            Route::get('edit/{id}', 'edit')->name('edit');
+            Route::post('save/{id?}', 'save')->name('save');
+        });
+
         //add staff
         Route::post('add/staff', 'AdminController@addStaff')->name('add.staff');
 

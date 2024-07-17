@@ -885,9 +885,20 @@ function checkWishList($product_id)
         return false;
     }
 }
+
 function can($code)
 {
     return Role::hasPermission($code);
+}
+
+function keyToTitle($text)
+{
+    return ucfirst(preg_replace("/[^A-Za-z0-9 ]/", ' ', $text));
+}
+
+function to_route($route, $parameters = [], $status = 302, $headers = [])
+{
+    return redirect()->route($route, $parameters, $status, $headers);
 }
 
 function ratingStar($rating = 0)

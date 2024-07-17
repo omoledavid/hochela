@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
-
+use App\Traits\Searchable;
+use App\Traits\GlobalStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Admin extends Authenticatable
 {
+    use GlobalStatus, Searchable;
+
     /**
      * The attributes that are mass assignable.
      *
