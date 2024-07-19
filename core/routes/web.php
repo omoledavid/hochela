@@ -775,9 +775,9 @@ Route::post('/property/review/load', 'PropertyController@reviewLoad')->name('pro
 
 Route::get('page/{id}/{slug}', 'SiteController@policy')->name('policy');
 
-Route::get('/contact', 'SiteController@contact')->name('contact');
-Route::post('/contact', 'SiteController@contactSubmit');
-Route::get('/change/{lang?}', 'SiteController@changeLanguage')->name('lang');
+Route::get('/about', 'SiteController@contact')->name('about');
+Route::post('/about', 'SiteController@contactSubmit');
+Route::get('/about/{lang?}', 'SiteController@changeLanguage')->name('lang');
 
 Route::get('/cookie/accept', 'SiteController@cookieAccept')->name('cookie.accept');
 

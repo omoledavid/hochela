@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\AdminNotification;
 use App\Models\Agent_review;
 use App\Models\Frontend;
@@ -22,13 +23,15 @@ use Illuminate\Support\Facades\Validator;
 class SiteController extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->activeTemplate = activeTemplate();
     }
 
-    public function index(){
-        $count = Page::where('tempname',$this->activeTemplate)->where('slug','home')->count();
-        if($count == 0){
+    public function index()
+    {
+        $count = Page::where('tempname', $this->activeTemplate)->where('slug', 'home')->count();
+        if ($count == 0) {
             $page = new Page();
             $page->tempname = $this->activeTemplate;
             $page->name = 'HOME';
@@ -42,46 +45,49 @@ class SiteController extends Controller
         }
 
         $pageTitle = 'Home';
-        $sections = Page::where('tempname',$this->activeTemplate)->where('slug','home')->first();
+        $sections = Page::where('tempname', $this->activeTemplate)->where('slug', 'home')->first();
         $locations = Location::where('status', 1)->limit(10)->get();
         $propertyTypes = PropertyType::where('status', 1)->limit(10)->get();
 
         //blog
-        $latestNews = News::active()->approved()->latest()->limit(3)->get(['id', 'title', 'image','created_at']);
-        return view($this->activeTemplate . 'home', compact('pageTitle','sections', 'locations', 'propertyTypes', 'latestNews'));
+        $latestNews = News::active()->approved()->latest()->limit(3)->get(['id', 'title', 'image', 'created_at']);
+        return view($this->activeTemplate . 'home', compact('pageTitle', 'sections', 'locations', 'propertyTypes', 'latestNews'));
     }
-    public function locations(){
+
+    public function locations()
+    {
         $pageTitle = 'All Locations';
         $emptyMessage = 'No location found';
         $locations = Location::where('status', 1)->paginate(getPaginate());
-        return view($this->activeTemplate.'locations', compact('pageTitle', 'emptyMessage', 'locations'));
+        return view($this->activeTemplate . 'locations', compact('pageTitle', 'emptyMessage', 'locations'));
     }
+
     public function faq()
-    { 
-         $pageTitle  = "Frequently Asked Questions";
-         $elements = Frontend::where('data_keys','faq.element')->latest()->get();
-         $heading = Frontend::where('data_keys','faq.content')->first();
-         return view($this->activeTemplate.'faq',compact('pageTitle','elements','heading'));
+    {
+        $pageTitle = "Frequently Asked Questions";
+        $elements = Frontend::where('data_keys', 'faq.element')->latest()->get();
+        $heading = Frontend::where('data_keys', 'faq.content')->first();
+        return view($this->activeTemplate . 'faq', compact('pageTitle', 'elements', 'heading'));
     }
 
     public function pages($slug)
     {
-        $page = Page::where('tempname',$this->activeTemplate)->where('slug',$slug)->firstOrFail();
+        $page = Page::where('tempname', $this->activeTemplate)->where('slug', $slug)->firstOrFail();
         $pageTitle = $page->name;
         $sections = $page->secs;
-        return view($this->activeTemplate . 'pages', compact('pageTitle','sections'));
+        return view($this->activeTemplate . 'pages', compact('pageTitle', 'sections'));
     }
 
 
     public function contact()
     {
-        $pageTitle = "Contact Us";
+        $pageTitle = "About Us";
         $contact = Frontend::select('data_values')->where('data_keys', 'contact_us.content')->first();
         $blogs = Frontend::where('data_keys', 'blog.element')->latest()->limit(10)->paginate(getPaginate());
-        $page = Page::where('tempname',$this->activeTemplate)->where('slug','contact')->first();
+        $page = Page::where('tempname', $this->activeTemplate)->where('slug', 'contact')->first();
         $sections = $page->secs;
-        
-        return view($this->activeTemplate . 'contact',compact('pageTitle', 'contact', 'sections'));
+
+        return view($this->activeTemplate . 'contact', compact('pageTitle', 'contact', 'sections'));
     }
 
 
@@ -116,7 +122,7 @@ class SiteController extends Controller
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = auth()->user() ? auth()->user()->id : 0;
         $adminNotification->title = 'A new support ticket has opened ';
-        $adminNotification->click_url = urlPath('admin.ticket.view',$ticket->id);
+        $adminNotification->click_url = urlPath('admin.ticket.view', $ticket->id);
         $adminNotification->save();
 
         $message = new SupportMessage();
@@ -137,73 +143,82 @@ class SiteController extends Controller
         return redirect()->back();
     }
 
-    public function blogs(){
+    public function blogs()
+    {
         $pageTitle = 'All Blogs Post';
         $emptyMessage = 'No blog post found';
         $blogs = News::latest()->limit(10)->paginate(getPaginate());
-        $page = Page::where('tempname',$this->activeTemplate)->where('slug','blog')->first();
+        $page = Page::where('tempname', $this->activeTemplate)->where('slug', 'blog')->first();
         $sections = $page->secs;
 
-        return view($this->activeTemplate.'blogs', compact('pageTitle', 'blogs', 'sections'));
+        return view($this->activeTemplate . 'blogs', compact('pageTitle', 'blogs', 'sections'));
     }
 
-    public function blogDetails($id,$slug){
-        $blog = News::where('id',$id)->where('id', $id)->firstOrFail();
+    public function blogDetails($id, $slug)
+    {
+        $blog = News::where('id', $id)->where('id', $id)->firstOrFail();
         $recentBlogs = News::latest()->limit(5)->get();
         $pageTitle = $blog->title;
         // return dd($recentBlogs);
-        return view($this->activeTemplate.'blog_details',compact('blog','pageTitle', 'recentBlogs'));
+        return view($this->activeTemplate . 'blog_details', compact('blog', 'pageTitle', 'recentBlogs'));
     }
-    public function agents(){
+
+    public function agents()
+    {
         $pageTitle = 'Agents';
         $agents_landlords = Owner::where('status', 1)->whereNotNull('image')->limit(10)->paginate(getPaginate());
-        return view($this->activeTemplate.'agents', compact('pageTitle', 'agents_landlords'));
+        return view($this->activeTemplate . 'agents', compact('pageTitle', 'agents_landlords'));
     }
-    public function agents_details($id){
+
+    public function agents_details($id)
+    {
         $agents = Owner::where('id', $id)->first();
-        $pageTitle = $agents->firstname.' '.$agents->lastname;
+        $pageTitle = $agents->firstname . ' ' . $agents->lastname;
         $properties = Property::where('owner_id', $agents->id)->count();
         $properties_all = Property::where('owner_id', $agents->id)->where('status', 1)->with('location')->with('rooms')->get();
         $review_count = Agent_review::where('agent_id', $agents->id)->count();
-        return view($this->activeTemplate.'agents_details', compact('pageTitle', 'agents', 'properties', 'properties_all', 'review_count'));
+        return view($this->activeTemplate . 'agents_details', compact('pageTitle', 'agents', 'properties', 'properties_all', 'review_count'));
     }
 
 
-    public function cookieAccept(){
-        session()->put('cookie_accepted',true);
-        $notify[] = ['success','Cookie accepted successfully'];
+    public function cookieAccept()
+    {
+        session()->put('cookie_accepted', true);
+        $notify[] = ['success', 'Cookie accepted successfully'];
         return back()->withNotify($notify);
     }
 
-    public function placeholderImage($size = null){
-        $imgWidth = explode('x',$size)[0];
-        $imgHeight = explode('x',$size)[1];
+    public function placeholderImage($size = null)
+    {
+        $imgWidth = explode('x', $size)[0];
+        $imgHeight = explode('x', $size)[1];
         $text = $imgWidth . '×' . $imgHeight;
         $fontFile = realpath('assets/font') . DIRECTORY_SEPARATOR . 'RobotoMono-Regular.ttf';
         $fontSize = round(($imgWidth - 50) / 8);
         if ($fontSize <= 9) {
             $fontSize = 9;
         }
-        if($imgHeight < 100 && $fontSize > 30){
+        if ($imgHeight < 100 && $fontSize > 30) {
             $fontSize = 30;
         }
 
-        $image     = imagecreatetruecolor($imgWidth, $imgHeight);
+        $image = imagecreatetruecolor($imgWidth, $imgHeight);
         $colorFill = imagecolorallocate($image, 100, 100, 100);
-        $bgFill    = imagecolorallocate($image, 175, 175, 175);
+        $bgFill = imagecolorallocate($image, 175, 175, 175);
         imagefill($image, 0, 0, $bgFill);
         $textBox = imagettfbbox($fontSize, 0, $fontFile, $text);
-        $textWidth  = abs($textBox[4] - $textBox[0]);
+        $textWidth = abs($textBox[4] - $textBox[0]);
         $textHeight = abs($textBox[5] - $textBox[1]);
-        $textX      = ($imgWidth - $textWidth) / 2;
-        $textY      = ($imgHeight + $textHeight) / 2;
+        $textX = ($imgWidth - $textWidth) / 2;
+        $textY = ($imgHeight + $textHeight) / 2;
         header('Content-Type: image/jpeg');
         imagettftext($image, $fontSize, 0, $textX, $textY, $colorFill, $fontFile, $text);
         imagejpeg($image);
         imagedestroy($image);
     }
 
-    public function subscribe(Request $request){
+    public function subscribe(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:subscribers,email'
@@ -211,9 +226,9 @@ class SiteController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'code'=>200,
-                'status'=>'error',
-                'message'=>$validator->errors()->all(),
+                'code' => 200,
+                'status' => 'error',
+                'message' => $validator->errors()->all(),
             ]);
         }
 
@@ -224,28 +239,31 @@ class SiteController extends Controller
         $notify = 'Thank you, we will notice you our latest news';
 
         return response()->json([
-            'code'=>200,
-            'status'=>'success',
-            'message'=>$notify
+            'code' => 200,
+            'status' => 'success',
+            'message' => $notify
         ]);
 
     }
 
-    public function policy($id){
+    public function policy($id)
+    {
         $page = Frontend::where('id', $id)->where('data_keys', 'policy_pages.element')->firstOrFail();
         $pageTitle = $page->data_values->title;
         $description = $page->data_values->details;
         return view($this->activeTemplate . 'policy', compact('pageTitle', 'description'));
     }
-    public function startChat(Request $request){
+
+    public function startChat(Request $request)
+    {
         if (Auth::check()) {
             $notify[] = ['success', 'Your message has been sent.'];
-        return redirect()->route('user.home')->withNotify($notify);
+            return redirect()->route('user.home')->withNotify($notify);
         } else {
             $notify[] = ['danger', 'Kindly Login first.'];
             return redirect()->barck()->withNotify($notify);
         }
-        
+
     }
 
 }
