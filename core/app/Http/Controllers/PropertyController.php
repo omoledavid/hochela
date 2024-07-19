@@ -183,7 +183,12 @@ class PropertyController extends Controller
                 $review->limit(1);
             }])
             ->firstOrFail();
-        $related_properties = Property::where('property_type_id', $property->property_type_id)->with('propertyTypeSingle')->limit(4)->get();
+        $related_properties = Property::where('property_type_id', $property->property_type_id)
+            ->where('id', '!=', $id)
+            ->where('status', 1)
+            ->with('propertyTypeSingle')
+            ->limit(4)
+            ->get();
         $agent = Owner::where('id', $property->owner_id)->first();
 
         $propertiesByAgent = Property::where('owner_id', $agent->id)->count();

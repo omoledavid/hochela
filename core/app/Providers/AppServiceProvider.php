@@ -43,31 +43,31 @@ class AppServiceProvider extends ServiceProvider
         $viewShare['activeTemplate'] = $activeTemplate;
         $viewShare['activeTemplateTrue'] = activeTemplate(true);
         $viewShare['language'] = Language::all();
-        $viewShare['pages'] = Page::where('tempname',$activeTemplate)->where('is_default',0)->get();
+        $viewShare['pages'] = Page::where('tempname', $activeTemplate)->where('is_default', 0)->get();
         view()->share($viewShare);
 
 
         view()->composer('admin.partials.sidenav', function ($view) {
             $view->with([
-                'banned_users_count'           => User::banned()->count(),
-                'banned_owners_count'           => Owner::banned()->count(),
-                'kycUnverifiedUsersCount'    => User::kycUnverified()->count(),
-                'kycPendingUsersCount'       => User::kycPending()->count(),
-                'email_unverified_users_count' => User::emailUnverified()->count(),
+                'banned_users_count' => User::banned()->count(),
+                'banned_owners_count' => Owner::banned()->count(),
+                'kycUnverifiedUsersCount' => Owner::kycUnverified()->count(),
+                'kycPendingUsersCount' => Owner::kycPending()->count(),
+                'email_unverified_users_count' => Owner::emailUnverified()->count(),
                 'email_unverified_owners_count' => Owner::emailUnverified()->count(),
-                'sms_unverified_users_count'   => User::smsUnverified()->count(),
-                'sms_unverified_owners_count'   => Owner::smsUnverified()->count(),
-                'pending_ticket_count'         => SupportTicket::whereIN('status', [0,2])->count(),
-                'pending_deposits_count'    => Deposit::pending()->count(),
-                'pending_withdraw_count'    => Withdrawal::pending()->count(),
-                'pending_news'         => News::pending()->count(),
+                'sms_unverified_users_count' => User::smsUnverified()->count(),
+                'sms_unverified_owners_count' => Owner::smsUnverified()->count(),
+                'pending_ticket_count' => SupportTicket::whereIN('status', [0, 2])->count(),
+                'pending_deposits_count' => Deposit::pending()->count(),
+                'pending_withdraw_count' => Withdrawal::pending()->count(),
+                'pending_news' => News::pending()->count(),
             ]);
         });
 
         view()->composer('admin.partials.topnav', function ($view) {
             $view->with([
-                'adminNotifications'=>AdminNotification::where('read_status',0)->with('user')->orderBy('id','desc')->get(),
-                'admin'=>Auth::guard('admin')->user(),
+                'adminNotifications' => AdminNotification::where('read_status', 0)->with('user')->orderBy('id', 'desc')->get(),
+                'admin' => Auth::guard('admin')->user(),
             ]);
         });
 
@@ -78,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        if($general->force_ssl){
+        if ($general->force_ssl) {
             \URL::forceScheme('https');
         }
 
