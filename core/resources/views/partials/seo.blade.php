@@ -13,11 +13,11 @@
     {{--<!-- Google / Search Engine Tags -->--}}
     @if(isset($seo_blog))
         <meta property="og:type" content="website">
-        <meta property="og:title" content="{{$blog->title}}">
-        <meta property="og:description" content="{{ $blog->short_description}}">
-        <meta property="og:image" content="{{ getImage('assets/images/news/' . $blog->image, '860x550') }}"/>
+        <meta property="og:title" content="{{$seo_blog->title}}">
+        <meta property="og:description" content="{{ $seo_blog->short_description}}">
+        <meta property="og:image" content="{{ getImage('assets/images/news/' . $seo_blog->image, '860x550') }}"/>
         <meta property="og:image:type"
-              content="image/{{ pathinfo(getImage('assets/images/news/' . $blog->image) .'/'. $blog->image)['extension'] }}"/>
+              content="image/{{ pathinfo(getImage('assets/images/news/' . $seo_blog->image) .'/'. $blog->image)['extension'] }}"/>
     @else
         <meta property="og:type" content="website">
         <meta property="og:title" content="{{ $seo->social_title }}">

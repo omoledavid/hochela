@@ -159,9 +159,9 @@ class SiteController extends Controller
         $blog = News::where('id', $id)->where('id', $id)->firstOrFail();
         $blog->views = $blog->views + 1;
         $blog->save();
-        $recentBlogs = News::latest()->limit(5)->get();
+        $recentBlogs = News::where('id', '!=', $blog->id)->latest()->limit(5)->get();
         $pageTitle = $blog->title;
-        $seo_blog = true;
+        $seo_blog = $blog;
         return view($this->activeTemplate . 'blog_details', compact('blog', 'pageTitle', 'recentBlogs', 'seo_blog'));
     }
 
