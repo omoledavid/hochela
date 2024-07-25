@@ -16,12 +16,12 @@ class NewsController extends Controller
     {
         $pageTitle = "All Blog Post";
         $admin = Auth::guard('admin')->user();
-        if($admin->level == 1){
+        if ($admin->level == 1) {
             $news = News::with('category')->latest()->paginate(getPaginate());
-        }else{
+        } else {
             $news = News::where('user_id', $admin->id)->with('category')->latest()->paginate(getPaginate());
         }
-        $categories = Category::active()->orderBy('name')->get();   
+        $categories = Category::active()->orderBy('name')->get();
         return view('admin.news.index', compact('news', 'pageTitle', 'categories', 'admin'));
     }
 
@@ -29,9 +29,9 @@ class NewsController extends Controller
     {
         $pageTitle = "Pending Blog Post";
         $admin = Auth::guard('admin')->user();
-        if($admin->level == 1){
+        if ($admin->level == 1) {
             $news = News::pending()->with('category')->latest()->paginate(getPaginate());
-        }else{
+        } else {
             $news = News::pending()->where('user_id', $admin->id)->with('category')->latest()->paginate(getPaginate());
         }
         $categories = Category::active()->orderBy('name')->get();
@@ -42,9 +42,9 @@ class NewsController extends Controller
     {
         $pageTitle = "Approved Blog Post";
         $admin = Auth::guard('admin')->user();
-        if($admin->level == 1){
+        if ($admin->level == 1) {
             $news = News::approved()->with('category')->latest()->paginate(getPaginate());
-        }else{
+        } else {
             $news = News::approved()->where('user_id', $admin->id)->with('category')->latest()->paginate(getPaginate());
         }
         $categories = Category::active()->orderBy('name')->get();
@@ -55,9 +55,9 @@ class NewsController extends Controller
     {
         $pageTitle = "Rejected Blog Post";
         $admin = Auth::guard('admin')->user();
-        if($admin->level == 1){
+        if ($admin->level == 1) {
             $news = News::rejected()->with('category')->latest()->paginate(getPaginate());
-        }else{
+        } else {
             $news = News::rejected()->where('user_id', $admin->id)->with('category')->latest()->paginate(getPaginate());
         }
         $categories = Category::active()->orderBy('name')->get();
@@ -74,7 +74,7 @@ class NewsController extends Controller
     public function update(Request $request, News $news, $slug = null)
     {
         $request->validate([
-            'category' => 'required|integer|in:'.Category::active()->pluck('id')->join(','),
+            'category' => 'required|integer|in:' . Category::active()->pluck('id')->join(','),
             'title' => 'required|string',
             'short_description' => 'required',
             'author' => 'required',
@@ -84,14 +84,14 @@ class NewsController extends Controller
             'tags' => 'required|max:60000|array',
         ]);
 
-        $directory = date("Y")."/".date("m")."/".date("d");
+        $directory = date("Y") . "/" . date("m") . "/" . date("d");
         $size = imagePath()['news']['size'];
-        $path = imagePath()['news']['path'].'/'.$directory;
+        $path = imagePath()['news']['path'] . '/' . $directory;
 
         if ($request->has('image')) {
             try {
-                removeFile(imagePath()['news']['path'].'/'.$news->image);
-                $image = $directory.'/'.uploadImage($request->image, $path, $size);
+                removeFile(imagePath()['news']['path'] . '/' . $news->image);
+                $image = $directory . '/' . uploadImage($request->image, $path, $size);
                 $news->image = $image;
             } catch (\Throwable $th) {
                 $notify[] = ['error', 'Could Not Upload Image'];
@@ -123,13 +123,13 @@ class NewsController extends Controller
         $news->status = ($news->status ? 0 : 1);
         $news->save();
 
-        $notify[] = ['success', 'News '. ($news->status ? 'Activated!' : 'Deactivated!')];
+        $notify[] = ['success', 'News ' . ($news->status ? 'Activated!' : 'Deactivated!')];
         return back()->withNotify($notify);
     }
 
     public function approveOrReject(News $news)
     {
-        if (\request()->approve){
+        if (\request()->approve) {
             $news->admin_check = 1;
         } else {
             $news->admin_check = 2;
@@ -137,13 +137,13 @@ class NewsController extends Controller
 
         $news->save();
 
-        $notify[] = ['success', 'News '. ($news->admin_check == 1 ? 'approved!' : 'rejected!')];
+        $notify[] = ['success', 'News ' . ($news->admin_check == 1 ? 'approved!' : 'rejected!')];
         return back()->withNotify($notify);
     }
 
     public function delete(News $news)
     {
-        $path = imagePath()['news']['path']. '/' . $news->image;
+        $path = imagePath()['news']['path'] . '/' . $news->image;
         removeFile($path);
 
         $news->delete();
@@ -162,24 +162,25 @@ class NewsController extends Controller
         return view('admin.news.index', compact('pageTitle', 'news', 'categories', 'categoryId'));
     }
 
-    public function filterByDate(Request $request) {
+    public function filterByDate(Request $request)
+    {
 
         if (!$request->date) {
             return back();
         }
 
-        $date = explode('-',$request->date);
+        $date = explode('-', $request->date);
         $start = @$date[0];
         $end = @$date[1];
         // date validation
         $pattern = "/\d{2}\/\d{2}\/\d{4}/";
 
-        if ($start && !preg_match($pattern,$start)) {
-            $notify[] = ['error','Invalid date format'];
+        if ($start && !preg_match($pattern, $start)) {
+            $notify[] = ['error', 'Invalid date format'];
             return back()->withNotify($notify);
         }
-        if ($end && !preg_match($pattern,$end)) {
-            $notify[] = ['error','Invalid date format'];
+        if ($end && !preg_match($pattern, $end)) {
+            $notify[] = ['error', 'Invalid date format'];
             return back()->withNotify($notify);
         }
 
@@ -258,16 +259,18 @@ class NewsController extends Controller
         return back()->withNotify($notify);
     }
 
-    public function createPage(){
+    public function createPage()
+    {
         $pageTitle = "Add Blog Post";
         $categories = Category::active()->orderBy('name')->get();
         return view('admin.news.create', compact('categories', 'pageTitle'));
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
 
         $request->validate([
-            'category' => 'required|integer|in:'.Category::active()->pluck('id')->join(','),
+            'category' => 'required|integer|in:' . Category::active()->pluck('id')->join(','),
             'title' => 'required|string',
             'short_description' => 'required',
             'author' => 'required',
@@ -277,13 +280,13 @@ class NewsController extends Controller
             'tags' => 'required|max:60000|array',
         ]);
 
-        $directory = date("Y")."/".date("m")."/".date("d");
+        $directory = date("Y") . "/" . date("m") . "/" . date("d");
         $size = imagePath()['news']['size'];
-        $path = imagePath()['news']['path'].'/'.$directory;
+        $path = imagePath()['news']['path'] . '/' . $directory;
 
         if ($request->has('image')) {
             try {
-                $image = $directory.'/'.uploadImage($request->image, $path, $size);
+                $image = $directory . '/' . uploadImage($request->image, $path, $size);
             } catch (\Throwable $th) {
                 $notify[] = ['error', 'Could Not Upload Image'];
                 return back()->withNotify($notify);
@@ -299,13 +302,9 @@ class NewsController extends Controller
         $news->author = $request->author;
         $news->description = $request->description;
         $news->image = $image;
-        if($admin->level == 2){
-            $news->	admin_check = 0;
-        }else{
-            $news->	admin_check = 1;
-        }
+        $news->admin_check = 0;
 
-        $news->tags = json_encode($request->tags) ;
+        $news->tags = json_encode($request->tags);
 
         $news->have_video = $request->video == 'on' ? 1 : 0;
         $news->video_link = $request->video == 'on' ? $request->video_link : null;

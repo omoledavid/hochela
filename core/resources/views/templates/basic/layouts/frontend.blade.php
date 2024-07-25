@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> {{ $general->sitename(__($pageTitle)) }}</title>
+
     @include('partials.seo')
     <!-- Bootstrap CSS -->
     <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] .'/favicon.png') }}"

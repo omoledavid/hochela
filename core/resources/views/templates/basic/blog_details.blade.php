@@ -1,5 +1,7 @@
 @extends($activeTemplate . 'layouts.frontend')
-
+@section('head_content')
+    <meta name="name" content="This is a different description rom blade">
+@overwrite
 @section('content')
     <div class="as-location-page">
         <div class="container">
@@ -7,7 +9,7 @@
                 <div class="col-lg-8">
                     <div class="blog-post">
                         <img src="{{ getImage('assets/images/news/' . $blog->image, '860x550') }}" alt="viserfly"
-                            class="img-fluid w-100" />
+                             class="img-fluid w-100"/>
                         <div class="blog-post__body">
                             <div class="blog-post__date">
                                 <h2 class="text-white">{{ showDateTime($blog->created_at, 'd') }}</h2>
@@ -40,31 +42,32 @@
                                 <ul class="social-list">
                                     <li class="social-list__item">
                                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
-                                            class="social-list__link flex-center"><i class="fab fa-facebook-f"></i></a>
+                                           class="social-list__link flex-center"><i class="fab fa-facebook-f"></i></a>
                                     </li>
                                     <li class="social-list__item">
                                         <a href="https://twitter.com/intent/tweet?text={{ __(@$blog->title) }}%0A{{ url()->current() }}"
-                                            class="social-list__link flex-center"> <i class="fab fa-twitter"></i></a>
+                                           class="social-list__link flex-center"> <i class="fab fa-twitter"></i></a>
                                     </li>
                                     <li class="social-list__item">
                                         <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ urlencode(url()->current()) }}&amp;title={{ __(@$blog->data_values->title) }}&amp;summary={{ __(@$blog->description) }}"
-                                            class="social-list__link flex-center"> <i class="fab fa-linkedin-in"></i></a>
+                                           class="social-list__link flex-center"> <i class="fab fa-linkedin-in"></i></a>
                                     </li>
                                     <li class="social-list__item">
                                         <a href="http://pinterest.com/pin/create/button/?url={{ urlencode(url()->current()) }}&description={{ __(@$blog->title) }}&media={{ getImage('assets/images/frontend/blog/' . @$blog->image, '970x490') }}"
-                                            class="social-list__link flex-center"> <i class="fab fa-pinterest"></i></a>
+                                           class="social-list__link flex-center"> <i class="fab fa-pinterest"></i></a>
                                     </li>
                                     <li class="social-list__item">
                                         <a href="https://wa.me/?text={{ urlencode(url()->current()) }}"
-                                            class="social-list__link flex-center"> <i class="fab fa-whatsapp"></i></a>
+                                           class="social-list__link flex-center"> <i class="fab fa-whatsapp"></i></a>
                                     </li>
                                 </ul>
                             </div>
 
                         </div>
 
-                        <div class="fb-comments" data-href="{{ route('blog.details', [$blog->id, slug($blog->title)]) }}"
-                            data-numposts="5"></div>
+                        <div class="fb-comments"
+                             data-href="{{ route('blog.details', [$blog->id, slug($blog->title)]) }}"
+                             data-numposts="5"></div>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -81,14 +84,15 @@
                                                 <div class="d-flex pb-3">
                                                     <div class="me-3 flex-shrink-0">
                                                         <div class="user__img user__img--md">
-                                                            <img src="{{ getImage('assets/images/news/' . $blog->image, '430x275') }}"
-                                                                alt="hochela" class="user__img-is" />
+                                                            <img
+                                                                src="{{ getImage('assets/images/news/' . $blog->image, '430x275') }}"
+                                                                alt="hochela" class="user__img-is"/>
                                                         </div>
                                                     </div>
                                                     <div class="article">
                                                         <h5 class="texte-capitalize t-fw-md mt-0 mb-2">
                                                             <a href="{{ route('blog.details', [$blog->id, slug($blog->title)]) }}"
-                                                                class="t-link d-inline-block t-text-heading fw-md t-link--primary text-capitalize">
+                                                               class="t-link d-inline-block t-text-heading fw-md t-link--primary text-capitalize">
                                                                 {{ __($blog->title) }}
                                                             </a>
                                                         </h5>
@@ -101,7 +105,7 @@
                                                                     <div class="blog-post__meta-text text-uppercase">
 
                                                                         <a href="{{ route('blog.details', [$blog->id, slug($blog->title)]) }}"
-                                                                            class="blog-post__link">{{ showDateTime($blog->created_at) }}</a>
+                                                                           class="blog-post__link">{{ showDateTime($blog->created_at) }}</a>
                                                                     </div>
                                                                 </div>
                                                             </li>

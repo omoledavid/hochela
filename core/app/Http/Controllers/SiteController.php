@@ -157,10 +157,12 @@ class SiteController extends Controller
     public function blogDetails($id, $slug)
     {
         $blog = News::where('id', $id)->where('id', $id)->firstOrFail();
+        $blog->views = $blog->views + 1;
+        $blog->save();
         $recentBlogs = News::latest()->limit(5)->get();
         $pageTitle = $blog->title;
-        // return dd($recentBlogs);
-        return view($this->activeTemplate . 'blog_details', compact('blog', 'pageTitle', 'recentBlogs'));
+        $seo_blog = true;
+        return view($this->activeTemplate . 'blog_details', compact('blog', 'pageTitle', 'recentBlogs', 'seo_blog'));
     }
 
     public function agents()
