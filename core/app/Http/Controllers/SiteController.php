@@ -15,6 +15,7 @@ use App\Models\PropertyType;
 use App\Models\Subscriber;
 use App\Models\SupportMessage;
 use App\Models\SupportTicket;
+use App\Models\ViewedBlog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -156,12 +157,22 @@ class SiteController extends Controller
 
     public function blogDetails($id, $slug)
     {
-        $blog = News::where('id', $id)->where('id', $id)->firstOrFail();
-        $blog->views = $blog->views + 1;
-        $blog->save();
+        $blog = News::where('id', $id)->firstOrFail();
+
+        // Check if the blog has been viewed in the current session
+        $viewedBlogs = session()->get('viewed_blogs', []);
+        if (!in_array($blog->id, $viewedBlogs)) {
+            $blog->views = $blog->views + 1;
+            $blog->save();
+
+            // Add the blog ID to the session to prevent counting again
+            session()->push('viewed_blogs', $blog->id);
+        }
+
         $recentBlogs = News::where('id', '!=', $blog->id)->latest()->limit(5)->get();
         $pageTitle = $blog->title;
         $seo_blog = $blog;
+
         return view($this->activeTemplate . 'blog_details', compact('blog', 'pageTitle', 'recentBlogs', 'seo_blog'));
     }
 
