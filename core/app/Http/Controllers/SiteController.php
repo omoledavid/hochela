@@ -52,7 +52,8 @@ class SiteController extends Controller
 
         //blog
         $latestNews = News::active()->approved()->latest()->limit(3)->get(['id', 'title', 'image', 'created_at']);
-        return view($this->activeTemplate . 'home', compact('pageTitle', 'sections', 'locations', 'propertyTypes', 'latestNews'));
+        $agents = Owner::where('status', 1)->orderBy('id', 'DESC')->limit(10)->whereNotNull('image')->get();
+        return view($this->activeTemplate . 'home', compact('pageTitle', 'sections', 'locations', 'propertyTypes', 'latestNews', 'agents'));
     }
 
     public function locations()
