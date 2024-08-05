@@ -18,6 +18,14 @@
         <meta property="og:image" content="{{ getImage('assets/images/news/' . $seo_blog->image, '860x550') }}"/>
         <meta property="og:image:type"
               content="image/{{ pathinfo(getImage('assets/images/news/' . $seo_blog->image) .'/'. $blog->image)['extension'] }}"/>
+    @elseif(isset($seo_property))
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{$seo_property->name}}">
+        <meta property="og:description" content="{{ $seo_property->description}}">
+        <meta property="og:image"
+              content="{{ getImage('assets/images/property/' . $seo_property->image, '860x550') }}"/>
+        <meta property="og:image:type"
+              content="image/{{ pathinfo(getImage('assets/images/property/' . $seo_property->image) .'/'. $seo_property->image)['extension'] }}"/>
     @else
         <meta property="og:type" content="website">
         <meta property="og:title" content="{{ $seo->social_title }}">

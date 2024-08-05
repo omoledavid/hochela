@@ -209,7 +209,8 @@ class PropertyController extends Controller
         for ($i = 1; $i <= 5; $i++) {
             $reviewCount[$i] = $property->reviews->where('rating', $i)->count();
         }
-        return view($this->activeTemplate . 'property.property_details', compact('pageTitle', 'property', 'lowestRoomPrice', 'reviewCount', 'agent', 'propertiesByAgent', 'related_properties'));
+        $seo_property = $property;
+        return view($this->activeTemplate . 'property.property_details', compact('pageTitle', 'property', 'lowestRoomPrice', 'reviewCount', 'agent', 'propertiesByAgent', 'related_properties', 'seo_property'));
     }
 
     public function roomsByCategory(Request $request)
