@@ -48,7 +48,7 @@
             @endforeach
         </div>
         <div class="col-lg-12 mt-5 text-center">
-            @if($agents->count() >= 4)
+            @if($agentsWithPropertiesCount >= 4)
                 <a href="{{ route('agents') }}" class="btn btn-lg btn-outline--base">@lang('View all agents')</a>
             @endif
         </div>

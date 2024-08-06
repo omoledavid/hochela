@@ -50,10 +50,14 @@ class SiteController extends Controller
         $locations = Location::where('status', 1)->limit(10)->get();
         $propertyTypes = PropertyType::where('status', 1)->limit(10)->get();
 
+
         //blog
         $latestNews = News::active()->approved()->latest()->limit(3)->get(['id', 'title', 'image', 'created_at']);
         $agents = Owner::where('status', 1)->orderBy('id', 'DESC')->limit(10)->whereNotNull('image')->get();
-        return view($this->activeTemplate . 'home', compact('pageTitle', 'sections', 'locations', 'propertyTypes', 'latestNews', 'agents'));
+        $agentsWithPropertiesCount = $agents->filter(function ($agent) {
+            return $agent->properties->count() != 0;
+        })->count();
+        return view($this->activeTemplate . 'home', compact('pageTitle', 'sections', 'locations', 'propertyTypes', 'latestNews', 'agents', 'agentsWithPropertiesCount'));
     }
 
     public function locations()
