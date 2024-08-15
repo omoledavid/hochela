@@ -38,7 +38,7 @@
                                     <a type="javascript{}" onclick="document.getElementById('agentSearch').submit();">
                                         <input type="hidden" name="agent_id" value="{{$agent->id}}">
                                         <span role="button"
-                                              class="text--base">{{$agent->properties->count()}} Porperties</span>
+                                              class="text--base">{{$agent->properties->count()}} Properties</span>
                                     </a>
                                 </form>
                             </div>
