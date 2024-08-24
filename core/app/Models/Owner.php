@@ -91,7 +91,7 @@ class Owner extends Authenticatable
 
     public function properties()
     {
-        return $this->hasMany(Property::class, 'owner_id', 'id');
+        return $this->hasMany(Property::class, 'owner_id', 'id')->where('status', 1);
     }
 
 }

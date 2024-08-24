@@ -100,8 +100,7 @@ class PropertyController extends Controller
 
         $properties = $properties->where('status', 1)->whereHas('location', function ($location) {
             $location->where('status', 1);
-        })
-            ->paginate(5);
+        })->orderBy('id', 'desc')->paginate(5);
 
 
         return view($this->activeTemplate . 'property.search', compact('pageTitle', 'emptyMessage', 'locations', 'propertyTypes', 'amenities', 'stars', 'properties', 'request'));
