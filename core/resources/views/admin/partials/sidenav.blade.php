@@ -695,6 +695,57 @@
                             </a>
                         </li>
                     @endcan
+                    <li class="sidebar-menu-item sidebar-dropdown">
+                        <a href="javascript:void(0)" class="{{menuActive('admin.email.template*',3)}}">
+                            <i class="menu-icon la la-envelope-o"></i>
+                            <span class="menu-title">@lang('Email Manager')</span>
+                        </a>
+                        <div class="sidebar-submenu {{menuActive('admin.email.template*',2)}} ">
+                            <ul>
+    
+                                <li class="sidebar-menu-item {{menuActive('admin.email.template.global')}} ">
+                                    <a href="{{route('admin.email.template.global')}}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Global Template')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{menuActive(['admin.email.template.index','admin.email.template.edit'])}} ">
+                                    <a href="{{ route('admin.email.template.index') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Email Templates')</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-menu-item sidebar-dropdown">
+                        <a href="javascript:void(0)" class="{{menuActive('admin.sms.template*',3)}}">
+                            <i class="menu-icon la la-mobile"></i>
+                            <span class="menu-title">@lang('SMS Manager')</span>
+                        </a>
+                        <div class="sidebar-submenu {{menuActive('admin.sms.template*',2)}} ">
+                            <ul>
+                                <li class="sidebar-menu-item {{menuActive('admin.sms.template.global')}} ">
+                                    <a href="{{route('admin.sms.template.global')}}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Global Setting')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{menuActive('admin.sms.templates.setting')}} ">
+                                    <a href="{{route('admin.sms.templates.setting')}}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('SMS Gateways')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{menuActive(['admin.sms.template.index','admin.sms.template.edit'])}} ">
+                                    <a href="{{ route('admin.sms.template.index') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('SMS Templates')</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                     @if (can(['admin.frontend.templates', 'admin.frontend.manage.pages', 'admin.frontend.sections']))
                         <li class="sidebar__menu-header">@lang('Frontend Manager')</li>
                     @endif

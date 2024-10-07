@@ -31,6 +31,10 @@ class SiteController extends Controller
 
     public function index()
     {
+        $reference = @$_GET['reference'];
+        if ($reference) {
+            session()->put('reference', $reference);
+        }
         $count = Page::where('tempname', $this->activeTemplate)->where('slug', 'home')->count();
         if ($count == 0) {
             $page = new Page();

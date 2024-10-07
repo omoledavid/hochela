@@ -11,6 +11,8 @@
     <!-- Bootstrap CSS -->
     <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] .'/favicon.png') }}"
           sizes="16x16">
+    <link rel="apple-touch-icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] .'/favicon.png') }}"
+          sizes="180x180">
     <!-- bootstrap 5  -->
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/lib/bootstrap.min.css') }}">
     <!-- fontawesome 5  -->

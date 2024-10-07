@@ -7674,6 +7674,104 @@ a.icon-btn {
     z-index: -1;
     width: 20px;
 }
+
+.d-widget {
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.d-widget:hover .d-widget__icon {
+    background-color: #3059B8;
+}
+
+
+.d-widget,
+.user-widget,
+.user-menu-widget{
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
+.d-widget {
+    padding: 0.9375rem;
+    background-color: #fff;
+    border: 1px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    align-items: center;
+    box-shadow: 0 5px 35px rgba(0, 0, 0, 0.05);
+}
+
+.d-widget:hover {
+    box-shadow: 0 8px 45px rgba(0, 0, 0, 0.1);
+}
+
+.d-widget:hover .d-widget__icon {
+    color: #fff !important;
+}
+.form--control {
+    padding: 0.625rem 1.25rem;
+    border: 1px solid #cfd7e0;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    color: #000;
+    height: 3.125rem;
+}
+
+.form--control:focus {
+    background-color: #fff;
+    border-color: #3059B8 !important;
+    box-shadow: 0 0 5px rgba(240, 89, 69, 0.35);
+    color: #000;
+}
+
+.form--control[readonly] {
+    background-color: #e9ecef;
+}
+
+.form--control.style--two {
+    border-width: 0 0 1px 0;
+    padding: 0.625rem 0;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    font-family: "Playfair Display", serif;
+    border-bottom-color: #999999;
+}
+
+.form--control.style--two:focus {
+    box-shadow: none;
+}
+
+.form--control.form-control-sm {
+    height: 35px;
+}
+.input-group>.form--control,
+.input-group>.select {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+}
+
+.input-group select {
+    background-color: transparent;
+    border: none;
+}
+
 .ps-container {
     position: relative;
     -ms-touch-action: auto;

@@ -118,6 +118,15 @@
                     <div class="form-group mt-4">
                         <button type="submit" id="recaptcha" class="btn btn--base w-100">@lang('Register')</button>
                     </div>
+                    {{-- socail login --}}
+                    <div class="social-login-wrapper">
+                        <div class="continue-google flex-grow-1">
+                        <a href="{{ route('google.login')}}" class="btn w-100 social-login-btn">
+                            <span class="google-icon">
+                                <img src="https://script.viserlab.com/hotellab/assets/templates/basic/images/google.svg" alt="Google">
+                            </span> Google            </a>
+                    </div>
+                </div>
                     <div class="row gy-1">
                         <div class="col-lg-6">
 

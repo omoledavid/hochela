@@ -1,5 +1,6 @@
 <?php
 require_once('timezone.php');
+$timezone = 'UTC';
 return [
 
     /*

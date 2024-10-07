@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function () {
@@ -53,10 +54,10 @@ Route::prefix('ticket')->group(function () {
 Route::prefix('message')->group(function () {
     Route::get('/', 'MessageController@index')->name('message');
     Route::get('/open', 'MessageController@open')->name('message.open');
-    Route::post('/create', 'TicketController@storeSupportTicket')->name('ticket.store');
+    // Route::post('/create', 'TicketController@storeSupportTicket')->name('ticket.store');
     Route::get('/view/{message}', 'MessageController@chat')->name('message.view');
-    Route::post('/reply/{ticket}', 'TicketController@replyTicket')->name('ticket.reply');
-    Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
+    // Route::post('/reply/{ticket}', 'TicketController@replyTicket')->name('ticket.reply');
+    // Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
 });
 
 
@@ -796,5 +797,9 @@ Route::get('/', 'SiteController@index')->name('home');
 
 // upload for summernote editor
 Route::post('/upload-image', 'UploadController@upload')->name('upload.image');
+
+// google login
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 
