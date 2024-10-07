@@ -715,6 +715,12 @@
                                         <span class="menu-title">@lang('Email Templates')</span>
                                     </a>
                                 </li>
+                                <li class="sidebar-menu-item {{menuActive('admin.email.template.setting')}} ">
+                                    <a href="{{route('admin.email.template.setting')}}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Email Configure')</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
