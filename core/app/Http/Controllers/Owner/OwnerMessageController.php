@@ -98,13 +98,35 @@ class OwnerMessageController extends Controller
         return back()->withNotify($notify);
     }
     public function check(Booking $booking){
+        $mp = mixpanel();
+        $status = null;
         if (\request()->approve){
             $booking->status = 1;
+            $status = 'Accepted';
         } else {
             $booking->status = 2;
+            $status = 'Rejected';
         }
 
         $booking->save();
+
+        $user = $booking->user;
+        $agent = $booking->agent;
+        $mp->track($status.' Appointment Booking', [
+            'user' => [
+                'user_id' => $user->id,
+                'user_name' => $user->fullname,
+            ],
+            'agent' => [
+                'agent_id' => $agent->id,
+                'agent_name' => $agent->fullname,
+            ],
+            'booking_info' => [
+                'booking_id' => $booking->id,
+                'booking_status' => $status,
+                'booking_date&time' => $booking->date_time,
+            ]
+        ]);
 
         $notify[] = ['success', 'Appointment '. ($booking->status == 1 ? 'approved!' : 'rejected!')];
         return back()->withNotify($notify);

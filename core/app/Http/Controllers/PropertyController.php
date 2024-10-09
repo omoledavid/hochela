@@ -177,6 +177,7 @@ class PropertyController extends Controller
     public function propertyDetail($id, $slug)
     {
         $pageTitle = 'Property Details';
+        $mp = mixpanel();
         $property = Property::where('id', $id)
             ->with(['rooms', 'roomCategories.amenities', 'reviews.user' => function ($review) {
                 $review->limit(1);
@@ -195,6 +196,17 @@ class PropertyController extends Controller
         $property->reviews()->paginate(getPaginate(1));
 
         $lowestRoomPrice = 0;
+        $mp->track('Viewed Property', [
+            'user' => auth()->user() ? auth()->user()->fullname : 'guest',
+            'property_agent' => [
+                'agent_id' => $agent->id,
+                'agent_name' => $agent->fullname,
+            ],
+            'property_info' => [
+                'property_id' => $property->id,
+                'property_name' => $property->name,
+            ]
+        ]);
 
         if (count($property->rooms)) {
             $lowestRoomPrice = $property->rooms[0]->price;

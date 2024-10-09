@@ -10,6 +10,7 @@ use App\Models\SmsTemplate;
 use App\Models\EmailLog;
 use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -33,7 +34,6 @@ function sidebarVariation()
     $variation['opacity'] = 'overlay--opacity-8'; // 1-10
 
     return $variation;
-
 }
 
 function systemDetails()
@@ -942,4 +942,49 @@ function ratingStar($rating = 0)
     }
 
     return $ratingStar;
+}
+
+function updateEnvVariable($key, $value)
+{
+    $path = base_path('.env');
+
+    // Ensure the .env file exists
+    if (file_exists($path)) {
+        // Read the file
+        $envContent = file_get_contents($path);
+
+        // Check if the key already exists
+        if (strpos($envContent, $key) !== false) {
+            // Replace the existing key with the new value
+            $envContent = preg_replace(
+                "/^{$key}=.*/m",
+                "{$key}={$value}",
+                $envContent
+            );
+        } else {
+            // If the key doesn't exist, append it to the end of the file
+            $envContent .= "\n{$key}={$value}\n";
+        }
+
+        // Write the updated content back to the .env file
+        file_put_contents($path, $envContent);
+
+        // Clear the config cache
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('config:cache');
+
+        return true;
+    }
+
+    return false;
+}
+
+function mixpanel()
+{
+    static $mp = null;
+    if (!$mp) {
+        $mp = Mixpanel::getInstance(env('MIXPANEL_TOKEN'));
+    }
+    return $mp;
 }

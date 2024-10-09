@@ -182,9 +182,7 @@
                                             {{ $booking->getCreatedAtAttribute($booking->date_time)->format('h:i a') }}
                                         </td>
                                         <td data-label="@lang('User')">
-                                            @php$user = \App\Models\User::where('id', $booking->user_id)->first();
-                                                echo $user->firstname . ' ' . $user->lastname;
-                                            @endphp
+                                            {{$booking->user->fullname;}}
                                         </td>
                                         <td data-label="@lang('Status')">
                                             @if ($booking->status == 1)

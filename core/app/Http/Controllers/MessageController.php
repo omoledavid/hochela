@@ -7,8 +7,10 @@ use App\Models\Conversation;
 use App\Models\Messages;
 use App\Models\Owner;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mixpanel;
 
 class MessageController extends Controller
 {
@@ -37,6 +39,7 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+        $mp = mixpanel();
         if ($user->id != $request->recevier_id) {
             $request->validate([
                 'subject' => 'required|max:250',
@@ -60,6 +63,24 @@ class MessageController extends Controller
             $message->subject = $request->subject;
             $message->message = $request->message;
             $message->save();
+
+            $agent = Owner::where('id', $request->recevier_id)->first();
+            $mp->track('Messaging of Agent', [
+                'user' => [
+                    'user_id' => $user->id,
+                    'user_name' => $user->fullname,
+                ],
+                'agent' => [
+                    'agent_id' => $agent->id,
+                    'agent_name' => $agent->fullname,
+                ],
+                'message' => [
+                    'subject' => $message->subject,
+                    'message' => $message->message,
+                ]
+            ]);
+            
+
             $notify[] = ['success', 'Message Sent'];
             return back()->withNotify($notify);
         }
@@ -104,10 +125,11 @@ class MessageController extends Controller
     public function booking(Request $request)
     {
         $user = Auth::user();
+        $mp = mixpanel();
         if ($user) {
             $request->validate([
                 'time' => 'required',
-                'agent_id' => 'required'
+                'agent_id' => 'required|exists:owners,id'
             ]);
             $oldBookings = Booking::where('user_id', $user->id)->where('agent_id', $request->agent_id)->first();
             if ($oldBookings) {
@@ -119,7 +141,23 @@ class MessageController extends Controller
             $booking->agent_id = $request->agent_id;
             $booking->date_time = $request->time;
             $booking->save();
-            $notify[] = ['success', 'Booking date and time Sent'];
+            $notify[] = ['success', 'Booking date and time Sent booking_id'];
+            $agent = Owner::where('id', $request->agent_id)->first();
+            $mp->track('Appointment Booking', [
+                'user' => [
+                    'user_id' => $user->id,
+                    'user_name' => $user->fullname,
+                ],
+                'agent' => [
+                    'agent_id' => $agent->id,
+                    'agent_name' => $agent->fullname,
+                ],
+                'booking_info' => [
+                    'booking_id' => $booking->id,
+                    'booking_status' => 'pending',
+                    'booking_date&time' => $booking->date_time,
+                ]
+            ]);
             return back()->withNotify($notify);
         }
         $notify[] = ['error', "Something is wrong somewhere"];

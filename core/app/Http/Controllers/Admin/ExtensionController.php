@@ -25,6 +25,10 @@ class ExtensionController extends Controller
         $request->validate($validation_rule);
 
         $shortcode = json_decode(json_encode($extension->shortcode), true);
+        if($extension->act == 'mix-panel'){
+            $key_value = $shortcode['app_key']['value'];
+            updateEnvVariable('MIXPANEL_TOKEN', $request->$key);
+        };
         foreach ($shortcode as $key => $code) {
             $shortcode[$key]['value'] = $request->$key;
         }

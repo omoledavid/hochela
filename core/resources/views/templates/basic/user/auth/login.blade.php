@@ -28,6 +28,7 @@
                                         alt="Google">
                                 </span> Google </a>
                         </div>
+                        {{-- <button onclick="mixpanel.track('Button Click', { 'button_name': 'Subscribe' });">Subscribe</button> --}}
                     </div>
                     @csrf
                     <div class="form-group">
