@@ -245,7 +245,7 @@
                 <label for="lastname" class="col-form-label">@lang('My Referral Link'):</label>
                 <div class="input-group">
                     <input type="url" id="ref"
-                        value="{{ route('home') . '?reference=' . auth()->user()->username }}"
+                        value="{{ route('home') . '?reference=' . $user->username }}"
                         class="form--control bg-transparent" readonly>
                     <button type="button" class="input-group-text bg--base copybtn border-0 text-white"><i
                             class="fa fa-copy"></i> &nbsp; @lang('Copy')</button>

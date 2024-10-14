@@ -28,6 +28,7 @@ class GoogleController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
+            dd($googleUser);
 
             // Find or create a user
             $user = User::updateOrCreate(
@@ -36,7 +37,6 @@ class GoogleController extends Controller
                     'name' => $googleUser->getName(),
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),
-                    'password' => bcrypt(str_random(16)), // Password is required but can be random
                 ]
             );
 
