@@ -750,6 +750,9 @@ function imagePath()
         'path' => 'assets/images/news',
         'size' => '590x300',
     ];
+    $data['icons'] = [
+        'path' => 'assets/images/icons',
+    ];
     return $data;
 }
 

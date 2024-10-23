@@ -45,8 +45,10 @@ class GoogleController extends Controller
                     'firstname' => $firstName,
                     'lastname' => $lastName,
                     'google_id' => $googleUser->getId(),
+                    'username' => 34,
+                    'ev' => 1,
+                    'sv' => 1,
                     // 'avatar' => $googleUser->getAvatar(),
-                    'ev' => 1
                 ]
             );
 

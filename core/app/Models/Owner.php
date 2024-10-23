@@ -21,6 +21,7 @@ class Owner extends Authenticatable
         'address' => 'object',
         'ver_code_send_at' => 'datetime'
     ];
+    protected $with = ['properties'];
 
     public function withdrawals()
     {

@@ -789,6 +789,10 @@ Route::get('placeholder-image/{size}', 'SiteController@placeholderImage')->name(
 
 Route::post('/subscribe', 'SiteController@subscribe')->name('subscribe');
 
+//onboarding route
+Route::get('on-boarding', 'OnBoardingController@index')->name('on.boarding');
+Route::post('on-boarding', 'OnBoardingController@onboarding')->name('on.boarding');
+
 Route::get('/{slug}', 'SiteController@pages')->name('pages');
 Route::get('property/chat', 'SiteController@startChat')->name('property.chat');
 
