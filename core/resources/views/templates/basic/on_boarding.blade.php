@@ -446,7 +446,7 @@
                 // Handle success response
                 console.log(data);
                 console.log('Form submitted successfully!');
-                window.location.href = '{{ route('home') }}';
+                window.location.href = '{{ route('user.home') }}';
             })
             .catch((error) => {
                 console.error('Error:', error);
