@@ -16,8 +16,8 @@ class OnBoardingController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if ($user->onboared == 1) {
-            redirect()->route('user.home');
+        if ($user->onboarded === 1) {
+            return redirect()->route('user.home');
         }
         return view($this->activeTemplate . 'on_boarding');
     }

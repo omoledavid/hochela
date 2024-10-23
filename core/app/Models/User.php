@@ -10,7 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasApiTokens, Searchable ;
+    use Notifiable, HasApiTokens, Searchable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -36,14 +37,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'address' => 'object',
-        'ver_code_send_at' => 'datetime'
+        'ver_code_send_at' => 'datetime',
+        'onboarded' => 'int',
     ];
 
     protected $data = [
-        'data'=>1
+        'data' => 1
     ];
-
-
 
 
     public function login_logs()
@@ -53,12 +53,12 @@ class User extends Authenticatable
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class)->orderBy('id','desc');
+        return $this->hasMany(Transaction::class)->orderBy('id', 'desc');
     }
 
     public function deposits()
     {
-        return $this->hasMany(Deposit::class)->where('status','!=',0);
+        return $this->hasMany(Deposit::class)->where('status', '!=', 0);
     }
 
 
@@ -71,7 +71,7 @@ class User extends Authenticatable
 
     public function reviewed()
     {
-        return Review::where('user_id',auth()->id())->exists();
+        return Review::where('user_id', auth()->id())->exists();
     }
 
     public function scopeActive()
@@ -93,6 +93,7 @@ class User extends Authenticatable
     {
         return $this->where('sv', 0);
     }
+
     public function scopeEmailVerified()
     {
         return $this->where('ev', 1);
@@ -102,10 +103,12 @@ class User extends Authenticatable
     {
         return $this->where('sv', 1);
     }
+
     public function scopeKycUnverified($query)
     {
         return $query->where('kv', 0);
     }
+
     public function scopeKycPending($query)
     {
         return $query->where('kv', 2);
