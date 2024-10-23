@@ -55,7 +55,7 @@ class GoogleController extends Controller
             // Log the user in
             Auth::login($user);
 
-            return redirect()->route('home'); // Redirect to home or desired route
+            return redirect()->route('on-boarding'); // Redirect to home or desired route
 
         } catch (\Exception $e) {
             return redirect('/login')->with('error', 'Something went wrong. Please try again.');
