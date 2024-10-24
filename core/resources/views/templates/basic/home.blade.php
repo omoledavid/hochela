@@ -64,66 +64,6 @@
     <!-- hero section end -->
 
     {{--ads section--}}
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="section-heading">Promotions</h2>
-                <p>Check out our special offers!</p>
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="best-trip-slider">
-                <div class="single-slide">
-                    <div class="best-trip-card">
-                        <img style="height: 200px"
-                             src={{ getImage(imagePath()['icons']['path'].'/house.svg') }} class="card-img-top"
-                             alt="Ad Image 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Special Offer 1</h5>
-                            <p class="card-text">Get 20% off your first month of rent when you sign up today!</p>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-slide">
-                    <div class="best-trip-card">
-                        <img style="height: 200px"
-                             src={{ getImage(imagePath()['icons']['path'].'/house.svg') }} class="card-img-top"
-                             alt="Ad Image 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Special Offer 1</h5>
-                            <p class="card-text">Get 20% off your first month of rent when you sign up today!</p>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-slide">
-                    <div class="best-trip-card">
-                        <img style="height: 200px"
-                             src={{ getImage(imagePath()['icons']['path'].'/house.svg') }} class="card-img-top"
-                             alt="Ad Image 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Special Offer 1</h5>
-                            <p class="card-text">Get 20% off your first month of rent when you sign up today!</p>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-slide">
-                    <div class="best-trip-card">
-                        <img style="height: 200px"
-                             src={{ getImage(imagePath()['icons']['path'].'/house.svg') }} class="card-img-top"
-                             alt="Ad Image 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Special Offer 1</h5>
-                            <p class="card-text">Get 20% off your first month of rent when you sign up today!</p>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 
