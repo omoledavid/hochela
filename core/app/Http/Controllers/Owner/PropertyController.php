@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use App\Models\Amenity;
+use App\Models\GeneralSetting;
 use App\Models\Location;
 use App\Models\Property;
 use App\Models\PropertyType;
@@ -17,11 +18,12 @@ class PropertyController extends Controller
     {
         $pageTitle = 'All Properties';
         $user = Auth::guard('owner')->user();
-        if ($user->image == null) {
+        $general = GeneralSetting::first();
+        if ($user->image == null && $general->pfr == 1) {
             $notify[] = ['error', 'Update Profile to upload property'];
             return redirect()->route('owner.dashboard')->with('notify', $notify);
         }
-        if ($user->kv == 0) {
+        if ($user->kv == 0 && $general->kr == 1) {
             $notify[] = ['error', 'Update KYC to upload property'];
             return redirect()->route('owner.dashboard')->with('notify', $notify);
         }
