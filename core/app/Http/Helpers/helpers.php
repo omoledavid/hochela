@@ -753,6 +753,9 @@ function imagePath()
     $data['icons'] = [
         'path' => 'assets/images/icons',
     ];
+    $data['agents'] = [
+        'path' => 'assets/images/icons/agent'
+    ];
     return $data;
 }
 

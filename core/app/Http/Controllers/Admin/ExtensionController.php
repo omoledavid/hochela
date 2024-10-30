@@ -31,6 +31,9 @@ class ExtensionController extends Controller
         } elseif ($extension->act == 'facebook-pixel') {
             $key_value = $shortcode['app_key']['value'];
             updateEnvVariable('FACEBOOK_PIXEL_ID', $request->$key);
+        } elseif ($extension->act == 'google-place-api') {
+            $key_value = $shortcode['app_key']['value'];
+            updateEnvVariable('GOOGLE_PLACE_API_KEY', $request->$key);
         };
         foreach ($shortcode as $key => $code) {
             $shortcode[$key]['value'] = $request->$key;

@@ -11,7 +11,6 @@
             },
             "heading": "text",
             "sub_heading": "text"
-
         }
     },
     "location": {
@@ -27,7 +26,6 @@
             "sub_heading": "text",
             "button": "text",
             "button_url": "text"
-
         }
     },
     "property_type": {
@@ -49,7 +47,6 @@
             },
             "heading": "text",
             "sub_heading": "text"
-
         }
     },
     "agents": {
@@ -63,7 +60,6 @@
             },
             "heading": "text",
             "sub_heading": "text"
-
         }
     },
     "works": {
@@ -120,7 +116,6 @@
             "heading": "text",
             "sub_heading": "text",
             "video_url": "text"
-
         }
     },
     "blog": {
@@ -131,10 +126,10 @@
             "sub_heading": "text"
         },
         "element": {
-            "images":{
-                "blog_image":{
-                    "size":"860x550",
-                    "thumb":"430x275"
+            "images": {
+                "blog_image": {
+                    "size": "860x550",
+                    "thumb": "430x275"
                 }
             },
             "title": "text",
@@ -147,19 +142,18 @@
         "no_selection": true,
         "name": "Footer Section",
         "content": {
-            "images":{
-                "background_image":{
-                    "size":"1920x840"
+            "images": {
+                "background_image": {
+                    "size": "1920x840"
                 }
             },
             "short_description": "text",
             "address": "text"
-
         }
     },
     "policy_pages": {
         "builder": true,
-        "no_selection":true,
+        "no_selection": true,
         "name": "Policy Pages",
         "element": {
             "title": "text",
@@ -320,6 +314,21 @@
         "element": {
             "question": "text",
             "answer": "textarea",
+            "modal": true
+        }
+    },
+    "partner_section": {
+        "builder": true,
+        "name": "Partners Section",
+        "content": {
+            "heading": "text"
+        },
+        "element": {
+            "images": {
+                "image": {
+                    "size": "300x150"
+                }
+            },
             "modal": true
         }
     }

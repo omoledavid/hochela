@@ -793,6 +793,10 @@ Route::post('/subscribe', 'SiteController@subscribe')->name('subscribe');
 Route::get('on-boarding', 'OnBoardingController@index')->name('on.boarding')->middleware('auth');
 Route::post('on-boarding', 'OnBoardingController@onboarding')->name('on.boarding');
 
+//agent onboarding
+Route::get('agent-onboarding', 'OnBoardingController@agent')->name('agent.onboarding');
+Route::post('agent-onboarding', 'OnBoardingController@propertyUpload')->name('agent.onboarding');
+
 Route::get('/{slug}', 'SiteController@pages')->name('pages');
 Route::get('property/chat', 'SiteController@startChat')->name('property.chat');
 
