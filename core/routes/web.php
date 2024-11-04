@@ -807,7 +807,8 @@ Route::get('/', 'SiteController@index')->name('home');
 Route::post('/upload-image', 'UploadController@upload')->name('upload.image');
 
 // google login
-Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogleUser'])->name('google.login');
+Route::get('auth/google/owner', [GoogleController::class, 'redirectToGoogleOwner'])->name('google.login.owner');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 

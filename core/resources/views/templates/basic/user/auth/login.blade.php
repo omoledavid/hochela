@@ -18,28 +18,18 @@
                             src="{{ getImage(imagePath()['logoIcon']['path'] . '/logo.png') }}" alt="image"></a>
                 </div>
                 <form method="POST" action="{{ route('user.login') }}" onsubmit="return submitUserForm();"
-                    class="account-form mt-5">
-                    <div class="social-login-wrapper">
-                        <div class="continue-google flex-grow-1">
-                            <a href="{{ route('google.login')}}"
-                                class="btn w-100 social-login-btn">
-                                <span class="google-icon">
-                                    <img src="https://script.viserlab.com/hotellab/assets/templates/basic/images/google.svg"
-                                        alt="Google">
-                                </span> Google </a>
-                        </div>
-                        {{-- <button onclick="mixpanel.track('Button Click', { 'button_name': 'Subscribe' });">Subscribe</button> --}}
-                    </div>
+                      class="account-form mt-5">
                     @csrf
                     <div class="form-group">
                         <label>@lang('Username or Email')</label>
-                        <input type="text" name="username" value="{{ old('username') }}" placeholder="@lang('Username or Email')"
-                            class="form--control" required>
+                        <input type="text" name="username" value="{{ old('username') }}"
+                               placeholder="@lang('Username or Email')"
+                               class="form--control" required>
                     </div>
                     <div class="form-group">
                         <label>@lang('Password')</label>
                         <input id="password" type="password" class="form--control" placeholder="@lang('Password')"
-                            name="password" required required>
+                               name="password" required required>
                     </div>
                     <div class="form-group">
                         @php echo loadReCaptcha() @endphp
@@ -47,9 +37,12 @@
                     @include($activeTemplate . 'partials.custom_captcha')
 
                     <p class="text-end"><a href="{{ route('user.password.request') }}"
-                            class="text--dark">@lang('Forgot password?')</a></p>
+                                           class="text--dark">@lang('Forgot password?')</a></p>
                     <div class="form-group mt-4">
                         <button type="submit" id="recaptcha" class="btn btn--base w-100">@lang('Login Now')</button>
+                        <a href="{{ route('google.login')}}"
+                           class="btn w-100 mt-3 google-btn">@lang('Login Now') <i
+                                class="lab la-google-plus-g"></i></a>
                     </div>
                     <div class="row gy-1">
                         <div class="col-lg-6">
@@ -62,14 +55,15 @@
                             </div>
                         </div>
                         <div class="col-lg-6 text-lg-end">
-                            <a href="{{ route('user.register') }}" class="text--base">@lang('Dont\'t have an account?')</a>
+                            <a href="{{ route('user.register') }}"
+                               class="text--base">@lang('Dont\'t have an account?')</a>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
         <div class="right bg_img"
-            style="background-image: url('{{ getImage('assets/images/frontend/login/' . $login->data_values->background_image, '1920x2190') }}');">
+             style="background-image: url('{{ getImage('assets/images/frontend/login/' . $login->data_values->background_image, '1920x2190') }}');">
             <div class="content text-center">
                 <h2 class="title text-white">{{ __($login->data_values->heading) }}</h2>
                 <p class="text-white mt-3">{{ __($login->data_values->sub_heading) }}</p>

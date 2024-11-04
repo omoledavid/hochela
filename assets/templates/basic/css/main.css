@@ -7271,4 +7271,14 @@ label {
     max-height: 100px;
 }
 
+.google-btn {
+    background-color: #c32828;
+    border-radius: 10px;
+    color: white;
+}
+
+.google-btn:hover {
+    color: white !important;
+}
+
 /*# sourceMappingURL=main.css.map */

@@ -11,6 +11,8 @@
     <!-- Bootstrap CSS -->
     <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] . '/favicon.png') }}"
           sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] . '/favicon.png') }}"
+          sizes="180x180">
     <link rel="apple-touch-icon" type="image/png"
           href="{{ getImage(imagePath()['logoIcon']['path'] . '/favicon.png') }}"
           sizes="180x180">
