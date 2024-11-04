@@ -40,20 +40,20 @@ class GoogleController extends Controller
         try {
             $state = $request->input('state'); // This will be 'user' or 'owner'
 
-// Retrieve Google user details
+            // Retrieve Google user details
             $googleUser = Socialite::driver('google')->stateless()->user();
 
-// Split the name into firstname and lastname
+            // Split the name into firstname and lastname
             $fullName = $googleUser->getName();
             $nameParts = explode(' ', $fullName);
             $firstName = $nameParts[0];
             $lastName = isset($nameParts[1]) ? $nameParts[1] : '';
 
-// Generate a unique username
+            // Generate a unique username
             $username = $this->generateUniqueUsername($firstName, $lastName);
 
             if ($state === 'user') {
-// Find or create a User
+                // Find or create a User
                 $user = User::updateOrCreate(
                     ['email' => $googleUser->getEmail()],
                     [
@@ -63,16 +63,16 @@ class GoogleController extends Controller
                         'username' => $username,
                         'ev' => 1,
                         'sv' => 1,
-// 'avatar' => $googleUser->getAvatar(),
+                        // 'avatar' => $googleUser->getAvatar(),
                     ]
                 );
 
-// Log the user in
+                // Log the user in
                 Auth::login($user);
 
                 return redirect('on-boarding'); // Redirect to home or desired route
             } elseif ($state === 'owner') {
-// Find or create an Owner
+                // Find or create an Owner
                 $owner = Owner::updateOrCreate(
                     ['email' => $googleUser->getEmail()],
                     [
@@ -82,14 +82,14 @@ class GoogleController extends Controller
                         'username' => $username,
                         'ev' => 1,
                         'sv' => 1,
-// 'avatar' => $googleUser->getAvatar(),
+                        // 'avatar' => $googleUser->getAvatar(),
                     ]
                 );
 
-// Log the owner in
+                // Log the owner in
                 Auth::guard('owner')->login($owner);
 
-                return redirect('owner.dashboard'); // Redirect to home or desired route
+                return redirect()->route('owner.dashboard'); // Redirect to home or desired route
             }
 
         } catch (\Exception $e) {
@@ -106,12 +106,12 @@ class GoogleController extends Controller
      */
     private function generateUniqueUsername($firstName, $lastName)
     {
-// Start with a base username
+        // Start with a base username
         $baseUsername = strtolower($firstName . '.' . $lastName);
         $username = $baseUsername;
         $counter = 1;
 
-// Check if the username is already taken in either User or Owner table
+        // Check if the username is already taken in either User or Owner table
         while (User::where('username', $username)->exists() || Owner::where('username', $username)->exists()) {
             $username = $baseUsername . $counter;
             $counter++;
