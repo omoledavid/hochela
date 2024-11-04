@@ -70,6 +70,8 @@
                         <div class="desciption">
                             <span class="text--small">@lang('Total Properties')</span>
                         </div>
+                        <a href="{{ route('agent.onboarding') }}"
+                           class="btn btn-sm text--small btn-success text--white box--shadow3 mt-3">@lang('Add Property')</a>
                         <a href="{{ route('owner.property.index') }}"
                            class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
                     </div>
@@ -122,6 +124,8 @@
                         <div class="desciption">
                             <span class="text--small">@lang('Total Properties')</span>
                         </div>
+                        <a href="{{ route('agent.onboarding') }}"
+                           class="btn btn-sm text--small btn-success text--white box--shadow3 mt-3">@lang('Add Property')</a>
                         <a href="{{ route('owner.property.index') }}"
                            class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
                     </div>

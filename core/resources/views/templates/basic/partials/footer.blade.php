@@ -26,6 +26,8 @@
                         @endforeach
                         <li><a href="{{ route('blog') }}">@lang('Blog')</a></li>
                         <li><a href="{{ route('about') }}">@lang('About us')</a></li>
+                        <li><a href="javascript:void()" data-toggle="modal"
+                               data-target="#feedbackModal">@lang('Give Feedback')</a></li>
                     </ul>
                 </div>
             </div>

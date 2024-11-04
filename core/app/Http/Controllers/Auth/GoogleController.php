@@ -107,7 +107,7 @@ class GoogleController extends Controller
     private function generateUniqueUsername($firstName, $lastName)
     {
         // Start with a base username
-        $baseUsername = strtolower($firstName . '.' . $lastName);
+        $baseUsername = strtolower($firstName . $lastName);
         $username = $baseUsername;
         $counter = 1;
 

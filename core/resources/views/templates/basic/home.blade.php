@@ -1,20 +1,37 @@
 @extends($activeTemplate.'layouts.frontend')
 @section('content')
     @php
-        $banner = getContent('banner.content', true);
+        $bannerElement = getContent('banner.element');
     @endphp
         <!-- hero section start -->
-    <section id="hero_img" class="hero bg_img"
-             style="background-image: url('{{ getImage('assets/images/frontend/banner/'.$banner->data_values->background_image, '1920x1195') }}');">
+    <section class="banner-section my-4">
+        <div class="container-fluid">
+            <div class="banner__wrapper">
+                <div class="banner__wrapper-category d-none d-lg-block">
+                    <div class="banner__wrapper-category-inner">
+                    </div>
+                </div>
+                <div class="banner__wrapper-content">
+                    <div class="banner-slider owl-theme owl-carousel">
+                        @foreach ($bannerElement as $banner)
+                            <div class="banner__wrapper-content-inner">
+                                <a href="{{ $banner->data_values->url }}">
+                                    <img src="{{ frontendImage('banner', $banner->data_values->image, '1290x480') }}"
+                                         alt="banner">
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- hero section end -->
+    <!-- search section start -->
+    <section id="hero_img" class="hero">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-xxl-6 col-lg-8 text-center">
-                    <h2 class="hero__title text-white wow fadeInUp" data-wow-duration="0.5s"
-                        data-wow-delay="0.3s">{{ __($banner->data_values->heading) }}</h2>
-                    <p class="hero__description text-white mt-3 wow fadeInUp" data-wow-duration="0.5s"
-                       data-wow-delay="0.5s">{{ __($banner->data_values->sub_heading) }}</p>
-                </div>
-                <div class="col-xxl-10 mt-5 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.7s">
+                <div class="col-xxl-10 mt-1 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.7s">
                     <div class="hero-search-area rounded-3">
                         <form action="{{ route('property.search') }}" class="hero-search-form">
                             <div class="row gy-3 align-items-center">

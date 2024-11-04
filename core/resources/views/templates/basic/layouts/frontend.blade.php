@@ -35,12 +35,33 @@
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/bootstrap-fileinput.css') }}">
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/color.php') }}?color={{ $general->base_color }}">
+
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/owl.min.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/slick.css') }}">
+
+    {{--    feedback--}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     @stack('style-lib')
 
     @stack('style')
     <x-facebook_pixel/>
     <!-- Include Mixpanel JS SDK in the <head> of your layout -->
     <x-mixpanel/>
+
+    <style>
+        #starRating .fa-star {
+            font-size: 1.5rem;
+            color: #ddd; /* Default color */
+            cursor: pointer;
+            margin-right: 0.2rem;
+        }
+
+        #starRating .fa-star.selected {
+            color: #ffc107; /* Highlighted color */
+        }
+    </style>
 
 </head>
 
@@ -94,6 +115,48 @@
 
 @stack('modal')
 
+<!-- Feedback Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">We value your feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm">
+                    <!-- Star Rating -->
+                    <div class="form-group">
+                        <label for="rating">Rate us:</label>
+                        <div id="starRating" class="d-flex">
+                            <!-- Star icons (Font Awesome) -->
+                            <span class="fa fa-star" data-rating="1"></span>
+                            <span class="fa fa-star" data-rating="2"></span>
+                            <span class="fa fa-star" data-rating="3"></span>
+                            <span class="fa fa-star" data-rating="4"></span>
+                            <span class="fa fa-star" data-rating="5"></span>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Text -->
+                    <div class="form-group">
+                        <label for="feedbackText">Your feedback:</label>
+                        <textarea class="form-control" id="feedbackText" rows="3"
+                                  placeholder="Write your feedback here..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="submitFeedback">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="{{ asset('assets/global/js/jquery-3.6.0.min.js') }}"></script>
@@ -111,6 +174,10 @@
 <script src="{{ asset('assets/global/js/datepicker.en.js') }}"></script>
 <!-- main js -->
 <script src="{{ asset($activeTemplateTrue . 'js/app.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/owl.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/wow.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/slick.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/main.js') }}"></script>
 
 
 @include('partials.plugins')
@@ -214,6 +281,54 @@
         });
 
     })(jQuery);
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Show the feedback modal after 3 minutes (180000 milliseconds)
+        setTimeout(function () {
+            $("#feedbackModal").modal("show");
+        }, 180000); // 3 minutes
+
+        // Star Rating Logic
+        $("#starRating .fa-star").on("click", function () {
+            const rating = $(this).data("rating");
+            $("#starRating .fa-star").removeClass("selected");
+            $(this).prevAll().addBack().addClass("selected"); // Highlight selected stars
+            $("#feedbackForm").data("rating", rating); // Store rating in form data
+        });
+
+        // Submit Feedback
+        $("#submitFeedback").on("click", function () {
+            const rating = $("#feedbackForm").data("rating");
+            const feedbackText = $("#feedbackText").val();
+
+            if (!rating) {
+                alert("Please provide a star rating.");
+                return;
+            }
+
+            // Send feedback to Laravel route
+            $.ajax({
+                url: '{{ route("feedback.store") }}',
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}", // CSRF token for security
+                    rating: rating,
+                    feedback: feedbackText,
+                },
+                success: function (response) {
+                    alert(response.message);
+                    $("#feedbackModal").modal("hide");
+                    $("#feedbackForm").trigger("reset");
+                    $("#starRating .fa-star").removeClass("selected");
+                },
+                error: function (xhr) {
+                    alert("There was an error submitting your feedback. Please try again.");
+                },
+            });
+        });
+    });
 </script>
 
 </body>

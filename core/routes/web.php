@@ -811,4 +811,8 @@ Route::get('auth/google', [GoogleController::class, 'redirectToGoogleUser'])->na
 Route::get('auth/google/owner', [GoogleController::class, 'redirectToGoogleOwner'])->name('google.login.owner');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+//feedback
+Route::post('/feedback', 'FeedbackController@store')->name('feedback.store');
+
+
 

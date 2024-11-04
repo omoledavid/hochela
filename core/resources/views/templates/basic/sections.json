@@ -3,14 +3,14 @@
         "builder": true,
         "no_selection": true,
         "name": "Banner Section",
-        "content": {
+        "element": {
             "images": {
-                "background_image": {
-                    "size": "1920x1195"
+                "image": {
+                    "size": "1290x480"
                 }
             },
-            "heading": "text",
-            "sub_heading": "text"
+            "url": "text",
+            "modal": true
         }
     },
     "location": {

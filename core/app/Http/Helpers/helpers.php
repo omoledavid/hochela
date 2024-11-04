@@ -994,3 +994,11 @@ function mixpanel()
     }
     return $mp;
 }
+
+function frontendImage($sectionName, $image, $size = null, $seo = false)
+{
+    if ($seo) {
+        return getImage('assets/images/frontend/' . $sectionName . '/seo/' . $image, $size);
+    }
+    return getImage('assets/images/frontend/' . $sectionName . '/' . $image, $size);
+}
