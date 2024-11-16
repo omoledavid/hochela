@@ -86,7 +86,10 @@ class SiteController extends Controller
         $pageTitle = $page->name;
         $sections = $page->secs;
         $agents = Owner::where('status', 1)->orderBy('id', 'DESC')->limit(10)->whereNotNull('image')->get();
-        return view($this->activeTemplate . 'pages', compact('pageTitle', 'sections', 'agents'));
+        $agentsWithPropertiesCount = $agents->filter(function ($agent) {
+            return $agent->properties->count() != 0;
+        })->count();
+        return view($this->activeTemplate . 'pages', compact('pageTitle', 'sections', 'agents', 'agentsWithPropertiesCount'));
     }
 
 
