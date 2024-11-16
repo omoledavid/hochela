@@ -150,7 +150,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
                 <button type="button" class="btn btn-primary" id="submitFeedback">Submit Feedback</button>
             </div>
         </div>

@@ -85,7 +85,8 @@ class SiteController extends Controller
         $page = Page::where('tempname', $this->activeTemplate)->where('slug', $slug)->firstOrFail();
         $pageTitle = $page->name;
         $sections = $page->secs;
-        return view($this->activeTemplate . 'pages', compact('pageTitle', 'sections'));
+        $agents = Owner::where('status', 1)->orderBy('id', 'DESC')->limit(10)->whereNotNull('image')->get();
+        return view($this->activeTemplate . 'pages', compact('pageTitle', 'sections', 'agents'));
     }
 
 
