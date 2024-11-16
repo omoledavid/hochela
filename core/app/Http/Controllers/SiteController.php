@@ -89,7 +89,8 @@ class SiteController extends Controller
         $agentsWithPropertiesCount = $agents->filter(function ($agent) {
             return $agent->properties->count() != 0;
         })->count();
-        return view($this->activeTemplate . 'pages', compact('pageTitle', 'sections', 'agents', 'agentsWithPropertiesCount'));
+        $latestNews = News::active()->approved()->latest()->limit(3)->get(['id', 'title', 'image', 'created_at']);
+        return view($this->activeTemplate . 'pages', compact('pageTitle', 'sections', 'agents', 'agentsWithPropertiesCount', 'latestNews'));
     }
 
 
