@@ -120,7 +120,7 @@ class NewsController extends Controller
 
     public function status(News $news)
     {
-        $news->status = ($news->status ? 0 : 1);
+        $news->status = (($news->status == 1) ? 0 : 1);
         $news->save();
 
         $notify[] = ['success', 'News ' . ($news->status ? 'Activated!' : 'Deactivated!')];
