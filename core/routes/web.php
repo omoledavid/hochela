@@ -795,7 +795,7 @@ Route::post('on-boarding', 'OnBoardingController@onboarding')->name('on.boarding
 
 //agent onboarding
 Route::get('agent-onboarding', 'OnBoardingController@agent')->name('agent.onboarding');
-Route::post('agent-onboarding', 'OnBoardingController@propertyUpload')->name('agent.onboarding');
+Route::post('agent-onboarding-post', 'OnBoardingController@propertyUpload')->name('agent.onboarding.post');
 
 Route::get('/{slug}', 'SiteController@pages')->name('pages');
 Route::get('property/chat', 'SiteController@startChat')->name('property.chat');

@@ -1076,7 +1076,7 @@
         }
 
         // Send FormData to the Laravel route
-        fetch('/agent-onboarding', { // Make sure to use the correct route path
+        fetch('/agent-onboarding-post', { // Make sure to use the correct route path
             method: 'POST',
             body: formData,
             headers: {
