@@ -162,7 +162,7 @@ class SiteController extends Controller
     {
         $pageTitle = 'All Blogs Post';
         $emptyMessage = 'No blog post found';
-        $blogs = News::latest()->limit(10)->paginate(getPaginate());
+        $blogs = News::latest()->where('status', 1)->limit(10)->paginate(getPaginate());
         $page = Page::where('tempname', $this->activeTemplate)->where('slug', 'blog')->first();
         $sections = $page->secs;
 

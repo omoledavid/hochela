@@ -37,8 +37,10 @@
                                 <form id="agentSearch" action="{{ route('property.search') }}" class="hero-search-form">
                                     <a type="javascript{}" onclick="document.getElementById('agentSearch').submit();">
                                         <input type="hidden" name="agent_id" value="{{$agent->id}}">
-                                        <span role="button"
-                                              class="text--base">{{$agent->properties->count()}} Properties</span>
+                                        <span role="button" class="text--base">
+                                            {{ ($agent->properties->count() == 1) ? $agent->properties->count().' Property' : $agent->properties->count().' Properties' }}
+                                        </span>
+
                                     </a>
                                 </form>
                             </div>
