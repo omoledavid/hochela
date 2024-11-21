@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Hochela Onboarding Wizard</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -453,7 +454,7 @@
     <!-- Step 2 -->
     <div class="container wizard-container" style="display: none" id="step-2">
         <div class="wizard-card">
-            <h2 class="step-heading">What type of place are you looking for?</h2>
+            <h2 class="step-heading">What type of place are you looking to rent?</h2>
             <div class="options-container">
                 <div class="option" id="option1" onclick="selectOption(1)">
                     <img src="{{ getImage(imagePath()['icons']['path'].'/hostel.svg') }}" alt="Hostel Icon"/>
@@ -677,33 +678,33 @@
         <div class="wizard-card">
             <h2 class="step-heading">What about these student favourites?</h2>
             <div class="options-container">
-                <div class="option" id="option12" onclick="selectOption(12)">
+                <div class="option" id="favourites-internet" onclick="selectFavourite('Internet')">
                     <img src="{{ getImage(imagePath()['icons']['path'].'/internet.svg') }}"
                          alt="Good Internet Service Icon"/>
                     <p>Good Internet Service</p>
                     <input type="checkbox" name="extra-features" value="Good Internet Service"/>
                 </div>
-                <div class="option" id="option13" onclick="selectOption(13)">
+                <div class="option" id="favourites-tvicon" onclick="selectFavourite('Tvicon')">
                     <img src="{{ getImage(imagePath()['icons']['path'].'/tv.svg') }}" alt="TV Icon"/>
                     <p>TV</p>
                     <input type="checkbox" name="extra-features" value="TV"/>
                 </div>
-                <div class="option" id="option14" onclick="selectOption(14)">
+                <div class="option" id="favourites-kitchen" onclick="selectFavourite('Kitchen')">
                     <img src="{{ getImage(imagePath()['icons']['path'].'/kitchen.svg') }}" alt="Kitchen Icon"/>
                     <p>Kitchen</p>
                     <input type="checkbox" name="extra-features" value="Kitchen"/>
                 </div>
-                <div class="option" id="option15" onclick="selectOption(15)">
+                <div class="option" id="favourites-bathroom" onclick="selectFavourite('Bathroom')">
                     <img src="{{ getImage(imagePath()['icons']['path'].'/bathroom.svg') }}" alt="Bathroom Icon"/>
                     <p>Functional Bathroom</p>
                     <input type="checkbox" name="extra-features" value="Functional Bathroom"/>
                 </div>
-                <div class="option" id="option16" onclick="selectOption(16)">
+                <div class="option" id="favourites-parking" onclick="selectFavourite('Parking')">
                     <img src="{{ getImage(imagePath()['icons']['path'].'/parking.svg') }}" alt="Parking Icon"/>
                     <p>Parking</p>
                     <input type="checkbox" name="extra-features" value="Parking"/>
                 </div>
-                <div class="option" id="option17" onclick="selectOption(17)">
+                <div class="option" id="favourites-study" onclick="selectFavourite('Study')">
                     <img src="{{ getImage(imagePath()['icons']['path'].'/study.svg') }}" alt="Study Space Icon"/>
                     <p>Study Space</p>
                     <input type="checkbox" name="extra-features" value="Study Space"/>
@@ -822,6 +823,7 @@
 
     <script>
         let selectedHighlights = [];
+        let selectedFavourites = [];
 
         function selectHighlight(highlight) {
             const optionElement = document.getElementById(`highlight-${highlight.toLowerCase().replace(/ /g, "-")}`);
@@ -837,6 +839,23 @@
                 optionElement.classList.add("selected"); // Add selected class
             } else {
                 alert("You can only select up to 2 highlights.");
+            }
+        }
+
+        function selectFavourite(favourite) {
+            const optionElement = document.getElementById(`favourites-${favourite.toLowerCase().replace(/ /g, "-")}`);
+            const checkbox = optionElement.querySelector('input[type="checkbox"]');
+
+            if (selectedFavourites.includes(favourite)) {
+                selectedFavourites = selectedFavourites.filter((h) => h !== favourite);
+                checkbox.checked = false;
+                optionElement.classList.remove("selected"); // Remove selected class
+            } else if (selectedFavourites.length < 3) {
+                selectedFavourites.push(favourite);
+                checkbox.checked = true;
+                optionElement.classList.add("selected"); // Add selected class
+            } else {
+                alert("You can only select up to 3 Favourite.");
             }
         }
     </script>
@@ -939,7 +958,7 @@
             <div class="mb-4 position-relative" style="display: inline-block">
                 <span class="currency-symbol">₦</span>
                 <input type="text" name="property_amount" class="form-control price-input" id="propertyPrice"
-                       value="100,000" oninput="formatPrice()" onkeydown="preventEnter(event)"/>
+                       value="100000" oninput="formatPrice()" onkeydown="preventEnter(event)"/>
                 <span class="edit-icon" onclick="editPrice()">
               <img src="{{ getImage(imagePath()['agents']['path'].'/Edit.png') }}" alt="Edit"/>
             </span>
@@ -1067,6 +1086,11 @@
     function submitForm() {
         event.preventDefault(); // Prevent the default form submission
 
+        const priceInput = document.getElementById("propertyPrice");
+
+        // Remove commas from the input value before form submission
+        priceInput.value = priceInput.value.replace(/,/g, "");
+
         // Create a FormData object from the form
         const formData = new FormData(document.getElementById("hochelaForm"));
 
@@ -1076,13 +1100,17 @@
         }
 
         // Send FormData to the Laravel route
-        fetch('/agent-onboarding-post', { // Make sure to use the correct route path
+        fetch('/agent-onboarding', {
             method: 'POST',
-            body: formData,
             headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}', // Ensure you include the CSRF token for Laravel
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json',
             },
+            body: formData,
+            credentials: 'include', // Ensures cookies are sent with the request
         })
+
+
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
@@ -1092,8 +1120,10 @@
             .then(data => {
                 // Handle success response
                 console.log('Success:', data);
+                console.log('form submited');
                 // alert('Form submitted successfully!');
-                window.location.href = '{{ route('owner.dashboard') }}';
+                window.location.href = '{{ route('owner.property.index') }}';
+
             })
             .catch(error => {
                 console.error('Error:', error);
