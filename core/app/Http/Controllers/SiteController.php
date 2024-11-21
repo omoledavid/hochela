@@ -57,7 +57,12 @@ class SiteController extends Controller
 
         //blog
         $latestNews = News::active()->approved()->latest()->limit(3)->get(['id', 'title', 'image', 'created_at']);
-        $agents = Owner::where('status', 1)->orderBy('id', 'DESC')->limit(10)->whereNotNull('image')->get();
+        $agents = Owner::where('status', 1)
+            ->whereNotNull('image')
+            ->orderBy('id', 'DESC')
+            ->limit(10)
+            ->get();
+
         $agentsWithPropertiesCount = $agents->filter(function ($agent) {
             return $agent->properties->count() != 0;
         })->count();
