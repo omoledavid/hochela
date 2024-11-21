@@ -60,7 +60,7 @@ class SiteController extends Controller
         $agents = Owner::where('status', 1)
             ->whereNotNull('image')
             ->whereHas('properties', function ($query) {
-                $query->havingRaw('COUNT(*) >= 2'); // Ensure at least 2 properties
+                $query->havingRaw('COUNT(*) >= 1'); // Ensure at least 2 properties
             })
             ->withCount('properties') // Include property count for efficiency in Blade
             ->orderBy('id', 'DESC')
