@@ -59,9 +59,14 @@ class SiteController extends Controller
         $latestNews = News::active()->approved()->latest()->limit(3)->get(['id', 'title', 'image', 'created_at']);
         $agents = Owner::where('status', 1)
             ->whereNotNull('image')
+            ->whereHas('properties', function ($query) {
+                $query->havingRaw('COUNT(*) >= 2'); // Ensure at least 2 properties
+            })
+            ->withCount('properties') // Include property count for efficiency in Blade
             ->orderBy('id', 'DESC')
             ->limit(10)
             ->get();
+
 
         $agentsWithPropertiesCount = $agents->filter(function ($agent) {
             return $agent->properties->count() != 0;
