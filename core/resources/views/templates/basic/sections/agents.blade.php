@@ -16,7 +16,7 @@
         </div><!-- row end -->
         <div class="row gy-4 justify-content-center">
             @foreach ($agents as $agent)
-                @if ($agent->properties_count >= 2)
+                @if ($agent->properties_count >= 1)
                     <!-- Ensure the count check matches your conditions -->
                     <div class="col-lg-3 col-sm-6">
                         <div class="mentor-card">
