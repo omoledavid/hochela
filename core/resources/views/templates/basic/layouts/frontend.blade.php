@@ -61,6 +61,17 @@
         #starRating .fa-star.selected {
             color: #ffc107; /* Highlighted color */
         }
+
+        /* For summernote override unordered and order list */
+        .blog-desc ul {
+            list-style: disc !important;
+            list-style-position: inside !important;
+        }
+
+        .blog-desc ol {
+            list-style: decimal !important;
+            list-style-position: inside !important;
+        }
     </style>
 
 </head>

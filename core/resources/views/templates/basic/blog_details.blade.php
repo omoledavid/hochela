@@ -33,7 +33,7 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div>
+                            <div class="blog-desc">
                                 {{-- @dd($blog->description) --}}
                                 {!! $blog->description !!}
                             </div>

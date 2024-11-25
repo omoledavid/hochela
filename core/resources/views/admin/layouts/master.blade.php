@@ -53,6 +53,18 @@
 
 
     @stack('style')
+    <style>
+        /* For summernote override unordered and order list */
+        .note-editable ul {
+            list-style: disc !important;
+            list-style-position: inside !important;
+        }
+
+        .note-editable ol {
+            list-style: decimal !important;
+            list-style-position: inside !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -94,15 +106,17 @@
             minHeight: 300,
             focus: true,
             toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['bold', 'underline', 'clear', 'strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
                 ['insert', ['link', 'picture', 'video', 'hr']],
+                ['height', ['height']],
                 ['view', ['fullscreen', 'help']],
                 ['remove', ['removeMedia']],
-                ['view', ['fullscreen', 'codeview']]
+                ['view', ['fullscreen', 'codeview', 'help']]
             ],
             callbacks: {
                 onImageUpload: function (files) {
