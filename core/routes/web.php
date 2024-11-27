@@ -168,6 +168,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('users/sms-unverified', 'ManageUsersController@smsUnverifiedUsers')->name('users.sms.unverified');
         Route::get('users/sms-verified', 'ManageUsersController@smsVerifiedUsers')->name('users.sms.verified');
         Route::get('users/with-balance', 'ManageUsersController@usersWithBalance')->name('users.with.balance');
+        Route::get('users/with-referrer', 'ManageUsersController@usersWithReferrer')->name('users.with.referrer');
 
         Route::get('users/{scope}/search', 'ManageUsersController@search')->name('users.search');
         Route::get('user/detail/{id}', 'ManageUsersController@detail')->name('users.detail');
@@ -179,6 +180,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('user/payments/{id}', 'ManageUsersController@deposits')->name('users.deposits');
         Route::get('user/payments/via/{method}/{type?}/{userId}', 'ManageUsersController@depositViaMethod')->name('users.deposits.method');
         Route::get('user/booked-properties/{id}', 'ManageUsersController@bookedProperties')->name('users.booked.properties');
+        Route::get('user/ref_users/{id}', 'ManageUsersController@refUsers')->name('users.ref.users');
         Route::get('user/withdrawals/via/{method}/{type?}/{userId}', 'ManageUsersController@withdrawalsViaMethod')->name('users.withdrawals.method');
 
         // Staffs Manager

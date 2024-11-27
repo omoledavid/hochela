@@ -1,4 +1,5 @@
-<div class="sidebar {{ sidebarVariation()['selector'] }} {{ sidebarVariation()['sidebar'] }} {{ @sidebarVariation()['overlay'] }} {{ @sidebarVariation()['opacity'] }}"
+<div
+    class="sidebar {{ sidebarVariation()['selector'] }} {{ sidebarVariation()['sidebar'] }} {{ @sidebarVariation()['overlay'] }} {{ @sidebarVariation()['opacity'] }}"
     data-background="{{ getImage('assets/laramin/images/sidebar/2.jpg', '400x800') }}">
     <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
     <div class="sidebar__inner">
@@ -242,6 +243,14 @@
                                             <a href="{{ route('admin.users.with.balance') }}" class="nav-link">
                                                 <i class="menu-icon las la-dot-circle"></i>
                                                 <span class="menu-title">@lang('With Balance')</span>
+                                            </a>
+                                        </li>
+                                    @endcan
+                                    @can('admin.users.with.balance')
+                                        <li class="sidebar-menu-item {{ menuActive('admin.users.with.referrer') }}">
+                                            <a href="{{ route('admin.users.with.referrer') }}" class="nav-link">
+                                                <i class="menu-icon las la-dot-circle"></i>
+                                                <span class="menu-title">@lang('With Referrer')</span>
                                             </a>
                                         </li>
                                     @endcan
@@ -633,7 +642,7 @@
                     @can('admin.subscriber.index')
                         <li class="sidebar-menu-item  {{ menuActive('admin.subscriber.index') }}">
                             <a href="{{ route('admin.subscriber.index') }}" class="nav-link"
-                                data-default-url="{{ route('admin.subscriber.index') }}">
+                               data-default-url="{{ route('admin.subscriber.index') }}">
                                 <i class="menu-icon las la-thumbs-up"></i>
                                 <span class="menu-title">@lang('Subscribers') </span>
                             </a>
@@ -889,7 +898,7 @@
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)"
-                            class="{{ menuActive(['user.change.password', 'user.profile.setting', 'user.twofactor'], 3) }}">
+                           class="{{ menuActive(['user.change.password', 'user.profile.setting', 'user.twofactor'], 3) }}">
                             <i class="menu-icon la la-user-circle"></i>
                             <span class="menu-title">@lang('Profile') </span>
                         </a>

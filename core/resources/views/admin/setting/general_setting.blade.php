@@ -50,6 +50,13 @@
                             </div>
 
                             <div class="form-group col-md-3">
+                                <label
+                                    class="form-control-label font-weight-bold"> @lang('Referrer Bonus')</label>
+                                <input type="number" class="form-control form-control-lg" name="ref_amount"
+                                       value="{{ $general->ref_amount }}" required>
+                            </div>
+
+                            <div class="form-group col-md-3">
                                 <label class="form-control-label font-weight-bold"> @lang('Site Base Color')</label>
                                 <div class="input-group">
                                 <span class="input-group-addon ">
@@ -69,14 +76,14 @@
                                        data-off="@lang('Disabled')" name="secure_password"
                                        @if($general->secure_password) checked @endif>
                             </div>
-                            <div class="form-group col-md-3">
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
                                 <label class="form-control-label font-weight-bold">@lang('Agree policy')</label>
                                 <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success"
                                        data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')"
                                        data-off="@lang('Disabled')" name="agree" @if($general->agree) checked @endif>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-md-2">
                                 <label class="form-control-label font-weight-bold">@lang('User Registration')</label>
                                 <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success"

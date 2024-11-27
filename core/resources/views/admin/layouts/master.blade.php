@@ -107,7 +107,7 @@
             focus: true,
             toolbar: [
                 ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['bold', 'underline', 'clear', 'strikethrough', 'superscript', 'subscript']],
+                ['font', ['bold', 'underline', 'strikethrough', 'superscript', 'subscript']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],

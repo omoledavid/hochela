@@ -74,6 +74,12 @@ class User extends Authenticatable
         return Review::where('user_id', auth()->id())->exists();
     }
 
+    public function referrers()
+    {
+        return $this->hasMany(User::class, 'ref_username', 'username');
+    }
+
+
     public function scopeActive()
     {
         return $this->where('status', 1);

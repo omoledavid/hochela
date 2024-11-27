@@ -47,6 +47,7 @@ class GeneralSettingController extends Controller
         $general->cur_sym = $request->cur_sym;
         $general->base_color = $request->base_color;
         $general->property_max_star = $request->property_max_star;
+        $general->ref_amount = $request->ref_amount;
         $general->save();
 
         $timezoneFile = config_path('timezone.php');
