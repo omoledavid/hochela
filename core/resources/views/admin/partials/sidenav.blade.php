@@ -648,6 +648,15 @@
                             </a>
                         </li>
                     @endcan
+                    @can('admin.subscriber.index')
+                        <li class="sidebar-menu-item  {{ menuActive('admin.feedback.index') }}">
+                            <a href="{{ route('admin.feedback.index') }}" class="nav-link"
+                               data-default-url="{{ route('admin.feedback.index') }}">
+                                <i class="menu-icon las la-thumbs-up"></i>
+                                <span class="menu-title">@lang('Feedbacks') </span>
+                            </a>
+                        </li>
+                    @endcan
 
                     @if (can([
                             'admin.setting.index',

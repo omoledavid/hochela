@@ -283,6 +283,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('owners/email-log/{id}', 'ManageOwnersController@emailLog')->name('owners.email.log');
         Route::get('owners/email-details/{id}', 'ManageOwnersController@emailDetails')->name('owners.email.details');
 
+        // Feddback
+        Route::get('feedback', 'SubscriberController@feedBacks')->name('feedback.index');
+        Route::post('feedback/remove', 'SubscriberController@feedbackRemove')->name('feedback.remove');
 
         // Subscriber
         Route::get('subscriber', 'SubscriberController@index')->name('subscriber.index');
