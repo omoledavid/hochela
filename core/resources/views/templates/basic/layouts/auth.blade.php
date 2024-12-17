@@ -31,6 +31,8 @@
     @stack('style-lib')
 
     @stack('style')
+
+    <x-mixpanel />
 </head>
 
 <body>

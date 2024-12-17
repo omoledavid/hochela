@@ -9,7 +9,7 @@ use App\Models\Messages;
 use App\Models\Owner;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;    
+use Illuminate\Support\Facades\Auth;
 
 class OwnerMessageController extends Controller
 {
@@ -18,43 +18,44 @@ class OwnerMessageController extends Controller
         $this->activeTemplate = activeTemplate();
     }
 
-    public function index(){
+    public function index()
+    {
         $pageTitle = "Inbox";
         $user = Auth::guard('owner')->user();
         $conversions = Conversation::where('sender_id', $user->id)->orWhere('receiver_id', $user->id)->with('sender')->with('messages')->latest()->get();
         return view('owner.message.index', compact('pageTitle', 'conversions'));
     }
+
     public function chat($conversionId)
     {
         $conversions = Conversation::findOrFail($conversionId);
         $pageTitle = "Chat List";
-        $messages = Messages::where('conversion_id',$conversions->id)->with('sender', 'receiver')->get();
-        return view('owner.message.view', compact('pageTitle','messages', 'conversionId'));
+        $messages = Messages::where('conversion_id', $conversions->id)->with('sender', 'receiver')->get();
+        return view('owner.message.view', compact('pageTitle', 'messages', 'conversionId'));
     }
-    
+
     public function store(Request $request)
     {
         $user = Auth::guard('owner')->user();
-        if($user->id != $request->recevier_id)
-        {
-        	$request->validate([
-        		'subject' => 'required|max:250',
-        		'message' => 'required|max:500',
-        		'recevier_id' => 'required|exists:owners,id'
-        	]);
+        if ($user->id != $request->recevier_id) {
+            $request->validate([
+                'subject' => 'required|max:250',
+                'message' => 'required|max:500',
+                'recevier_id' => 'required|exists:owners,id'
+            ]);
             $conversion = new Conversation();
             $conversion->sender_id = $user->id;
             $conversion->receiver_id = $request->recevier_id;
             $conversion->save();
 
-        	$message = new Messages();
+            $message = new Messages();
             $message->conversion_id = $conversion->id;
-        	$message->sender_id = $user->id;
-        	$message->receiver_id = $request->recevier_id;
-        	$message->subject = $request->subject;
-        	$message->message = $request->message;
-        	$message->save();
-        	$notify[] = ['success', 'Message Sent'];
+            $message->sender_id = $user->id;
+            $message->receiver_id = $request->recevier_id;
+            $message->subject = $request->subject;
+            $message->message = $request->message;
+            $message->save();
+            $notify[] = ['success', 'Message Sent'];
             return back()->withNotify($notify);
         }
         $notify[] = ['error', "it's You"];
@@ -63,50 +64,85 @@ class OwnerMessageController extends Controller
 
     public function messageStore(Request $request)
     {
-        $conversionId =Conversation::findOrFail(decrypt($request->conversion_id));
-        $receiver =Owner::findOrFail(decrypt($request->receiver_id));
-        if($request->image == null){
+        // Retrieve and decrypt the conversion ID
+        $conversionId = Conversation::findOrFail(decrypt($request->conversion_id));
+
+        // Determine if the receiver is an Owner or a User
+        $receiverId = decrypt($request->receiver_id);
+        $receiver = Owner::find($receiverId) ?: User::findOrFail($receiverId); // Check both models
+
+        // Validate inputs
+        if ($request->image == null) {
             $request->validate(['message' => 'required|max:500']);
-        }
-        elseif($request->message == null){
+        } elseif ($request->message == null) {
             $request->validate(['image' => 'required|mimes:jpeg,jpg,png|max:100000']);
-        }
-        elseif($request->message && $request->image){
+        } elseif ($request->message && $request->image) {
             $request->validate([
                 'message' => 'required|max:500',
                 'image' => 'required|mimes:jpeg,jpg,png|max:100000'
             ]);
         }
+
+        // Create a new message instance
         $message = new Messages();
         $message->conversion_id = $conversionId->id;
-        $message->sender_id = Auth::guard('owner')->user()->id;
+        $message->sender_id = Auth::guard('owner')->check() ? Auth::guard('owner')->id() : Auth::id(); // Set sender based on guard
         $message->receiver_id = $receiver->id;
         $message->message = $request->message;
+
+        // Handle image upload
         $path = imagePath()['message']['path'];
         $size = imagePath()['message']['size'];
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             try {
                 $filename = uploadImage($request->image, $path, $size);
+                $message->file = $filename;
             } catch (\Exception $exp) {
                 $notify[] = ['error', 'Image could not be uploaded.'];
                 return back()->withNotify($notify);
             }
-            $message->file = $filename;
         }
+
+        // Save message and return response
         $message->save();
         $notify[] = ['success', 'Message Sent'];
         return back()->withNotify($notify);
     }
-    public function check(Booking $booking){
-        if (\request()->approve){
+
+
+    public function check(Booking $booking)
+    {
+        $mp = mixpanel();
+        $status = null;
+        if (\request()->approve) {
             $booking->status = 1;
+            $status = 'Accepted';
         } else {
             $booking->status = 2;
+            $status = 'Rejected';
         }
 
         $booking->save();
 
-        $notify[] = ['success', 'Appointment '. ($booking->status == 1 ? 'approved!' : 'rejected!')];
+        $user = $booking->user;
+        $agent = $booking->agent;
+        $mp->track($status . ' Appointment Booking', [
+            'user' => [
+                'user_id' => $user->id,
+                'user_name' => $user->fullname,
+            ],
+            'agent' => [
+                'agent_id' => $agent->id,
+                'agent_name' => $agent->fullname,
+            ],
+            'booking_info' => [
+                'booking_id' => $booking->id,
+                'booking_status' => $status,
+                'booking_date&time' => $booking->date_time,
+            ]
+        ]);
+
+        $notify[] = ['success', 'Appointment ' . ($booking->status == 1 ? 'approved!' : 'rejected!')];
         return back()->withNotify($notify);
 
     }

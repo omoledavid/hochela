@@ -7,7 +7,8 @@
     <title>{{ $general->sitename($pageTitle ?? '') }}</title>
     <!-- site favicon -->
     <link rel="shortcut icon" type="image/png" href="{{getImage(imagePath()['logoIcon']['path'] .'/favicon.png')}}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
     <!-- bootstrap 4  -->
     <link rel="stylesheet" href="{{ asset('assets/laramin/css/vendor/gird.min.css') }}">
     <!-- bootstrap toggle css -->
@@ -73,14 +74,14 @@
 {{-- LOAD NIC EDIT --}}
 <script>
     "use strict";
-    bkLib.onDomLoaded(function() {
-        $( ".nicEdit" ).each(function( index ) {
-            $(this).attr("id","nicEditor"+index);
-            new nicEditor({fullPanel : true}).panelInstance('nicEditor'+index,{hasPanel : true});
+    bkLib.onDomLoaded(function () {
+        $(".nicEdit").each(function (index) {
+            $(this).attr("id", "nicEditor" + index);
+            new nicEditor({fullPanel: true}).panelInstance('nicEditor' + index, {hasPanel: true});
         });
     });
-    (function($){
-        $( document ).on('mouseover ', '.nicEdit-main,.nicEdit-panelContain',function(){
+    (function ($) {
+        $(document).on('mouseover ', '.nicEdit-main,.nicEdit-panelContain', function () {
             $('.nicEdit-main').focus();
         });
     })(jQuery);
@@ -96,7 +97,7 @@
         }
 
         // Create the autocomplete object, restricting the search to geographical location types.
-        var autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] });
+        var autocomplete = new google.maps.places.Autocomplete(input, {types: ['geocode']});
 
         console.log('Autocomplete initialized');
 

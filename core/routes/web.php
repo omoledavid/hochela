@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function () {
@@ -53,10 +54,10 @@ Route::prefix('ticket')->group(function () {
 Route::prefix('message')->group(function () {
     Route::get('/', 'MessageController@index')->name('message');
     Route::get('/open', 'MessageController@open')->name('message.open');
-    Route::post('/create', 'TicketController@storeSupportTicket')->name('ticket.store');
+    // Route::post('/create', 'TicketController@storeSupportTicket')->name('ticket.store');
     Route::get('/view/{message}', 'MessageController@chat')->name('message.view');
-    Route::post('/reply/{ticket}', 'TicketController@replyTicket')->name('ticket.reply');
-    Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
+    // Route::post('/reply/{ticket}', 'TicketController@replyTicket')->name('ticket.reply');
+    // Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
 });
 
 
@@ -83,12 +84,31 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('kyc-setting', 'settingUpdate');
     });
 
-    Route::middleware('admin')->group(function () {
+    Route::middleware('admin', 'adminPermission')->group(function () {
         Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
         Route::get('profile', 'AdminController@profile')->name('profile');
         Route::post('profile', 'AdminController@profileUpdate')->name('profile.update');
         Route::get('password', 'AdminController@password')->name('password');
         Route::post('password', 'AdminController@passwordUpdate')->name('password.update');
+
+        Route::controller('StaffController')->prefix('staff')->name('staff.')->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::post('save/{id?}', 'save')->name('save');
+            Route::post('switch-status/{id}', 'status')->name('status');
+            Route::get('login/{id}', 'login')->name('login');
+        });
+
+        Route::controller('PermissionController')->group(function () {
+            Route::get('permissions', 'index');
+            Route::post('permission', 'updatePermissions')->name('permissions.update');
+        });
+
+        Route::controller('RolesController')->prefix('roles')->name('roles.')->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::get('add', 'add')->name('add');
+            Route::get('edit/{id}', 'edit')->name('edit');
+            Route::post('save/{id?}', 'save')->name('save');
+        });
 
         //add staff
         Route::post('add/staff', 'AdminController@addStaff')->name('add.staff');
@@ -148,6 +168,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('users/sms-unverified', 'ManageUsersController@smsUnverifiedUsers')->name('users.sms.unverified');
         Route::get('users/sms-verified', 'ManageUsersController@smsVerifiedUsers')->name('users.sms.verified');
         Route::get('users/with-balance', 'ManageUsersController@usersWithBalance')->name('users.with.balance');
+        Route::get('users/with-referrer', 'ManageUsersController@usersWithReferrer')->name('users.with.referrer');
 
         Route::get('users/{scope}/search', 'ManageUsersController@search')->name('users.search');
         Route::get('user/detail/{id}', 'ManageUsersController@detail')->name('users.detail');
@@ -159,6 +180,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('user/payments/{id}', 'ManageUsersController@deposits')->name('users.deposits');
         Route::get('user/payments/via/{method}/{type?}/{userId}', 'ManageUsersController@depositViaMethod')->name('users.deposits.method');
         Route::get('user/booked-properties/{id}', 'ManageUsersController@bookedProperties')->name('users.booked.properties');
+        Route::get('user/ref_users/{id}', 'ManageUsersController@refUsers')->name('users.ref.users');
         Route::get('user/withdrawals/via/{method}/{type?}/{userId}', 'ManageUsersController@withdrawalsViaMethod')->name('users.withdrawals.method');
 
         // Staffs Manager
@@ -261,6 +283,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('owners/email-log/{id}', 'ManageOwnersController@emailLog')->name('owners.email.log');
         Route::get('owners/email-details/{id}', 'ManageOwnersController@emailDetails')->name('owners.email.details');
 
+        // Feddback
+        Route::get('feedback', 'SubscriberController@feedBacks')->name('feedback.index');
+        Route::post('feedback/remove', 'SubscriberController@feedbackRemove')->name('feedback.remove');
 
         // Subscriber
         Route::get('subscriber', 'SubscriberController@index')->name('subscriber.index');
@@ -756,9 +781,9 @@ Route::post('/property/review/load', 'PropertyController@reviewLoad')->name('pro
 
 Route::get('page/{id}/{slug}', 'SiteController@policy')->name('policy');
 
-Route::get('/contact', 'SiteController@contact')->name('contact');
-Route::post('/contact', 'SiteController@contactSubmit');
-Route::get('/change/{lang?}', 'SiteController@changeLanguage')->name('lang');
+Route::get('/about', 'SiteController@contact')->name('about');
+Route::post('/about', 'SiteController@contactSubmit');
+Route::get('/about/{lang?}', 'SiteController@changeLanguage')->name('lang');
 
 Route::get('/cookie/accept', 'SiteController@cookieAccept')->name('cookie.accept');
 
@@ -769,6 +794,14 @@ Route::get('placeholder-image/{size}', 'SiteController@placeholderImage')->name(
 
 Route::post('/subscribe', 'SiteController@subscribe')->name('subscribe');
 
+//onboarding route
+Route::get('on-boarding', 'OnBoardingController@index')->name('on.boarding')->middleware('auth');
+Route::post('on-boarding', 'OnBoardingController@onboarding')->name('on.boarding');
+
+//agent onboarding
+Route::get('agent-onboarding', 'OnBoardingController@agent')->name('agent.onboarding');
+Route::post('agent-onboarding', 'OnBoardingController@propertyUpload')->name('agent.onboarding');
+
 Route::get('/{slug}', 'SiteController@pages')->name('pages');
 Route::get('property/chat', 'SiteController@startChat')->name('property.chat');
 
@@ -777,5 +810,14 @@ Route::get('/', 'SiteController@index')->name('home');
 
 // upload for summernote editor
 Route::post('/upload-image', 'UploadController@upload')->name('upload.image');
+
+// google login
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogleUser'])->name('google.login');
+Route::get('auth/google/owner', [GoogleController::class, 'redirectToGoogleOwner'])->name('google.login.owner');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+//feedback
+Route::post('/feedback', 'FeedbackController@store')->name('feedback.store');
+
 
 

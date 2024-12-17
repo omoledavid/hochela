@@ -19,7 +19,7 @@ class ManageOwnersController extends Controller
     {
         $pageTitle = 'Manage Agent';
         $emptyMessage = 'No owner found';
-        $owners = Owner::orderBy('id','desc')->paginate(getPaginate());
+        $owners = Owner::orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.owners.list', compact('pageTitle', 'emptyMessage', 'owners'));
     }
 
@@ -27,7 +27,7 @@ class ManageOwnersController extends Controller
     {
         $pageTitle = 'Manage Active Owners';
         $emptyMessage = 'No active owner found';
-        $owners = Owner::active()->orderBy('id','desc')->paginate(getPaginate());
+        $owners = Owner::active()->orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.owners.list', compact('pageTitle', 'emptyMessage', 'owners'));
     }
 
@@ -35,7 +35,7 @@ class ManageOwnersController extends Controller
     {
         $pageTitle = 'Banned Owners';
         $emptyMessage = 'No banned owner found';
-        $owners = Owner::banned()->orderBy('id','desc')->paginate(getPaginate());
+        $owners = Owner::banned()->orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.owners.list', compact('pageTitle', 'emptyMessage', 'owners'));
     }
 
@@ -43,14 +43,15 @@ class ManageOwnersController extends Controller
     {
         $pageTitle = 'Email Unverified Owners';
         $emptyMessage = 'No email unverified owner found';
-        $owners = Owner::emailUnverified()->orderBy('id','desc')->paginate(getPaginate());
+        $owners = Owner::emailUnverified()->orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.owners.list', compact('pageTitle', 'emptyMessage', 'owners'));
     }
+
     public function emailVerifiedOwners()
     {
         $pageTitle = 'Email Verified Owners';
         $emptyMessage = 'No email verified owner found';
-        $owners = Owner::emailVerified()->orderBy('id','desc')->paginate(getPaginate());
+        $owners = Owner::emailVerified()->orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.owners.list', compact('pageTitle', 'emptyMessage', 'owners'));
     }
 
@@ -59,7 +60,7 @@ class ManageOwnersController extends Controller
     {
         $pageTitle = 'SMS Unverified Owners';
         $emptyMessage = 'No sms unverified owner found';
-        $owners = Owner::smsUnverified()->orderBy('id','desc')->paginate(getPaginate());
+        $owners = Owner::smsUnverified()->orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.owners.list', compact('pageTitle', 'emptyMessage', 'owners'));
     }
 
@@ -68,16 +69,16 @@ class ManageOwnersController extends Controller
     {
         $pageTitle = 'SMS Verified Owners';
         $emptyMessage = 'No sms verified owner found';
-        $owners = Owner::smsVerified()->orderBy('id','desc')->paginate(getPaginate());
+        $owners = Owner::smsVerified()->orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.owners.list', compact('pageTitle', 'emptyMessage', 'owners'));
     }
 
-    
+
     public function ownersWithBalance()
     {
         $pageTitle = 'Owners with balance';
         $emptyMessage = 'No sms verified owner found';
-        $owners = Owner::where('balance','!=',0)->orderBy('id','desc')->paginate(getPaginate());
+        $owners = Owner::where('balance', '!=', 0)->orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.owners.list', compact('pageTitle', 'emptyMessage', 'owners'));
     }
 
@@ -93,18 +94,18 @@ class ManageOwnersController extends Controller
         if ($scope == 'active') {
             $pageTitle = 'Active ';
             $owners = $owners->where('status', 1);
-        }elseif($scope == 'banned'){
+        } elseif ($scope == 'banned') {
             $pageTitle = 'Banned';
             $owners = $owners->where('status', 0);
-        }elseif($scope == 'emailUnverified'){
+        } elseif ($scope == 'emailUnverified') {
             $pageTitle = 'Email Unverified ';
             $owners = $owners->where('ev', 0);
-        }elseif($scope == 'smsUnverified'){
+        } elseif ($scope == 'smsUnverified') {
             $pageTitle = 'SMS Unverified ';
             $owners = $owners->where('sv', 0);
-        }elseif($scope == 'withBalance'){
+        } elseif ($scope == 'withBalance') {
             $pageTitle = 'With Balance ';
-            $owners = $owners->where('balance','!=',0);
+            $owners = $owners->where('balance', '!=', 0);
         }
 
         $owners = $owners->paginate(getPaginate());
@@ -118,11 +119,11 @@ class ManageOwnersController extends Controller
     {
         $pageTitle = 'Owner Detail';
         $owner = Owner::findOrFail($id);
-        $totalWithdraw = Withdrawal::where('owner_id',$owner->id)->where('status',1)->sum('amount');
-        $totalTransaction = Transaction::where('owner_id',$owner->id)->count();
+        $totalWithdraw = Withdrawal::where('owner_id', $owner->id)->where('status', 1)->sum('amount');
+        $totalTransaction = Transaction::where('owner_id', $owner->id)->count();
         $totalProperties = Property::where('owner_id', $owner->id)->count();
         $countries = json_decode(file_get_contents(resource_path('views/partials/country.json')));
-        return view('admin.owners.detail', compact('pageTitle', 'owner','totalWithdraw','totalTransaction', 'totalProperties', 'countries'));
+        return view('admin.owners.detail', compact('pageTitle', 'owner', 'totalWithdraw', 'totalTransaction', 'totalProperties', 'countries'));
     }
 
 
@@ -146,16 +147,17 @@ class ManageOwnersController extends Controller
         $owner->lastname = $request->lastname;
         $owner->email = $request->email;
         $owner->address = [
-                            'address' => $request->address,
-                            'city' => $request->city,
-                            'state' => $request->state,
-                            'zip' => $request->zip,
-                            'country' => @$countryData->$countryCode->country,
-                        ];
+            'address' => $request->address,
+            'city' => $request->city,
+            'state' => $request->state,
+            'zip' => $request->zip,
+            'country' => @$countryData->$countryCode->country,
+        ];
         $owner->status = $request->status ? 1 : 0;
         $owner->ev = $request->ev ? 1 : 0;
         $owner->sv = $request->sv ? 1 : 0;
         $owner->ts = $request->ts ? 1 : 0;
+        $owner->kv = $request->kv ? 1 : 0;
         $owner->tv = $request->tv ? 1 : 0;
         $owner->save();
 
@@ -169,7 +171,7 @@ class ManageOwnersController extends Controller
 
         $owner = Owner::findOrFail($id);
         $amount = $request->amount;
-        $general = GeneralSetting::first(['cur_text','cur_sym']);
+        $general = GeneralSetting::first(['cur_text', 'cur_sym']);
         $trx = getTrx();
 
         if ($request->act) {
@@ -184,7 +186,7 @@ class ManageOwnersController extends Controller
             $transaction->charge = 0;
             $transaction->trx_type = '+';
             $transaction->details = 'Added Balance Via Admin';
-            $transaction->trx =  $trx;
+            $transaction->trx = $trx;
             $transaction->save();
 
             notify($owner, 'BAL_ADD', [
@@ -209,7 +211,7 @@ class ManageOwnersController extends Controller
             $transaction->charge = 0;
             $transaction->trx_type = '-';
             $transaction->details = 'Subtract Balance Via Admin';
-            $transaction->trx =  $trx;
+            $transaction->trx = $trx;
             $transaction->save();
 
 
@@ -230,10 +232,9 @@ class ManageOwnersController extends Controller
         $owner = Owner::findOrFail($id);
         $pageTitle = 'Owner Login History - ' . $owner->username;
         $emptyMessage = 'No owners login found.';
-        $login_logs = $owner->login_logs()->orderBy('id','desc')->with('owner')->paginate(getPaginate());
+        $login_logs = $owner->login_logs()->orderBy('id', 'desc')->with('owner')->paginate(getPaginate());
         return view('admin.owners.logins', compact('pageTitle', 'emptyMessage', 'login_logs'));
     }
-
 
 
     public function showEmailSingleForm($id)
@@ -262,20 +263,21 @@ class ManageOwnersController extends Controller
         if ($request->search) {
             $search = $request->search;
             $pageTitle = 'Search Owner Transactions : ' . $owner->username;
-            $transactions = $owner->transactions()->where('trx', $search)->with('owner')->orderBy('id','desc')->paginate(getPaginate());
+            $transactions = $owner->transactions()->where('trx', $search)->with('owner')->orderBy('id', 'desc')->paginate(getPaginate());
             $emptyMessage = 'No transactions';
             return view('admin.reports.transactions', compact('pageTitle', 'search', 'owner', 'transactions', 'emptyMessage'));
         }
         $pageTitle = 'Owner Transactions : ' . $owner->username;
-        $transactions = $owner->transactions()->with('owner')->orderBy('id','desc')->paginate(getPaginate());
+        $transactions = $owner->transactions()->with('owner')->orderBy('id', 'desc')->paginate(getPaginate());
         $emptyMessage = 'No transactions';
         return view('admin.reports.transactions', compact('pageTitle', 'owner', 'transactions', 'emptyMessage'));
     }
 
-    public function properties(Request $request, $id){
+    public function properties(Request $request, $id)
+    {
         $owner = Owner::findOrFail($id);
         $pageTitle = 'Owner Properties : ' . $owner->username;
-        $properties = Property::with('propertyType', 'location', 'amenities', 'rooms', 'roomCategories' )->where('owner_id', $id)->orderBy('id', 'DESC')->paginate(getPaginate());
+        $properties = Property::with('propertyType', 'location', 'amenities', 'rooms', 'roomCategories')->where('owner_id', $id)->orderBy('id', 'DESC')->paginate(getPaginate());
         $emptyMessage = 'No properties';
         return view('admin.property.index', compact('pageTitle', 'owner', 'properties', 'emptyMessage'));
     }
@@ -287,36 +289,37 @@ class ManageOwnersController extends Controller
         if ($request->search) {
             $search = $request->search;
             $pageTitle = 'Search Owner Withdrawals : ' . $owner->username;
-            $withdrawals = $owner->withdrawals()->where('trx', 'like',"%$search%")->orderBy('id','desc')->paginate(getPaginate());
+            $withdrawals = $owner->withdrawals()->where('trx', 'like', "%$search%")->orderBy('id', 'desc')->paginate(getPaginate());
             $emptyMessage = 'No withdrawals';
             return view('admin.withdraw.withdrawals', compact('pageTitle', 'owner', 'search', 'withdrawals', 'emptyMessage'));
         }
         $pageTitle = 'Owner Withdrawals : ' . $owner->username;
-        $withdrawals = $owner->withdrawals()->orderBy('id','desc')->paginate(getPaginate());
+        $withdrawals = $owner->withdrawals()->orderBy('id', 'desc')->paginate(getPaginate());
         $emptyMessage = 'No withdrawals';
         $ownerId = $owner->id;
-        return view('admin.withdraw.withdrawals', compact('pageTitle', 'owner', 'withdrawals', 'emptyMessage','ownerId'));
+        return view('admin.withdraw.withdrawals', compact('pageTitle', 'owner', 'withdrawals', 'emptyMessage', 'ownerId'));
     }
 
-    public  function withdrawalsViaMethod($method,$type,$ownerId){
+    public function withdrawalsViaMethod($method, $type, $ownerId)
+    {
         $method = WithdrawMethod::findOrFail($method);
         $owner = Owner::findOrFail($ownerId);
         if ($type == 'approved') {
-            $pageTitle = 'Approved Withdrawal of '.$owner->username.' Via '.$method->name;
-            $withdrawals = Withdrawal::where('status', 1)->where('owner_id',$owner->id)->with(['owner','method'])->orderBy('id','desc')->paginate(getPaginate());
-        }elseif($type == 'rejected'){
-            $pageTitle = 'Rejected Withdrawals of '.$owner->username.' Via '.$method->name;
-            $withdrawals = Withdrawal::where('status', 3)->where('owner_id',$owner->id)->with(['owner','method'])->orderBy('id','desc')->paginate(getPaginate());
+            $pageTitle = 'Approved Withdrawal of ' . $owner->username . ' Via ' . $method->name;
+            $withdrawals = Withdrawal::where('status', 1)->where('owner_id', $owner->id)->with(['owner', 'method'])->orderBy('id', 'desc')->paginate(getPaginate());
+        } elseif ($type == 'rejected') {
+            $pageTitle = 'Rejected Withdrawals of ' . $owner->username . ' Via ' . $method->name;
+            $withdrawals = Withdrawal::where('status', 3)->where('owner_id', $owner->id)->with(['owner', 'method'])->orderBy('id', 'desc')->paginate(getPaginate());
 
-        }elseif($type == 'pending'){
-            $pageTitle = 'Pending Withdrawals of '.$owner->username.' Via '.$method->name;
-            $withdrawals = Withdrawal::where('status', 2)->where('owner_id',$owner->id)->with(['owner','method'])->orderBy('id','desc')->paginate(getPaginate());
-        }else{
-            $pageTitle = 'Withdrawals of '.$owner->username.' Via '.$method->name;
-            $withdrawals = Withdrawal::where('status', '!=', 0)->where('owner_id',$owner->id)->with(['owner','method'])->orderBy('id','desc')->paginate(getPaginate());
+        } elseif ($type == 'pending') {
+            $pageTitle = 'Pending Withdrawals of ' . $owner->username . ' Via ' . $method->name;
+            $withdrawals = Withdrawal::where('status', 2)->where('owner_id', $owner->id)->with(['owner', 'method'])->orderBy('id', 'desc')->paginate(getPaginate());
+        } else {
+            $pageTitle = 'Withdrawals of ' . $owner->username . ' Via ' . $method->name;
+            $withdrawals = Withdrawal::where('status', '!=', 0)->where('owner_id', $owner->id)->with(['owner', 'method'])->orderBy('id', 'desc')->paginate(getPaginate());
         }
         $emptyMessage = 'Withdraw Log Not Found';
-        return view('admin.withdraw.withdrawals', compact('pageTitle', 'withdrawals', 'emptyMessage','method'));
+        return view('admin.withdraw.withdrawals', compact('pageTitle', 'withdrawals', 'emptyMessage', 'method'));
     }
 
     public function showEmailAllForm()
@@ -340,25 +343,29 @@ class ManageOwnersController extends Controller
         return back()->withNotify($notify);
     }
 
-    public function login($id){
+    public function login($id)
+    {
         $owner = Owner::findOrFail($id);
         Auth::guard('owner')->login($owner);
         return redirect()->route('owner.dashboard');
     }
 
-    public function emailLog($id){
+    public function emailLog($id)
+    {
         $owner = Owner::findOrFail($id);
-        $pageTitle = 'Email log of '.$owner->username;
-        $logs = EmailLog::where('owner_id',$id)->with('owner')->orderBy('id','desc')->paginate(getPaginate());
+        $pageTitle = 'Email log of ' . $owner->username;
+        $logs = EmailLog::where('owner_id', $id)->with('owner')->orderBy('id', 'desc')->paginate(getPaginate());
         $emptyMessage = 'No data found';
-        return view('admin.owners.email_log', compact('pageTitle','logs','emptyMessage','owner'));
+        return view('admin.owners.email_log', compact('pageTitle', 'logs', 'emptyMessage', 'owner'));
     }
 
-    public function emailDetails($id){
+    public function emailDetails($id)
+    {
         $email = EmailLog::findOrFail($id);
         $pageTitle = 'Email details';
-        return view('admin.owners.email_details', compact('pageTitle','email'));
+        return view('admin.owners.email_details', compact('pageTitle', 'email'));
     }
+
     protected function userData($scope = null)
     {
         if ($scope) {
@@ -369,30 +376,33 @@ class ManageOwnersController extends Controller
 
         return $users->searchable(['username', 'email'])->orderBy('id', 'desc')->paginate(getPaginate());
     }
+
     public function kycUnverifiedUsers()
     {
         $pageTitle = 'KYC Unverified Users';
-        $owners     = $this->userData('kycUnverified');
+        $owners = $this->userData('kycUnverified');
         return view('admin.owners.list', compact('pageTitle', 'owners'));
     }
+
     public function kycPendingUsers()
     {
         $pageTitle = 'KYC Unverified Users';
         $emptyMessage = 'No Pending Agents';
-        $owners     = $this->userData('kycPending');
+        $owners = $this->userData('kycPending');
         return view('admin.owners.list', compact('pageTitle', 'owners', 'emptyMessage'));
     }
+
     public function kycDetails($id)
     {
         $pageTitle = 'KYC Details';
-        $user      = Owner::findOrFail($id);
+        $user = Owner::findOrFail($id);
         $data = json_decode($user->kyc_data);
         return view('admin.owners.kyc_detail', compact('pageTitle', 'user', 'data'));
     }
 
     public function kycApprove($id)
     {
-        $user     = Owner::findOrFail($id);
+        $user = Owner::findOrFail($id);
         $user->kv = 1;
         $user->save();
 
@@ -411,7 +421,7 @@ class ManageOwnersController extends Controller
                 fileManager()->removeFile(getFilePath('verify') . '/' . $kycData->value);
             }
         }
-        $user->kv       = 0;
+        $user->kv = 0;
         $user->kyc_data = null;
         $user->save();
 

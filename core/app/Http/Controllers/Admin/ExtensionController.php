@@ -11,7 +11,7 @@ class ExtensionController extends Controller
     public function index()
     {
         $pageTitle = 'Extensions';
-        $extensions = Extension::orderBy('status','desc')->get();
+        $extensions = Extension::orderBy('status', 'desc')->get();
         return view('admin.extension.index', compact('pageTitle', 'extensions'));
     }
 
@@ -25,6 +25,16 @@ class ExtensionController extends Controller
         $request->validate($validation_rule);
 
         $shortcode = json_decode(json_encode($extension->shortcode), true);
+        if ($extension->act == 'mix-panel') {
+            $key_value = $shortcode['app_key']['value'];
+            updateEnvVariable('MIXPANEL_TOKEN', $request->$key);
+        } elseif ($extension->act == 'facebook-pixel') {
+            $key_value = $shortcode['app_key']['value'];
+            updateEnvVariable('FACEBOOK_PIXEL_ID', $request->$key);
+        } elseif ($extension->act == 'google-place-api') {
+            $key_value = $shortcode['app_key']['value'];
+            updateEnvVariable('GOOGLE_PLACE_API_KEY', $request->$key);
+        };
         foreach ($shortcode as $key => $code) {
             $shortcode[$key]['value'] = $request->$key;
         }

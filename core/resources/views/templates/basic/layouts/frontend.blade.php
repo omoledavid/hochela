@@ -6,45 +6,92 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> {{ $general->sitename(__($pageTitle)) }}</title>
+
     @include('partials.seo')
     <!-- Bootstrap CSS -->
-    <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] .'/favicon.png') }}"
+    <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] . '/favicon.png') }}"
           sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ getImage(imagePath()['logoIcon']['path'] . '/favicon.png') }}"
+          sizes="180x180">
+    <link rel="apple-touch-icon" type="image/png"
+          href="{{ getImage(imagePath()['logoIcon']['path'] . '/favicon.png') }}"
+          sizes="180x180">
     <!-- bootstrap 5  -->
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/lib/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/lib/bootstrap.min.css') }}">
     <!-- fontawesome 5  -->
     <link rel="stylesheet" href="{{ asset('assets/global/css/all.min.css') }}">
     <!-- lineawesome font -->
     <link rel="stylesheet" href="{{ asset('assets/global/css/line-awesome.min.css') }}">
     <!--  -->
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/lightcase.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/lightcase.css') }}">
     <!-- slick slider css -->
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/lib/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/lib/slick.css') }}">
     <!-- select 2 plugin css -->
     <link rel="stylesheet" href="{{ asset('assets/global/css/select2.min.css') }}">
     <!-- dateoicker css -->
     <link rel="stylesheet" href="{{ asset('assets/global/css/datepicker.min.css') }}">
     <!-- main css -->
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/main.css') }}">
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/bootstrap-fileinput.css') }}">
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/custom.css') }}">
-    <link rel="stylesheet" href="{{ asset($activeTemplateTrue.'css/color.php')}}?color={{ $general->base_color }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/bootstrap-fileinput.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/color.php') }}?color={{ $general->base_color }}">
+
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/owl.min.css') }}">
+    <link rel="stylesheet" href="{{ asset($activeTemplateTrue . 'css/slick.css') }}">
+
+    {{--    feedback--}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     @stack('style-lib')
 
     @stack('style')
+    <x-facebook_pixel/>
+    <!-- Include Mixpanel JS SDK in the <head> of your layout -->
+    <x-mixpanel/>
+
+    <style>
+        #starRating .fa-star {
+            font-size: 1.5rem;
+            color: #ddd; /* Default color */
+            cursor: pointer;
+            margin-right: 0.2rem;
+        }
+
+        #starRating .fa-star.selected {
+            color: #ffc107; /* Highlighted color */
+        }
+
+        /* For summernote override unordered and order list */
+        .blog-desc ul {
+            list-style: disc !important;
+            list-style-position: inside !important;
+        }
+
+        .blog-desc ol {
+            list-style: decimal !important;
+            list-style-position: inside !important;
+        }
+    </style>
+
 </head>
 
 <body>
 
 @stack('fbComment')
 
-@include($activeTemplate.'partials.preloader')
+@include($activeTemplate . 'partials.preloader')
 <!-- header-section start  -->
-@include($activeTemplate.'partials.header')
+@include($activeTemplate . 'partials.header')
 
 <div class="main-wrapper">
-    @if (!request()->routeIs('home') && !request()->routeIs('property.details') && !request()->routeIs('property') && !request()->routeIs('property.category.rooms') && !request()->routeIs('property.category.rooms.date'))
-        @include($activeTemplate.'partials.breadcrumb')
+    @if (
+        !request()->routeIs('home') &&
+            !request()->routeIs('property.details') &&
+            !request()->routeIs('property') &&
+            !request()->routeIs('property.category.rooms') &&
+            !request()->routeIs('property.category.rooms.date'))
+        @include($activeTemplate . 'partials.breadcrumb')
     @endif
 
     @yield('content')
@@ -53,15 +100,15 @@
 
 
 <!-- footer section start -->
-@include($activeTemplate.'partials.footer')
+@include($activeTemplate . 'partials.footer')
 
-@include($activeTemplate.'partials.go_to_top')
+@include($activeTemplate . 'partials.go_to_top')
 
 @php
-    $cookie = App\Models\Frontend::where('data_keys','cookie.data')->first();
+    $cookie = App\Models\Frontend::where('data_keys', 'cookie.data')->first();
 @endphp
 
-@if(@$cookie->data_values->status && !session('cookie_accepted'))
+@if (@$cookie->data_values->status && !session('cookie_accepted'))
     <!-- cookies dark version start -->
     <div class="cookies-card bg--default text-center cookies--dark radius--10px">
         <div class="cookies-card__icon">
@@ -79,23 +126,29 @@
 
 @stack('modal')
 
+<x-feedback/>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="{{ asset('assets/global/js/jquery-3.6.0.min.js') }}"></script>
 <!-- bootstrap js -->
-<script src="{{ asset($activeTemplateTrue.'js/lib/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/lib/bootstrap.bundle.min.js') }}"></script>
 <!-- slick slider js -->
-<script src="{{ asset($activeTemplateTrue.'js/lib/slick.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/lib/slick.min.js') }}"></script>
 <!-- scroll animation -->
-<script src="{{ asset($activeTemplateTrue.'js/lib/wow.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/lib/wow.min.js') }}"></script>
 <!-- lightcase js -->
-<script src="{{ asset($activeTemplateTrue.'js/lib/lightcase.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/lib/lightcase.min.js') }}"></script>
 <script src="{{ asset('assets/global/js/select2.min.js') }}"></script>
 
 <script src="{{ asset('assets/global/js/datepicker.min.js') }}"></script>
 <script src="{{ asset('assets/global/js/datepicker.en.js') }}"></script>
 <!-- main js -->
-<script src="{{ asset($activeTemplateTrue.'js/app.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/app.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/owl.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/wow.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/slick.min.js') }}"></script>
+<script src="{{ asset($activeTemplateTrue . 'js/main.js') }}"></script>
 
 
 @include('partials.plugins')
@@ -195,7 +248,7 @@
     (function ($) {
         "use strict";
         $(".langSel").on("change", function () {
-            window.location.href = "{{route('home')}}/change/" + $(this).val();
+            window.location.href = "{{ route('home') }}/change/" + $(this).val();
         });
 
     })(jQuery);

@@ -100,8 +100,7 @@ class PropertyController extends Controller
 
         $properties = $properties->where('status', 1)->whereHas('location', function ($location) {
             $location->where('status', 1);
-        })
-            ->paginate(5);
+        })->orderBy('id', 'desc')->paginate(5);
 
 
         return view($this->activeTemplate . 'property.search', compact('pageTitle', 'emptyMessage', 'locations', 'propertyTypes', 'amenities', 'stars', 'properties', 'request'));
@@ -178,12 +177,18 @@ class PropertyController extends Controller
     public function propertyDetail($id, $slug)
     {
         $pageTitle = 'Property Details';
+        $mp = mixpanel();
         $property = Property::where('id', $id)
             ->with(['rooms', 'roomCategories.amenities', 'reviews.user' => function ($review) {
                 $review->limit(1);
             }])
             ->firstOrFail();
-        $related_properties = Property::where('property_type_id', $property->property_type_id)->with('propertyTypeSingle')->limit(4)->get();
+        $related_properties = Property::where('property_type_id', $property->property_type_id)
+            ->where('id', '!=', $id)
+            ->where('status', 1)
+            ->with('propertyTypeSingle')
+            ->limit(4)
+            ->get();
         $agent = Owner::where('id', $property->owner_id)->first();
 
         $propertiesByAgent = Property::where('owner_id', $agent->id)->count();
@@ -191,6 +196,17 @@ class PropertyController extends Controller
         $property->reviews()->paginate(getPaginate(1));
 
         $lowestRoomPrice = 0;
+        $mp->track('Viewed Property', [
+            'user' => auth()->user() ? auth()->user()->fullname : 'guest',
+            'property_agent' => [
+                'agent_id' => $agent->id,
+                'agent_name' => $agent->fullname,
+            ],
+            'property_info' => [
+                'property_id' => $property->id,
+                'property_name' => $property->name,
+            ]
+        ]);
 
         if (count($property->rooms)) {
             $lowestRoomPrice = $property->rooms[0]->price;
@@ -204,7 +220,8 @@ class PropertyController extends Controller
         for ($i = 1; $i <= 5; $i++) {
             $reviewCount[$i] = $property->reviews->where('rating', $i)->count();
         }
-        return view($this->activeTemplate . 'property.property_details', compact('pageTitle', 'property', 'lowestRoomPrice', 'reviewCount', 'agent', 'propertiesByAgent', 'related_properties'));
+        $seo_property = $property;
+        return view($this->activeTemplate . 'property.property_details', compact('pageTitle', 'property', 'lowestRoomPrice', 'reviewCount', 'agent', 'propertiesByAgent', 'related_properties', 'seo_property'));
     }
 
     public function roomsByCategory(Request $request)

@@ -1,5 +1,6 @@
 <?php
 require_once('timezone.php');
+$timezone = 'UTC';
 return [
 
     /*
@@ -135,6 +136,9 @@ return [
     */
 
     'providers' => [
+
+        // Existing providers...
+        App\Providers\BladeDirectivesServiceProvider::class,
 
         /*
          * Laravel Framework Service Providers...

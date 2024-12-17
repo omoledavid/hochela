@@ -125,6 +125,25 @@
                             @endif
                         </div>
                         <div class="book-widget mt-4 text-center text-white">
+                            <i class="lar la-calendar"></i>
+                            <h3 class="text-white mt-2 mb-2">@lang('Schedule an appointment')</h3>
+                            @guest
+                                <p>Login to book an appointment</p>
+                                <a href="{{route('user.login')}}"
+                                   class="btn mt-2 btn--base w-100">@lang('Login')</a>
+                            @endguest
+                            @auth
+                                <form method="POST" action="{{route('user.conversation.booking')}}">
+                                    @csrf
+                                    <input type="hidden" name="agent_id" value="{{$agent->id}}">
+                                    <input class="form-control" name="time" type="datetime-local"
+                                           placeholder="Select date" required>
+                                    <button type="submit" class="btn mt-3 btn--base w-100"
+                                            style="width:100%;">@lang('Submit')</button>
+                                </form>
+                            @endauth
+                        </div>
+                        <div class="book-widget mt-4 text-center text-white">
                             <i class="fas fa-mail-bulk"></i>
                             <h3 class="text-white mt-2">@lang('Send a message')</h3>
                             <form action="{{route('property.chat')}}">

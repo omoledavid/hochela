@@ -30,7 +30,7 @@ class OwnerController extends Controller
         $pageTitle = 'Dashboard';
         $widget['balance'] = Auth::guard('owner')->user()->balance;
         $widget['total_properties'] = Property::where('owner_id', Auth::guard('owner')->id())->count();
-        $widget['total_rooms'] = Property::sum('available_rooms');
+        $widget['total_rooms'] = Property::where('owner_id', Auth::guard('owner')->id())->sum('available_rooms');
         $widget['total_appointment'] = Booking::where('agent_id', Auth::guard('owner')->id())->count();
         $user = Auth::guard('owner')->user();
         $bookings = Booking::where('agent_id', $user->id)->latest()->paginate(getPaginate());
@@ -342,7 +342,7 @@ class OwnerController extends Controller
 
         $withdraw->status = 2;
         $withdraw->save();
-        $owner->balance  -=  $withdraw->amount;
+        $owner->balance -= $withdraw->amount;
         $owner->save();
 
         $transaction = new Transaction();
@@ -352,7 +352,7 @@ class OwnerController extends Controller
         $transaction->charge = $withdraw->charge;
         $transaction->trx_type = '-';
         $transaction->details = showAmount($withdraw->final_amount) . ' ' . $withdraw->currency . ' Withdraw Via ' . $withdraw->method->name;
-        $transaction->trx =  $withdraw->trx;
+        $transaction->trx = $withdraw->trx;
         $transaction->save();
 
         $adminNotification = new AdminNotification();
@@ -398,19 +398,19 @@ class OwnerController extends Controller
             return redirect()->route('owner.dashboard')->withNotify($notify);
         }
         $pageTitle = 'KYC Form';
-        $form      = Form::where('act', 'kyc')->first();
+        $form = Form::where('act', 'kyc')->first();
         return view('owner.kyc.form', compact('pageTitle', 'form'));
     }
 
     public function kycSubmit(Request $request, QuoreId $quoreId)
     {
-        $form           = Form::where('act', 'kyc')->first();
-        $formData       = $form->form_data;
-        $formProcessor  = new FormProcessor();
+        $form = Form::where('act', 'kyc')->first();
+        $formData = $form->form_data;
+        $formProcessor = new FormProcessor();
         $validationRule = $formProcessor->valueValidation($formData);
         $request->validate($validationRule);
 
-        $userData       = $formProcessor->processFormData($request, $formData);
+        $userData = $formProcessor->processFormData($request, $formData);
         $ninDetails = array_reduce($userData, function ($combine, $data) {
             $combine[strtolower($data['name'])] = $data['value'];
             return $combine;
@@ -418,18 +418,19 @@ class OwnerController extends Controller
         $quoreId->verifyId($ninDetails);
 
         /** App\Models\Owner $user */
-        $user           = Auth::guard('owner')->user();
+        $user = Auth::guard('owner')->user();
         $user->kyc_data = $userData;
-        $user->kv       = 2;
+        $user->kv = 2;
         $user->save();
 
 
         $notify[] = ['success', 'KYC data submitted successfully'];
         return redirect()->route('owner.dashboard')->withNotify($notify);
     }
+
     public function kycData()
     {
-        $user      = Auth::guard('owner')->user();
+        $user = Auth::guard('owner')->user();
         $pageTitle = 'KYC Data';
         $kyc_data = json_decode($user->kyc_data);
         return view('owner.kyc.info', compact('pageTitle', 'user', 'kyc_data'));

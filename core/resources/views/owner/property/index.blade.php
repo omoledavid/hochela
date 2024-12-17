@@ -1,12 +1,12 @@
 @extends('owner.layouts.app')
 @section('panel')
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card b-radius--10 ">
-            <div class="card-body p-0">
-                <div class="table-responsive--md  table-responsive">
-                    <table class="table table--light style--two">
-                        <thead>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card b-radius--10 ">
+                <div class="card-body p-0">
+                    <div class="table-responsive--md  table-responsive">
+                        <table class="table table--light style--two">
+                            <thead>
                             <tr>
                                 <th>@lang('S.N.')</th>
                                 <th>@lang('Name')</th>
@@ -18,8 +18,8 @@
                                 <th>@lang('Status')</th>
                                 <th>@lang('Action')</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             @forelse($properties as $property)
                                 <tr>
                                     <td data-label="@lang('S.N.')"> {{ $properties->firstItem() + $loop->index }}</td>
@@ -29,7 +29,8 @@
                                     <td data-label="@lang('Discount')">{{ showAmount($property->discount) }}%</td>
                                     <td data-label="@lang('Room')">{{ $property->available_rooms }}</td>
                                     <td data-label="@lang('Categories')">
-                                        <a href="{{ route('owner.property.room.category.property', [slug($property->name), $property->id]) }}" class="icon-btn btn--info ml-1">
+                                        <a href="{{ route('owner.property.room.category.property', [slug($property->name), $property->id]) }}"
+                                           class="icon-btn btn--info ml-1">
                                             {{ $property->roomCategories->count() }}
                                         </a>
                                     </td>
@@ -41,7 +42,8 @@
                                         @endif
                                     </td>
                                     <td data-label="@lang('Action')">
-                                        <a href="{{ route('owner.property.edit', $property->id) }}" class="icon-btn ml-1"><i class="la la-pen"></i></i></a>
+                                        <a href="{{ route('owner.property.edit', $property->id) }}"
+                                           class="icon-btn ml-1"><i class="la la-pen"></i></i></a>
                                     </td>
                                 </tr>
                             @empty
@@ -50,18 +52,20 @@
                                 </tr>
                             @endforelse
 
-                        </tbody>
-                    </table><!-- table end -->
+                            </tbody>
+                        </table><!-- table end -->
+                    </div>
                 </div>
-            </div>
-            <div class="card-footer py-4">
-                {{ paginateLinks($properties) }}
+                <div class="card-footer py-4">
+                    {{ paginateLinks($properties) }}
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('breadcrumb-plugins')
-    <a href="{{ route('owner.property.create') }}" class="btn btn-sm btn--primary box--shadow1 text--small" ><i class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
+    <a href="{{ route('agent.onboarding') }}" class="btn btn-sm btn--primary box--shadow1 text--small"><i
+            class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
+    {{--    <a href="{{ route('owner.property.create') }}" class="btn btn-sm btn--primary box--shadow1 text--small" ><i class="fa fa-fw fa-plus"></i>@lang('Add New')</a>--}}
 @endpush

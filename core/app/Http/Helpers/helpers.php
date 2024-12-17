@@ -8,7 +8,9 @@ use App\Models\Frontend;
 use App\Models\GeneralSetting;
 use App\Models\SmsTemplate;
 use App\Models\EmailLog;
+use App\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -32,7 +34,6 @@ function sidebarVariation()
     $variation['opacity'] = 'overlay--opacity-8'; // 1-10
 
     return $variation;
-
 }
 
 function systemDetails()
@@ -749,6 +750,12 @@ function imagePath()
         'path' => 'assets/images/news',
         'size' => '590x300',
     ];
+    $data['icons'] = [
+        'path' => 'assets/images/icons',
+    ];
+    $data['agents'] = [
+        'path' => 'assets/images/icons/agent'
+    ];
     return $data;
 }
 
@@ -885,6 +892,21 @@ function checkWishList($product_id)
     }
 }
 
+function can($code)
+{
+    return Role::hasPermission($code);
+}
+
+function keyToTitle($text)
+{
+    return ucfirst(preg_replace("/[^A-Za-z0-9 ]/", ' ', $text));
+}
+
+function to_route($route, $parameters = [], $status = 302, $headers = [])
+{
+    return redirect()->route($route, $parameters, $status, $headers);
+}
+
 function ratingStar($rating = 0)
 {
     $ratingStar = '';
@@ -926,4 +948,57 @@ function ratingStar($rating = 0)
     }
 
     return $ratingStar;
+}
+
+function updateEnvVariable($key, $value)
+{
+    $path = base_path('.env');
+
+    // Ensure the .env file exists
+    if (file_exists($path)) {
+        // Read the file
+        $envContent = file_get_contents($path);
+
+        // Check if the key already exists
+        if (strpos($envContent, $key) !== false) {
+            // Replace the existing key with the new value
+            $envContent = preg_replace(
+                "/^{$key}=.*/m",
+                "{$key}={$value}",
+                $envContent
+            );
+        } else {
+            // If the key doesn't exist, append it to the end of the file
+            $envContent .= "\n{$key}={$value}\n";
+        }
+
+        // Write the updated content back to the .env file
+        file_put_contents($path, $envContent);
+
+        // Clear the config cache
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('config:cache');
+
+        return true;
+    }
+
+    return false;
+}
+
+function mixpanel()
+{
+    static $mp = null;
+    if (!$mp) {
+        $mp = Mixpanel::getInstance(env('MIXPANEL_TOKEN'));
+    }
+    return $mp;
+}
+
+function frontendImage($sectionName, $image, $size = null, $seo = false)
+{
+    if ($seo) {
+        return getImage('assets/images/frontend/' . $sectionName . '/seo/' . $image, $size);
+    }
+    return getImage('assets/images/frontend/' . $sectionName . '/' . $image, $size);
 }
